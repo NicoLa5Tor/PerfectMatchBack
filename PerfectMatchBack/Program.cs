@@ -1,7 +1,12 @@
+using Microsoft.EntityFrameworkCore;
+using PerfectMatchBack.Models;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddDbContext<PerfectMatchContext>(option => option.UseSqlServer
+(builder.Configuration.GetConnectionString("Connection")));
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 

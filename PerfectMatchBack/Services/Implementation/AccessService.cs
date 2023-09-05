@@ -12,6 +12,44 @@ namespace PerfectMatchBack.Services.Implementation
             this._context = context;
         }
 
+        public async Task<Access> createAccess(Access access)
+        {
+            try
+            {
+                _context.Accesses.Add(access);
+                await _context.SaveChangesAsync();  
+                return access;
+
+            }catch (Exception ex) {
+                throw ex;
+            }
+        }
+
+        public async Task<bool> deleteAccess(Access access)
+        {
+            try
+            {
+                _context.Accesses.Remove(access);   
+                await _context.SaveChangesAsync();
+                return true;  
+
+            }catch (Exception ex) {
+                throw ex;
+            }
+        }
+
+        public async Task<Access> getAccess(int id)
+        {
+            try
+            {
+                var access = await _context.Accesses.Where(model => model.IdAccess == id).FirstOrDefaultAsync();
+                return access;
+
+            }catch (Exception ex) {
+                throw ex;
+            }
+        }
+
         public async Task<List<Access>> listAccess()
         {
             try
@@ -20,6 +58,21 @@ namespace PerfectMatchBack.Services.Implementation
                 return list;
 
             }catch (Exception ex) {
+                throw ex;
+            }
+        }
+
+        public async Task<bool> updateAccess(Access access)
+        {
+            try
+            {
+               _context.Accesses.Update(access);
+                await _context.SaveChangesAsync();
+                return true;
+
+            }catch (Exception ex)
+            {
+
                 throw ex;
             }
         }

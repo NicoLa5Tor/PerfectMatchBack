@@ -1,6 +1,9 @@
-﻿namespace PerfectMatchBack.Services.Contract
+﻿using PerfectMatchBack.Models;
+
+namespace PerfectMatchBack.Services.Contract
 {
-    public interface IAnimalType
+    public interface IAnimalTypeService
     {
+        Task<List<AnimalType>> listAnimalType();
     }
 }

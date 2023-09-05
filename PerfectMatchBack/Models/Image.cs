@@ -9,7 +9,7 @@ public partial class Image
 
     public int IdPublication { get; set; }
 
-    public byte[] DataImage { get; set; } = null!;
+    public string DataImage { get; set; } = null!;
 
     public virtual Publication IdPublicationNavigation { get; set; } = null!;
 }

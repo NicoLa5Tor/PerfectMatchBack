@@ -97,6 +97,7 @@ app.MapGet("City/List", async (
     return Results.NotFound();
     }
 });
+
 #endregion
 #region Image
 app.MapGet("Image/List", async (
@@ -114,6 +115,57 @@ app.MapGet("Image/List", async (
     return Results.NotFound();
     }
 });
+app.MapPost("Image/Add", async (
+    ImageDTO model,
+    IIMageService service,
+    IMapper _mapper
+    
+    ) => {
+    var image = _mapper.Map<Image>(model);  
+    var imageAdd = await service.addImage(image);
+        if (imageAdd is not null) {
+            return Results.Ok(_mapper.Map<ImageDTO>(imageAdd));
+        }else
+        {
+            return Results.StatusCode(StatusCodes.Status500InternalServerError);
+        }
+    });
+//las imagenes solo se pueden actualizar para ser cambiadas, no se cambiaran el id de publicación para no hacer mas tedioso el proceso
+app.MapPut("Image/Update/{idImage}",async ( 
+    int idImage,
+    ImageDTO model,
+    IMapper _mapper,
+    IIMageService _service
+    
+    ) => {
+        var image = await _service.GetImage(idImage);
+        if (image is null) return Results.NotFound();
+        var mapImage = _mapper.Map<Image>(model);
+        image.DataImage = mapImage.DataImage;
+        var result = await _service.Updatemgae(image);
+        if (result) {
+            return Results.Ok(_mapper.Map<ImageDTO>(image));
+        }
+        else
+        {
+            return Results.StatusCode(StatusCodes.Status500InternalServerError);
+        }
+    });
+app.MapDelete("Image/Delete/{idImage}", async (
+    int idImage,
+    IIMageService _service
+    ) => {
+        var search = await _service.GetImage(idImage);
+        if (search is null) return Results.NotFound();
+        var deleteImage = await _service.removeImage(search);
+        if (deleteImage) {
+            return Results.Ok();
+        }
+        else
+        {
+            return Results.StatusCode(StatusCodes.Status500InternalServerError);
+        }
+    });
 #endregion
 #region Role
 app.MapGet("Role/List", async (

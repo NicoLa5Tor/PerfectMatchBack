@@ -55,7 +55,8 @@ namespace PerfectMatchBack.Utilitles
                 ForMember(destiny => destiny.NameRole, origin => origin.MapFrom(dest => dest.IdRoleNavigation.RoleName)).
                 ForMember(destiny => destiny.NameCity, origin => origin.MapFrom(dest => dest.IdCityNavigation.CityName)).
                 ForMember(destiny => destiny.BirthDate, origin => origin.MapFrom(
-                    dest => dest.BirthDate.Value.ToString("dd/MM/yyyy")));
+                    dest => dest.BirthDate.Value.ToString("dd/MM/yyyy"))).
+                    ForMember(destiny => destiny.password, origin => origin.Ignore());
             #endregion
 
         }

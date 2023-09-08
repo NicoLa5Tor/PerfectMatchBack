@@ -24,7 +24,11 @@ namespace PerfectMatchBack.Utilitles
                 origen => origen.MapFrom(dest => dest.IdAnimalTypeNavigation.AnimalTypeName));
             #endregion
             #region City
-            CreateMap<CityDTO, City>().ReverseMap();
+            CreateMap<CityDTO, City>().
+                ForMember(destiny => destiny.IdDeparmentNavigation, origin => origin.Ignore());
+            CreateMap<City, CityDTO>().
+                ForMember(destiny => destiny.DepartmentName, origin => origin.MapFrom(
+                    dest => dest.IdDeparmentNavigation.DepartamentName));
             #endregion
             #region Image
             CreateMap<ImageDTO, Image>().ReverseMap();
@@ -38,7 +42,7 @@ namespace PerfectMatchBack.Utilitles
             CreateMap<Publication, PublicationDTO>().
                 ForMember(destiny => destiny.NameType, origin => origin.MapFrom(dest => dest.IdAnimalTypeNavigation.AnimalTypeName)).
                 ForMember(destiny => destiny.NameCity, origin => origin.MapFrom(dest => dest.IdCityNavigation.CityName)).
-                ForMember(destiny => destiny.NameBreed, origin => origin.MapFrom(dest => dest.IdBreedNavigation)).
+                ForMember(destiny => destiny.NameBreed, origin => origin.MapFrom(dest => dest.IdBreedNavigation.BreedName)).
                 ForMember(destiny => destiny.NameOwner, origin => origin.MapFrom(dest => dest.IdOwnerNavigation.Name));
             #endregion
             #region Role

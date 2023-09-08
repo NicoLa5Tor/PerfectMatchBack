@@ -16,7 +16,7 @@ namespace PerfectMatchBack.Services.Implementation
         {
             try
             {
-                var list = await _context.Cities.ToListAsync();
+                var list = await _context.Cities.Include(id => id.IdDeparmentNavigation).ToListAsync();
                 return list;    
 
             }catch (Exception ex) {

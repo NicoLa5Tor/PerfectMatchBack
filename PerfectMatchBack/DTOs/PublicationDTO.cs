@@ -13,7 +13,7 @@
         public string? NameCity { get; set; }   
 
 
-        public double? Weigth { get; set; }
+     
 
         public bool? Sex { get; set; }
 

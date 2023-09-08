@@ -211,7 +211,7 @@ public partial class PerfectMatchContext : DbContext
             entity.Property(e => e.IdCity).HasColumnName("idCity");
             entity.Property(e => e.IdOwner).HasColumnName("idOwner");
             entity.Property(e => e.Sex).HasColumnName("sex");
-            entity.Property(e => e.Weigth).HasColumnName("weigth");
+       
 
             entity.HasOne(d => d.IdAnimalTypeNavigation).WithMany(p => p.Publications)
                 .HasForeignKey(d => d.IdAnimalType)

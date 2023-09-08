@@ -27,7 +27,11 @@ namespace PerfectMatchBack.Utilitles
             CreateMap<CityDTO, City>().ReverseMap();
             #endregion
             #region Image
-            CreateMap<ImageDTO, Image>().ReverseMap();
+            CreateMap<ImageDTO, Image>().
+                ForMember(destiny => destiny.IdPublicationNavigation, origin => origin.Ignore()).ReverseMap();
+           
+                
+                
             #endregion
             #region Publication
             CreateMap<PublicationDTO, Publication>().
@@ -38,7 +42,7 @@ namespace PerfectMatchBack.Utilitles
             CreateMap<Publication, PublicationDTO>().
                 ForMember(destiny => destiny.NameType, origin => origin.MapFrom(dest => dest.IdAnimalTypeNavigation.AnimalTypeName)).
                 ForMember(destiny => destiny.NameCity, origin => origin.MapFrom(dest => dest.IdCityNavigation.CityName)).
-                ForMember(destiny => destiny.NameBreed, origin => origin.MapFrom(dest => dest.IdBreedNavigation)).
+                ForMember(destiny => destiny.NameBreed, origin => origin.MapFrom(dest => dest.IdBreedNavigation.BreedName)).
                 ForMember(destiny => destiny.NameOwner, origin => origin.MapFrom(dest => dest.IdOwnerNavigation.Name));
             #endregion
             #region Role
@@ -56,7 +60,7 @@ namespace PerfectMatchBack.Utilitles
                 ForMember(destiny => destiny.NameCity, origin => origin.MapFrom(dest => dest.IdCityNavigation.CityName)).
                 ForMember(destiny => destiny.BirthDate, origin => origin.MapFrom(
                     dest => dest.BirthDate.Value.ToString("dd/MM/yyyy"))).
-                    ForMember(destiny => destiny.password, origin => origin.Ignore());
+                    ForMember(destiny => destiny.Password, origin => origin.Ignore());
             #endregion
 
         }

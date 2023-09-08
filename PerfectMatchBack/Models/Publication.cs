@@ -13,7 +13,7 @@ public partial class Publication
 
     public int? IdCity { get; set; }
 
-    public double? Weigth { get; set; }
+  
 
     public bool? Sex { get; set; }
 

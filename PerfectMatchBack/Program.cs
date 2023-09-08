@@ -235,7 +235,7 @@ app.MapPut("Publication/Update/{idPublication}", async (
     modelTrue.IdBreed = publication.IdBreed;
     modelTrue.IdAnimalType = publication.IdAnimalType;
     modelTrue.Sex = publication.Sex;
-    modelTrue.Weigth = publication.Weigth;
+   
     var ouput = await _service.updatePublication(modelTrue);
     if (ouput)
     {

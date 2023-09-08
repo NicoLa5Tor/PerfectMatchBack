@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using datos.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace PerfectMatchBack.Models;
@@ -36,6 +37,7 @@ public partial class PerfectMatchContext : DbContext
     public virtual DbSet<Role> Roles { get; set; }
 
     public virtual DbSet<User> Users { get; set; }
+    public virtual DbSet<Department> Departments { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         => optionsBuilder.UseSqlServer("Name=Connection");
@@ -98,6 +100,11 @@ public partial class PerfectMatchContext : DbContext
                 .HasMaxLength(100)
                 .IsUnicode(false)
                 .HasColumnName("cityName");
+            entity.Property(e => e.IdDeparment).HasColumnName("idDeparment");
+
+            entity.HasOne(d => d.IdDeparmentNavigation).WithMany(p => p.Cities)
+                .HasForeignKey(d => d.IdDeparment)
+                .HasConstraintName("FK_City_Deparment");
         });
 
         modelBuilder.Entity<Comment>(entity =>
@@ -128,20 +135,32 @@ public partial class PerfectMatchContext : DbContext
                 .HasConstraintName("FK__Comment__idUser__38996AB5");
         });
 
+        modelBuilder.Entity<Department>(entity =>
+        {
+            entity.HasKey(e => e.IdDeparment).HasName("PK_Deparment");
+
+            entity.ToTable("Department");
+
+            entity.Property(e => e.IdDeparment).HasColumnName("idDeparment");
+            entity.Property(e => e.DepartamentName)
+                .HasMaxLength(50)
+                .IsUnicode(false);
+        });
+
         modelBuilder.Entity<Image>(entity =>
         {
-            entity.HasKey(e => e.IdImage);
+            entity.HasKey(e => e.IdImage).HasName("PK_Image1");
 
             entity.ToTable("Image");
 
             entity.Property(e => e.IdImage).HasColumnName("idImage");
-            entity.Property(e => e.DataImage).HasColumnType("image");
+            entity.Property(e => e.DataImage).IsUnicode(false);
             entity.Property(e => e.IdPublication).HasColumnName("idPublication");
 
             entity.HasOne(d => d.IdPublicationNavigation).WithMany(p => p.Images)
                 .HasForeignKey(d => d.IdPublication)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Image_Publication");
+                .HasConstraintName("FK_Image1_Publication");
         });
 
         modelBuilder.Entity<Movement>(entity =>
@@ -211,7 +230,7 @@ public partial class PerfectMatchContext : DbContext
             entity.Property(e => e.IdCity).HasColumnName("idCity");
             entity.Property(e => e.IdOwner).HasColumnName("idOwner");
             entity.Property(e => e.Sex).HasColumnName("sex");
-            entity.Property(e => e.Weigth).HasColumnName("weigth");
+            entity.Property(e => e.Weight).HasColumnName("weight");
 
             entity.HasOne(d => d.IdAnimalTypeNavigation).WithMany(p => p.Publications)
                 .HasForeignKey(d => d.IdAnimalType)
@@ -283,6 +302,7 @@ public partial class PerfectMatchContext : DbContext
 
         OnModelCreatingPartial(modelBuilder);
     }
+
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
 }

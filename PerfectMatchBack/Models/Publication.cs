@@ -18,6 +18,7 @@ public partial class Publication
     public bool? Sex { get; set; }
 
     public int? Age { get; set; }
+    public double? Weight { get; set; }
 
     public int IdAnimalType { get; set; }
 

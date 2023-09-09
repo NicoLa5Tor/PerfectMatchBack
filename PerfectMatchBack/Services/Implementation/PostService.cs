@@ -30,12 +30,13 @@ namespace PerfectMatchBack.Services.Implementation
         {
             try
             {
+                var ima = await _context.Publications.Include(id => id.Images).FirstOrDefaultAsync(id => id.IdPublication == model.IdPublication);
+                _context.Images.RemoveRange(ima.Images);
+             
                 _context.Publications.Remove(model);
                 await _context.SaveChangesAsync();
                 return true;
-
             }catch (Exception ex) {
-
                 throw ex;
             }
         }
@@ -57,6 +58,7 @@ namespace PerfectMatchBack.Services.Implementation
             try
             {
                 var list = await _context.Publications.Include(navi => navi.IdOwnerNavigation).Include(navi => navi.IdCityNavigation).Include(navi => navi.IdAnimalTypeNavigation).Include(navi => navi.IdBreedNavigation).
+                    Include(id => id.IdGenderNavigation).
                     ToListAsync();
                 return list;
             }

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using datos.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace PerfectMatchBack.Models;
@@ -26,6 +25,10 @@ public partial class PerfectMatchContext : DbContext
 
     public virtual DbSet<Comment> Comments { get; set; }
 
+    public virtual DbSet<Department> Departments { get; set; }
+
+    public virtual DbSet<Gender> Genders { get; set; }
+
     public virtual DbSet<Image> Images { get; set; }
 
     public virtual DbSet<Movement> Movements { get; set; }
@@ -37,7 +40,6 @@ public partial class PerfectMatchContext : DbContext
     public virtual DbSet<Role> Roles { get; set; }
 
     public virtual DbSet<User> Users { get; set; }
-    public virtual DbSet<Department> Departments { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         => optionsBuilder.UseSqlServer("Name=Connection");
@@ -147,6 +149,19 @@ public partial class PerfectMatchContext : DbContext
                 .IsUnicode(false);
         });
 
+        modelBuilder.Entity<Gender>(entity =>
+        {
+            entity.HasKey(e => e.IdGender);
+
+            entity.ToTable("Gender");
+
+            entity.Property(e => e.IdGender).HasColumnName("idGender");
+            entity.Property(e => e.GenderName)
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasColumnName("genderName");
+        });
+
         modelBuilder.Entity<Image>(entity =>
         {
             entity.HasKey(e => e.IdImage).HasName("PK_Image1");
@@ -228,8 +243,8 @@ public partial class PerfectMatchContext : DbContext
             entity.Property(e => e.IdAnimalType).HasColumnName("idAnimalType");
             entity.Property(e => e.IdBreed).HasColumnName("idBreed");
             entity.Property(e => e.IdCity).HasColumnName("idCity");
+            entity.Property(e => e.IdGender).HasColumnName("idGender");
             entity.Property(e => e.IdOwner).HasColumnName("idOwner");
-            entity.Property(e => e.Sex).HasColumnName("sex");
             entity.Property(e => e.Weight).HasColumnName("weight");
 
             entity.HasOne(d => d.IdAnimalTypeNavigation).WithMany(p => p.Publications)
@@ -245,6 +260,11 @@ public partial class PerfectMatchContext : DbContext
             entity.HasOne(d => d.IdCityNavigation).WithMany(p => p.Publications)
                 .HasForeignKey(d => d.IdCity)
                 .HasConstraintName("FK__Publicati__idCit__3F466844");
+
+            entity.HasOne(d => d.IdGenderNavigation).WithMany(p => p.Publications)
+                .HasForeignKey(d => d.IdGender)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Publication_Gender");
 
             entity.HasOne(d => d.IdOwnerNavigation).WithMany(p => p.Publications)
                 .HasForeignKey(d => d.IdOwner)
@@ -302,7 +322,6 @@ public partial class PerfectMatchContext : DbContext
 
         OnModelCreatingPartial(modelBuilder);
     }
-
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
 }

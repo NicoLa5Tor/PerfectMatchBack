@@ -1,8 +1,7 @@
-﻿using PerfectMatchBack.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
-namespace datos.Models;
+namespace PerfectMatchBack.Models;
 
 public partial class Department
 {

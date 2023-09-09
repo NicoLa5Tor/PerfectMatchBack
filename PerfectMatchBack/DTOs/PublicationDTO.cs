@@ -15,7 +15,8 @@
 
         public double? Weight { get; set; }
 
-        public bool? Sex { get; set; }
+        public int IdGender { get; set; }
+        public string? TypeGender { get; set; }  
 
         public int? Age { get; set; }
 

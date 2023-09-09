@@ -234,12 +234,12 @@ app.MapPut("Publication/Update/{idPublication}", async (
     modelTrue.AnimalName = publication.AnimalName;
     modelTrue.IdBreed = publication.IdBreed;
     modelTrue.IdAnimalType = publication.IdAnimalType;
-    modelTrue.Sex = publication.Sex;
+    modelTrue.IdGender = publication.IdGender;
     modelTrue.Weight = publication.Weight;
     var ouput = await _service.updatePublication(modelTrue);
     if (ouput)
     {
-        return Results.Ok(_mapper.Map<PublicationDTO>(ouput));
+        return Results.Ok(_mapper.Map<PublicationDTO>(modelTrue));
     }
     else
     {
@@ -253,28 +253,14 @@ app.MapDelete("Publication/Delete/{idPublication}", async (
 
     ) =>
 
-{
-
-    bool deleteImage = true;
-   
+{  
         var postTrue = await _service.GetPublication(idPublication);
     if (postTrue is null) return Results.NotFound();
-       while (deleteImage == true)
-    {
-        var image = await _imageService.GetImage(idPublication);
-    if (image is not null)
-    {
-            deleteImage = true;
-             await _imageService.removeImage(image);
-        }
-        else
-        {
-            deleteImage = false;
-        }
-    }
+  
     var deletePost = await _service.deletePublication(postTrue);
     if (deletePost)
     {
+      
         return Results.Ok();
     }
     else

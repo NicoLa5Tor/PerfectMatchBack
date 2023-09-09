@@ -13,11 +13,11 @@ public partial class Publication
 
     public int? IdCity { get; set; }
 
+    public double? Weight { get; set; }
 
-    public bool? Sex { get; set; }
+    public int IdGender { get; set; }
 
     public int? Age { get; set; }
-    public double? Weight { get; set; }
 
     public int IdAnimalType { get; set; }
 
@@ -32,6 +32,8 @@ public partial class Publication
     public virtual Breed IdBreedNavigation { get; set; } = null!;
 
     public virtual City? IdCityNavigation { get; set; }
+
+    public virtual Gender IdGenderNavigation { get; set; } = null!;
 
     public virtual User? IdOwnerNavigation { get; set; }
 

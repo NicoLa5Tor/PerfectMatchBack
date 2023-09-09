@@ -290,6 +290,26 @@ app.MapDelete("Publication/Delete/{idPublication}", async (
     }
 });
 #endregion
+#region User
+app.MapGet("User/List", async (
+
+    IMapper _mapper,
+    IUserService _userService
+    ) =>
+{
+    var list = await _userService.listUser();
+    var lisDTO = _mapper.Map<List<UserDTO>>(list);
+    if (lisDTO.Count > 0)
+    {
+        return Results.Ok(lisDTO);
+    }
+    else
+    {
+        return Results.NotFound();
+    }
+
+});
+#endregion
 #endregion
 
 

@@ -19,8 +19,6 @@ namespace PerfectMatchBack.DTOs
         public string? GenderName { get; set; }
         public double? Weight { get; set; }
 
-        public bool? Sex { get; set; }
-
         public int? Age { get; set; }
 
         public int IdAnimalType { get; set; }

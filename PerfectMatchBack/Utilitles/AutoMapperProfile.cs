@@ -41,11 +41,11 @@ namespace PerfectMatchBack.Utilitles
              ForMember(destiny => destiny.IdOwnerNavigation, origin => origin.Ignore()).
              ForMember(destiny => destiny.IdGenderNavigation, origin => origin.Ignore());
             CreateMap<Publication, PublicationDTO>().
-                ForMember(destiny => destiny.NameType, origin => origin.MapFrom(dest => dest.IdAnimalTypeNavigation.AnimalTypeName)).
-                ForMember(destiny => destiny.NameCity, origin => origin.MapFrom(dest => dest.IdCityNavigation.CityName)).
-                ForMember(destiny => destiny.NameBreed, origin => origin.MapFrom(dest => dest.IdBreedNavigation.BreedName)).
+                ForMember(destiny => destiny.TypeName, origin => origin.MapFrom(dest => dest.IdAnimalTypeNavigation.AnimalTypeName)).
+                ForMember(destiny => destiny.CityName, origin => origin.MapFrom(dest => dest.IdCityNavigation.CityName)).
+                ForMember(destiny => destiny.BreedName, origin => origin.MapFrom(dest => dest.IdBreedNavigation.BreedName)).
                 ForMember(destiny => destiny.NameOwner, origin => origin.MapFrom(dest => dest.IdOwnerNavigation.Name)).
-                ForMember(destiny => destiny.TypeGender, origin => origin.MapFrom(dest => dest.IdGenderNavigation.GenderName));
+                ForMember(destiny => destiny.GenderName, origin => origin.MapFrom(dest => dest.IdGenderNavigation.GenderName));
             #endregion
             #region Role
             CreateMap<RoleDTO, Role>().ReverseMap();

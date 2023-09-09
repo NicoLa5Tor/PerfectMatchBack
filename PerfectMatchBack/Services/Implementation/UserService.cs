@@ -30,11 +30,11 @@ namespace PerfectMatchBack.Services.Implementation
         {
             try
             {
+                var pass = await _context.Accesses.FirstOrDefaultAsync(id => id.IdAccess == model.IdAccess);
                 _context.Users.Remove(model);
+                _context.Accesses.Remove(pass);
                 await _context.SaveChangesAsync();
                 return true;    
-
-
             }catch(Exception ex) {
                 throw ex;
             }

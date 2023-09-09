@@ -42,7 +42,7 @@ public partial class PerfectMatchContext : DbContext
     public virtual DbSet<User> Users { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseSqlServer("name=connection");
+        => optionsBuilder.UseSqlServer("Name=Connection");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

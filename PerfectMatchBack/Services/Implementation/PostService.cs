@@ -55,6 +55,19 @@ namespace PerfectMatchBack.Services.Implementation
                 throw ex;
             }
         }
+
+        public async Task<List<Image>> listImage(int id)
+        {
+            try
+            {
+                var images = await _context.Images.Where(ide => ide.IdPublicationNavigation.IdPublication == id).ToListAsync();
+                return  images;
+            }catch(Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         public async Task<List<Publication>> listPublication()
         {
             try

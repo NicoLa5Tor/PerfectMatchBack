@@ -5,6 +5,7 @@ using PerfectMatchBack.Models;
 using PerfectMatchBack.Services.Contract;
 using PerfectMatchBack.Services.Implementation;
 using PerfectMatchBack.Utilitles;
+using System.Globalization;
 using System.Reflection.Metadata.Ecma335;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -206,6 +207,22 @@ app.MapGet("Role/List", async (
     });
 #endregion
 #region Publication
+app.MapGet("Publication/listImages/{id}",async (
+    int id,
+    IPostService _service,
+    IMapper _mapper 
+    ) => {
+        var list = await _service.listImage(id);
+        var listDTO = _mapper.Map<List<ImageDTO>>(list);
+        if (listDTO is not null) {
+            return Results.Ok(listDTO);
+        }
+        else
+        {
+            return Results.NotFound();
+        }
+    
+    });
 app.MapGet("Publication/List", async (
     IMapper _mapper,
     IPostService _service
@@ -306,6 +323,75 @@ app.MapGet("User/List", async (
     else
     {
         return Results.NotFound();
+    }
+
+});
+app.MapPost("User/Add",async (
+    UserDTO model,
+    IUserService userService,
+    IMapper _mapper,
+    IAccessService _accessService
+    ) => {
+        Encryption enc = new Encryption();
+        Access access = new Access();
+        access.Password = enc.Encrypt(model.password);
+        var addAcces = await _accessService.createAccess(access);
+        if (addAcces is null) return Results.StatusCode(StatusCodes.Status500InternalServerError); 
+
+        var modelDTO = _mapper.Map<User>(model);
+        modelDTO.IdAccess = addAcces.IdAccess;
+        var addUser = await userService.addUser(modelDTO);
+        
+        if (addUser is not null)
+        {
+            return Results.Ok(_mapper.Map<UserDTO>(addUser));
+        }
+        else
+        {
+            return Results.StatusCode(StatusCodes.Status500InternalServerError);
+        }
+    
+    });
+app.MapPut("User/Update/{idUser}",async (
+    UserDTO model,
+    int idUser,
+    IUserService userService,
+    IMapper _mapper
+    ) => {
+    var userTrue = await userService.getUser(idUser);
+        if (userTrue is null) return Results.StatusCode(StatusCodes.Status500InternalServerError);
+        userTrue.Name = model.Name;
+        userTrue.Email = model.Email;
+        userTrue.IdCity = model.IdCity;
+        userTrue.BirthDate = DateTime.ParseExact(model.BirthDate, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+        userTrue.IdRole = model.IdRole; 
+     var userUpdate = await userService.updateUser(userTrue);
+        if (userUpdate) {
+            return Results.Ok(_mapper.Map<UserDTO>(userTrue));
+        }
+        else
+        {
+            return Results.StatusCode(StatusCodes.Status500InternalServerError);
+        }
+
+    });
+app.MapDelete("User/Delete/{idUser}",async (
+    int idUser,
+    IUserService _service
+    ) =>
+
+
+{
+    var userTrue = await _service.getUser(idUser);
+    if (userTrue is null) return Results.NotFound();
+    var deleteUser = await _service.deleteUser(userTrue);
+    if (deleteUser) {
+
+        return Results.Ok();
+    }
+    else
+    {
+        return Results.StatusCode(StatusCodes.Status500InternalServerError);
     }
 
 });

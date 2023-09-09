@@ -64,6 +64,11 @@ namespace PerfectMatchBack.Utilitles
                     dest => dest.BirthDate.Value.ToString("dd/MM/yyyy"))).
                     ForMember(destiny => destiny.password, origin => origin.Ignore());
             #endregion
+            #region Gender
+
+            CreateMap<GenderDTO, Gender>()
+                .ReverseMap();
+            #endregion
 
         }
     }

@@ -45,8 +45,10 @@ namespace PerfectMatchBack.Services.Implementation
         {
             try
             {
-                var publication = await _context.Publications.Include(navi => navi.IdOwnerNavigation).Include(navi => navi.IdCityNavigation).Include(navi => navi.IdAnimalTypeNavigation).Include(navi => navi.IdBreedNavigation).
-                    Where(model => model.IdPublication == id).FirstOrDefaultAsync();
+                var publication = await _context.Publications.Include(navi => navi.IdOwnerNavigation).Include(navi => navi.IdCityNavigation).Include(navi => navi.IdAnimalTypeNavigation)
+                    .Include(navi => navi.IdBreedNavigation).Include(navi => navi.Images)
+                    .Where(model => model.IdPublication == id).FirstOrDefaultAsync()
+                    ;
                 return publication;
 
             }catch (Exception ex) {
@@ -58,7 +60,7 @@ namespace PerfectMatchBack.Services.Implementation
             try
             {
                 var list = await _context.Publications.Include(navi => navi.IdOwnerNavigation).Include(navi => navi.IdCityNavigation).Include(navi => navi.IdAnimalTypeNavigation).Include(navi => navi.IdBreedNavigation).
-                    Include(id => id.IdGenderNavigation).
+                    Include(id => id.IdGenderNavigation).Include(navi => navi.Images).
                     ToListAsync();
                 return list;
             }

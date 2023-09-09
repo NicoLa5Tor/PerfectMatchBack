@@ -16,6 +16,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IAccessService, AccessService>();
 builder.Services.AddScoped<IAnimalTypeService,AnimalTypeService>();
 builder.Services.AddScoped<IBreedService, BreedService>();
+builder.Services.AddScoped<IGenderService, GenderService>();
 builder.Services.AddScoped<ICityService, CityService>();    
 builder.Services.AddScoped<IIMageService, ImageService>();
 builder.Services.AddScoped<IPostService, PostService>();
@@ -80,7 +81,27 @@ app.MapPost("Breed/List", async (
     }
 });
 #endregion
+#region Gender
+app.MapGet("Gender/List", async (
+    IMapper _mapper,
+    IGenderService _service
+    ) =>
+{
+    var list = await _service.listGender();
+    var listDTO = _mapper.Map<List<GenderDTO>>(list);
+    if (listDTO.Count > 0)
+    {
+        return Results.Ok(listDTO);
+    }
+    else
+    {
+        return Results.NotFound();
+    }
+    {
 
+    }
+});
+#endregion
 #region City
 app.MapGet("City/List", async (
     IMapper _mapper,

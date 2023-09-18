@@ -10,7 +10,7 @@ using System.Reflection.Metadata.Ecma335;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddDbContext<PerfectMatchContext>(option => option.UseSqlServer
+builder.Services.AddDbContext<PetFectMatchContext>(option => option.UseSqlServer
 (builder.Configuration.GetConnectionString("Connection")));
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -43,6 +43,24 @@ if (app.Environment.IsDevelopment())
 }
 
 #region Peticiones API REST
+#region Access
+app.MapGet("Access/List",async (
+    IMapper _mapper,
+    IAccessService _service
+    ) => {
+        var acc = await _service.listAccess();
+        var listDTO = _mapper.Map<List<AccessDTO>>(acc);
+        if(listDTO.Count > 0)
+        {
+            return Results.Ok(listDTO);
+        }
+        else
+        {
+            return Results.NotFound();
+        }
+    });
+#endregion
+
 #region AnimalType
 app.MapGet("AnimalType/List", async (
     IMapper _mapper,
@@ -62,7 +80,7 @@ app.MapGet("AnimalType/List", async (
 });
 #endregion
 #region Breed
-app.MapPost("Breed/List", async (
+app.MapGet("Breed/List", async (
     IMapper _mapper,
     IBreedService _service
     ) =>
@@ -222,6 +240,24 @@ app.MapGet("Publication/listImages/{id}",async (
             return Results.NotFound();
         }
     
+    });
+app.MapGet("Publication/userList/{idUser}",async (
+    int idUser,
+    IMapper _mapper,
+    IPostService _service
+    ) => {
+    var list = await _service.userPublications(idUser);
+        var listDTO = _mapper.Map<List<PublicationDTO>>(list);
+        if (listDTO is not null)
+        {
+            return Results.Ok(listDTO);
+
+        }
+        else
+        {
+            return Results.NotFound();
+        }
+
     });
 app.MapGet("Publication/List", async (
     IMapper _mapper,

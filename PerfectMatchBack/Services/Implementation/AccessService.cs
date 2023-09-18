@@ -6,8 +6,8 @@ namespace PerfectMatchBack.Services.Implementation
 {
     public class AccessService : IAccessService
     {
-        private PerfectMatchContext _context;
-        public AccessService(PerfectMatchContext context)
+        private PetFectMatchContext _context;
+        public AccessService(PetFectMatchContext context)
         {
             this._context = context;
         }

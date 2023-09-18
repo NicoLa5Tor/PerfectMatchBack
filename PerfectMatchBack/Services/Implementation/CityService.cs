@@ -7,8 +7,8 @@ namespace PerfectMatchBack.Services.Implementation
 {
     public class CityService : ICityService
     {
-        private PerfectMatchContext _context;
-        public CityService(PerfectMatchContext context)
+        private PetFectMatchContext _context;
+        public CityService(PetFectMatchContext context)
         {
             _context = context; 
         }
@@ -16,7 +16,7 @@ namespace PerfectMatchBack.Services.Implementation
         {
             try
             {
-                var list = await _context.Cities.Include(id => id.IdDeparmentNavigation).ToListAsync();
+                var list = await _context.Cities.Include(id => id.IdDepartmentNavigation).ToListAsync();
                 return list;    
 
             }catch (Exception ex) {

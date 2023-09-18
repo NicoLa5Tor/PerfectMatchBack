@@ -6,8 +6,8 @@ namespace PerfectMatchBack.Services.Implementation
 {
     public class PostService : IPostService
     {
-        private PerfectMatchContext _context;
-        public PostService(PerfectMatchContext context)
+        private PetFectMatchContext _context;
+        public PostService(PetFectMatchContext context)
         {
 
             _context = context;
@@ -92,6 +92,20 @@ namespace PerfectMatchBack.Services.Implementation
                 return true;
 
             }catch (Exception ex) {
+                throw ex;
+            }
+        }
+
+        public async Task<List<Publication>> userPublications(int idUser)
+        {
+            try
+            {
+                var list = await _context.Publications.Include(navi => navi.IdOwnerNavigation).Include(navi => navi.IdCityNavigation).Include(navi => navi.IdAnimalTypeNavigation).Include(navi => navi.IdBreedNavigation).
+                    Include(id => id.IdGenderNavigation).Include(navi => navi.Images).Where(id => id.IdOwner == idUser).ToListAsync();
+                return list;
+
+            }catch(Exception ex)
+            {
                 throw ex;
             }
         }

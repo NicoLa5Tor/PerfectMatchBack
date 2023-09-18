@@ -6,8 +6,8 @@ namespace PerfectMatchBack.Services.Implementation
 {
     public class UserService : IUserService
     { 
-        private PerfectMatchContext _context;
-        public UserService(PerfectMatchContext context)
+        private PetFectMatchContext _context;
+        public UserService(PetFectMatchContext context)
         {
 
             _context = context; 

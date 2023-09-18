@@ -6,8 +6,8 @@ namespace PerfectMatchBack.Services.Implementation
 {
     public class BreedService : IBreedService
     {
-        private PerfectMatchContext _context;
-        public BreedService (PerfectMatchContext context)
+        private PetFectMatchContext _context;
+        public BreedService (PetFectMatchContext context)
         {
             _context = context; 
         }
@@ -16,7 +16,7 @@ namespace PerfectMatchBack.Services.Implementation
         {
             try
             {
-                var list = await _context.Breeds.ToListAsync();
+                var list = await _context.Breeds.Include(id => id.IdAnimalTypeNavigation).ToListAsync();
                 return list;
 
             }catch (Exception ex) {

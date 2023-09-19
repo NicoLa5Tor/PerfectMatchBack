@@ -14,6 +14,7 @@ builder.Services.AddDbContext<PerfectMatchContext>(option => option.UseSqlServer
 (builder.Configuration.GetConnectionString("Connection")));
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
 builder.Services.AddScoped<IAccessService, AccessService>();
 builder.Services.AddScoped<IAnimalTypeService,AnimalTypeService>();
 builder.Services.AddScoped<IBreedService, BreedService>();
@@ -23,6 +24,9 @@ builder.Services.AddScoped<IIMageService, ImageService>();
 builder.Services.AddScoped<IPostService, PostService>();
 builder.Services.AddScoped<IRoleService, RoleService>();    
 builder.Services.AddScoped<IUserService,UserService>();
+
+builder.Services.AddScoped<IReportService, ReportService>();
+
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 builder.Services.AddCors(options =>
 {

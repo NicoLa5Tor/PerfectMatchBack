@@ -139,12 +139,12 @@ public partial class PerfectMatchContext : DbContext
 
         modelBuilder.Entity<Department>(entity =>
         {
-            entity.HasKey(e => e.IdDeparment).HasName("PK_Deparment");
+            entity.HasKey(e => e.IdDepartment).HasName("PK_Deparment");
 
             entity.ToTable("Department");
 
-            entity.Property(e => e.IdDeparment).HasColumnName("idDeparment");
-            entity.Property(e => e.DepartamentName)
+            entity.Property(e => e.IdDepartment).HasColumnName("idDeparment");
+            entity.Property(e => e.DepartmentName)
                 .HasMaxLength(50)
                 .IsUnicode(false);
         });

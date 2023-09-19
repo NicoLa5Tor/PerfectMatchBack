@@ -25,10 +25,10 @@ namespace PerfectMatchBack.Utilitles
             #endregion
             #region City
             CreateMap<CityDTO, City>().
-                ForMember(destiny => destiny.IdDeparmentNavigation, origin => origin.Ignore());
+                ForMember(destiny => destiny.IdDepartmentNavigation, origin => origin.Ignore());
             CreateMap<City, CityDTO>().
                 ForMember(destiny => destiny.DepartmentName, origin => origin.MapFrom(
-                    dest => dest.IdDeparmentNavigation.DepartamentName));
+                    dest => dest.IdDepartmentNavigation.DepartmentName));
             #endregion
             #region Image
             CreateMap<ImageDTO, Image>().ReverseMap();

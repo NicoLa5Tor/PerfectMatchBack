@@ -42,7 +42,7 @@ public partial class PerfectMatchContext : DbContext
     public virtual DbSet<User> Users { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseSqlServer("Name=Connection");
+        => optionsBuilder.UseSqlServer("Name= Connection");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -78,6 +78,8 @@ public partial class PerfectMatchContext : DbContext
 
             entity.ToTable("Breed");
 
+            entity.HasIndex(e => e.IdAnimalType, "IX_Breed_idAnimalType");
+
             entity.Property(e => e.IdBreed).HasColumnName("idBreed");
             entity.Property(e => e.BreedName)
                 .HasMaxLength(100)
@@ -97,12 +99,14 @@ public partial class PerfectMatchContext : DbContext
 
             entity.ToTable("City");
 
+            entity.HasIndex(e => e.IdDepartment, "IX_City_idDeparment");
+
             entity.Property(e => e.IdCity).HasColumnName("idCity");
             entity.Property(e => e.CityName)
                 .HasMaxLength(100)
                 .IsUnicode(false)
                 .HasColumnName("cityName");
-            entity.Property(e => e.IdDepartment).HasColumnName("idDeparment");
+            entity.Property(e => e.IdDepartment).HasColumnName("idDepartment");
 
             entity.HasOne(d => d.IdDepartmentNavigation).WithMany(p => p.Cities)
                 .HasForeignKey(d => d.IdDepartment)
@@ -114,6 +118,12 @@ public partial class PerfectMatchContext : DbContext
             entity.HasKey(e => e.IdComment).HasName("PK__Comment__0370297E9127B084");
 
             entity.ToTable("Comment");
+
+            entity.HasIndex(e => e.IdCommentFk, "IX_Comment_idCommentFk");
+
+            entity.HasIndex(e => e.IdPublication, "IX_Comment_idPublication");
+
+            entity.HasIndex(e => e.IdUser, "IX_Comment_idUser");
 
             entity.Property(e => e.IdComment).HasColumnName("idComment");
             entity.Property(e => e.Comment1)
@@ -143,7 +153,6 @@ public partial class PerfectMatchContext : DbContext
 
             entity.ToTable("Department");
 
-            entity.Property(e => e.IdDepartment).HasColumnName("idDeparment");
             entity.Property(e => e.DepartmentName)
                 .HasMaxLength(50)
                 .IsUnicode(false);
@@ -168,6 +177,8 @@ public partial class PerfectMatchContext : DbContext
 
             entity.ToTable("Image");
 
+            entity.HasIndex(e => e.IdPublication, "IX_Image_idPublication");
+
             entity.Property(e => e.IdImage).HasColumnName("idImage");
             entity.Property(e => e.DataImage).IsUnicode(false);
             entity.Property(e => e.IdPublication).HasColumnName("idPublication");
@@ -184,8 +195,15 @@ public partial class PerfectMatchContext : DbContext
 
             entity.ToTable("Movement");
 
+            entity.HasIndex(e => e.IdBuyer, "IX_Movement_idBuyer");
+
+            entity.HasIndex(e => e.IdPublication, "IX_Movement_idPublication");
+
+            entity.HasIndex(e => e.IdSeller, "IX_Movement_idSeller");
+
             entity.Property(e => e.IdMovement).HasColumnName("idMovement");
             entity.Property(e => e.Amount).HasColumnName("amount");
+            entity.Property(e => e.Date).HasColumnType("date");
             entity.Property(e => e.IdBuyer).HasColumnName("idBuyer");
             entity.Property(e => e.IdPublication).HasColumnName("idPublication");
             entity.Property(e => e.IdSeller).HasColumnName("idSeller");
@@ -209,6 +227,8 @@ public partial class PerfectMatchContext : DbContext
 
             entity.ToTable("Notification");
 
+            entity.HasIndex(e => e.IdUser, "IX_Notification_idUser");
+
             entity.Property(e => e.IdNotifacation).HasColumnName("idNotifacation");
             entity.Property(e => e.Date)
                 .HasColumnType("datetime")
@@ -229,6 +249,16 @@ public partial class PerfectMatchContext : DbContext
             entity.HasKey(e => e.IdPublication).HasName("PK__Publicat__ECEE91EED6DB5C2C");
 
             entity.ToTable("Publication");
+
+            entity.HasIndex(e => e.IdAnimalType, "IX_Publication_idAnimalType");
+
+            entity.HasIndex(e => e.IdBreed, "IX_Publication_idBreed");
+
+            entity.HasIndex(e => e.IdCity, "IX_Publication_idCity");
+
+            entity.HasIndex(e => e.IdGender, "IX_Publication_idGender");
+
+            entity.HasIndex(e => e.IdOwner, "IX_Publication_idOwner");
 
             entity.Property(e => e.IdPublication).HasColumnName("idPublication");
             entity.Property(e => e.Age).HasColumnName("age");
@@ -289,6 +319,12 @@ public partial class PerfectMatchContext : DbContext
             entity.HasKey(e => e.IdUser).HasName("PK__User__3717C98256EB3AB3");
 
             entity.ToTable("User");
+
+            entity.HasIndex(e => e.IdAccess, "IX_User_idAccess");
+
+            entity.HasIndex(e => e.IdCity, "IX_User_idCity");
+
+            entity.HasIndex(e => e.IdRole, "IX_User_idRole");
 
             entity.Property(e => e.IdUser).HasColumnName("idUser");
             entity.Property(e => e.BirthDate)

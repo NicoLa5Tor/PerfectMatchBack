@@ -28,9 +28,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="ReportFile\ReportSales.rdlc">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    <Folder Include="ReportFile\" />
   </ItemGroup>
 
 </Project>

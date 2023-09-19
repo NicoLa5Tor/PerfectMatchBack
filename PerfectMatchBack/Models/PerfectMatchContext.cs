@@ -102,10 +102,10 @@ public partial class PerfectMatchContext : DbContext
                 .HasMaxLength(100)
                 .IsUnicode(false)
                 .HasColumnName("cityName");
-            entity.Property(e => e.IdDeparment).HasColumnName("idDeparment");
+            entity.Property(e => e.IdDepartment).HasColumnName("idDeparment");
 
-            entity.HasOne(d => d.IdDeparmentNavigation).WithMany(p => p.Cities)
-                .HasForeignKey(d => d.IdDeparment)
+            entity.HasOne(d => d.IdDepartmentNavigation).WithMany(p => p.Cities)
+                .HasForeignKey(d => d.IdDepartment)
                 .HasConstraintName("FK_City_Deparment");
         });
 

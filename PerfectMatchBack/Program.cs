@@ -1,5 +1,6 @@
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualBasic;
 using PerfectMatchBack.DTOs;
 using PerfectMatchBack.Models;
 using PerfectMatchBack.Services.Contract;
@@ -171,26 +172,7 @@ app.MapPost("Image/Add", async (
         }
     });
 //las imagenes solo se pueden actualizar para ser cambiadas, no se cambiaran el id de publicación para no hacer mas tedioso el proceso
-app.MapPut("Image/Update/{idImage}",async ( 
-    int idImage,
-    ImageDTO model,
-    IMapper _mapper,
-    IIMageService _service
-    
-    ) => {
-        var image = await _service.GetImage(idImage);
-        if (image is null) return Results.NotFound();
-        var mapImage = _mapper.Map<Image>(model);
-        image.DataImage = mapImage.DataImage;
-        var result = await _service.Updatemgae(image);
-        if (result) {
-            return Results.Ok(_mapper.Map<ImageDTO>(image));
-        }
-        else
-        {
-            return Results.StatusCode(StatusCodes.Status500InternalServerError);
-        }
-    });
+
 app.MapDelete("Image/Delete/{idImage}", async (
     int idImage,
     IIMageService _service
@@ -296,6 +278,7 @@ app.MapPut("Publication/Update/{idPublication}", async (
     int idPublication,
     PublicationDTO model,
     IPostService _service,
+    IIMageService _serviceImage,
     IMapper _mapper
     ) =>
 {
@@ -310,6 +293,16 @@ app.MapPut("Publication/Update/{idPublication}", async (
     modelTrue.IdAnimalType = publication.IdAnimalType;
     modelTrue.IdGender = publication.IdGender;
     modelTrue.Weight = publication.Weight;
+    foreach (var im in publication.Images)
+    {
+        var images = await _serviceImage.GetImage(im.IdImage);
+         if(images is not null)
+        {
+            images.DataImage = im.DataImage;
+            await _serviceImage.Updatemgae(images);
+            }
+
+    }
     var ouput = await _service.updatePublication(modelTrue);
     if (ouput)
     {

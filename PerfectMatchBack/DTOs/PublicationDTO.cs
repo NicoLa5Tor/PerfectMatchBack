@@ -29,6 +29,6 @@ namespace PerfectMatchBack.DTOs
         public string? BreedName { get; set; }  
 
         public string? Description { get; set; }
-        public virtual ICollection<ImageDTO> Images { get; set; } = new List<ImageDTO>();
+        public virtual ICollection<ImageDTO>? Images { get; set; } = new List<ImageDTO>();
     }
 }

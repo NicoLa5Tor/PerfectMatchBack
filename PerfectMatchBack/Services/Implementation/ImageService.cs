@@ -72,8 +72,11 @@ namespace PerfectMatchBack.Services.Implementation
         {
             try
             {
-                _context.Images.Update(image);
-                await _context.SaveChangesAsync();  
+                if (image is not null) {
+                    _context.Images.Update(image);
+                }
+                 await _context.SaveChangesAsync();
+
                 return true;    
 
             } catch (Exception ex) {

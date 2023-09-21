@@ -17,11 +17,11 @@ namespace PerfectMatchBack.Services.Implementation
         {
             try
             {
-                _context.Publications.Add(model);   
-                await _context.SaveChangesAsync();  
+                _context.Publications.Add(model);
+                await _context.SaveChangesAsync();
                 return model;
 
-            }catch (Exception ex) {
+            } catch (Exception ex) {
                 throw ex;
             }
         }
@@ -32,11 +32,11 @@ namespace PerfectMatchBack.Services.Implementation
             {
                 var ima = await _context.Publications.Include(id => id.Images).FirstOrDefaultAsync(id => id.IdPublication == model.IdPublication);
                 _context.Images.RemoveRange(ima.Images);
-             
+
                 _context.Publications.Remove(model);
                 await _context.SaveChangesAsync();
                 return true;
-            }catch (Exception ex) {
+            } catch (Exception ex) {
                 throw ex;
             }
         }
@@ -51,7 +51,7 @@ namespace PerfectMatchBack.Services.Implementation
                     ;
                 return publication;
 
-            }catch (Exception ex) {
+            } catch (Exception ex) {
                 throw ex;
             }
         }
@@ -61,8 +61,8 @@ namespace PerfectMatchBack.Services.Implementation
             try
             {
                 var images = await _context.Images.Where(ide => ide.IdPublicationNavigation.IdPublication == id).ToListAsync();
-                return  images;
-            }catch(Exception ex)
+                return images;
+            } catch (Exception ex)
             {
                 throw ex;
             }
@@ -77,7 +77,7 @@ namespace PerfectMatchBack.Services.Implementation
                     ToListAsync();
                 return list;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw ex;
             }
@@ -87,7 +87,10 @@ namespace PerfectMatchBack.Services.Implementation
         {
             try
             {
-                _context.Publications.Update(model);    
+             
+                
+                _context.Publications.Update(model);
+
                 await _context.SaveChangesAsync();
                 return true;
 

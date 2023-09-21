@@ -12,6 +12,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<PerfectMatchContext>(option => option.UseSqlServer
 (builder.Configuration.GetConnectionString("Connection")));
+
+builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -24,8 +26,6 @@ builder.Services.AddScoped<IIMageService, ImageService>();
 builder.Services.AddScoped<IPostService, PostService>();
 builder.Services.AddScoped<IRoleService, RoleService>();    
 builder.Services.AddScoped<IUserService,UserService>();
-
-builder.Services.AddScoped<IReportService, ReportService>();
 
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 builder.Services.AddCors(options =>
@@ -402,7 +402,9 @@ app.MapDelete("User/Delete/{idUser}",async (
 #endregion
 #endregion
 
-
+app.UseHttpsRedirection();
+app.UseRouting();
+app.MapControllers();
 app.UseCors("NuevaPolitica");
 app.Run();
 

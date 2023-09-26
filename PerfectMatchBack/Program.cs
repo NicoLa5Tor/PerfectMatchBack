@@ -286,22 +286,27 @@ app.MapPut("Publication/Update/{idPublication}", async (
     if (modelTrue is null) return Results.NotFound();
     var publication = _mapper.Map<Publication>(model);
     modelTrue.Age = publication.Age;
+    modelTrue.IdOwner = publication.IdOwner;
     modelTrue.Description = publication.Description;
     modelTrue.Comments = publication.Comments;
     modelTrue.AnimalName = publication.AnimalName;
     modelTrue.IdBreed = publication.IdBreed;
     modelTrue.IdAnimalType = publication.IdAnimalType;
+    modelTrue.Price = publication.Price;
     modelTrue.IdGender = publication.IdGender;
     modelTrue.Weight = publication.Weight;
-    foreach (var im in publication.Images)
+    if (publication.Images.Count > 0)
     {
-        var images = await _serviceImage.GetImage(im.IdImage);
-         if(images is not null)
+        foreach (var im in publication.Images)
         {
-            images.DataImage = im.DataImage;
-            await _serviceImage.Updatemgae(images);
+            var images = await _serviceImage.GetImage(im.IdImage);
+            if (images is not null)
+            {
+                images.DataImage = im.DataImage;
+                await _serviceImage.Updatemgae(images);
             }
 
+        }
     }
     var ouput = await _service.updatePublication(modelTrue);
     if (ouput)
@@ -394,6 +399,7 @@ app.MapPut("User/Update/{idUser}",async (
         userTrue.IdCity = model.IdCity;
         userTrue.BirthDate = DateTime.ParseExact(model.BirthDate, "dd/MM/yyyy", CultureInfo.InvariantCulture);
         userTrue.IdRole = model.IdRole; 
+        userTrue.CodePay = model.CodePay;
      var userUpdate = await userService.updateUser(userTrue);
         if (userUpdate) {
             return Results.Ok(_mapper.Map<UserDTO>(userTrue));

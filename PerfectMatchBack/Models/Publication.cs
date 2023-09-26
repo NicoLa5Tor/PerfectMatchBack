@@ -25,6 +25,8 @@ public partial class Publication
 
     public string? Description { get; set; }
 
+    public long Price { get; set; }
+
     public virtual ICollection<Comment> Comments { get; set; } = new List<Comment>();
 
     public virtual AnimalType IdAnimalTypeNavigation { get; set; } = null!;

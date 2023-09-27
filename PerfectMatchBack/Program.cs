@@ -2,13 +2,11 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using PerfectMatchBack.DTOs;
 using PerfectMatchBack.Models;
 using PerfectMatchBack.Models.Common;
 using PerfectMatchBack.Services.Contract;
 using PerfectMatchBack.Services.Implementation;
 using PerfectMatchBack.Utilitles;
-using System.Reflection.Metadata.Ecma335;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);

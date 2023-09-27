@@ -12,15 +12,15 @@ namespace PerfectMatchBack.Services.Implementation
             _context = context; 
         }
 
-        public async Task<List<Breed>> listBreed()
+        public async Task<List<Breed>> ListBreed()
         {
             try
             {
                 var list = await _context.Breeds.ToListAsync();
                 return list;
 
-            }catch (Exception ex) {
-                throw ex;
+            }catch (Exception) {
+                return new();
             }
         }
     }

@@ -11,14 +11,14 @@ namespace PerfectMatchBack.Services.Implementation
         {
             this._context = context;
         }
-        public async Task<List<AnimalType>> listAnimalType()
+        public async Task<List<AnimalType>> ListAnimalType()
         {
             try {
                 var list = await _context.AnimalTypes.ToListAsync();
                 return list;
 
-            }catch (Exception ex) {
-                throw ex;
+            }catch (Exception) {
+                return new();
             }
         }
     }

@@ -12,15 +12,15 @@ namespace PerfectMatchBack.Services.Implementation
         {
             _context = context; 
         }
-        public async Task<List<City>> listCity()
+        public async Task<List<City>> ListCity()
         {
             try
             {
-                var list = await _context.Cities.Include(id => id.IdDeparmentNavigation).ToListAsync();
+                var list = await _context.Cities.Include(id => id.IdDepartmentNavigation).ToListAsync();
                 return list;    
 
-            }catch (Exception ex) {
-                throw ex;
+            }catch (Exception) {
+                return new();
             }
         }
     }

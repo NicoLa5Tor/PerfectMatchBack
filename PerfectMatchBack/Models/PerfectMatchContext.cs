@@ -15,35 +15,35 @@ public partial class PerfectMatchContext : DbContext
     {
     }
 
-    public virtual DbSet<Access> Accesses { get; set; }
+    public  DbSet<Access> Accesses { get; set; }
 
-    public virtual DbSet<AnimalType> AnimalTypes { get; set; }
+    public  DbSet<AnimalType> AnimalTypes { get; set; }
 
-    public virtual DbSet<Breed> Breeds { get; set; }
+    public DbSet<Breed> Breeds { get; set; }
 
-    public virtual DbSet<City> Cities { get; set; }
+    public DbSet<City> Cities { get; set; }
 
-    public virtual DbSet<Comment> Comments { get; set; }
+    public DbSet<Comment> Comments { get; set; }
 
-    public virtual DbSet<Department> Departments { get; set; }
+    public DbSet<Department> Departments { get; set; }
 
-    public virtual DbSet<Gender> Genders { get; set; }
+    public DbSet<Gender> Genders { get; set; }
 
-    public virtual DbSet<Image> Images { get; set; }
+    public DbSet<Image> Images { get; set; }
 
-    public virtual DbSet<Movement> Movements { get; set; }
+    public DbSet<Movement> Movements { get; set; }
 
-    public virtual DbSet<Notification> Notifications { get; set; }
+    public DbSet<Notification> Notifications { get; set; }
 
-    public virtual DbSet<Publication> Publications { get; set; }
+    public DbSet<Publication> Publications { get; set; }
 
-    public virtual DbSet<Role> Roles { get; set; }
+    public DbSet<Role> Roles { get; set; }
 
-    public virtual DbSet<User> Users { get; set; }
+    public DbSet<User> Users { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseSqlServer("Name=Connection");
-
+        => optionsBuilder.UseSqlServer("server=localhost;database=PerfectMatch;Trusted_Connection=true;TrustServerCertificate=true;");
+        
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Access>(entity =>
@@ -102,11 +102,11 @@ public partial class PerfectMatchContext : DbContext
                 .HasMaxLength(100)
                 .IsUnicode(false)
                 .HasColumnName("cityName");
-            entity.Property(e => e.IdDeparment).HasColumnName("idDeparment");
+            entity.Property(e => e.IdDepartment).HasColumnName("idDepartment");
 
-            entity.HasOne(d => d.IdDeparmentNavigation).WithMany(p => p.Cities)
-                .HasForeignKey(d => d.IdDeparment)
-                .HasConstraintName("FK_City_Deparment");
+            entity.HasOne(d => d.IdDepartmentNavigation).WithMany(p => p.Cities)
+                .HasForeignKey(d => d.IdDepartment)
+                .HasConstraintName("FK_City_Department");
         });
 
         modelBuilder.Entity<Comment>(entity =>
@@ -139,12 +139,12 @@ public partial class PerfectMatchContext : DbContext
 
         modelBuilder.Entity<Department>(entity =>
         {
-            entity.HasKey(e => e.IdDeparment).HasName("PK_Deparment");
+            entity.HasKey(e => e.IdDepartment).HasName("PK_Department");
 
             entity.ToTable("Department");
 
-            entity.Property(e => e.IdDeparment).HasColumnName("idDeparment");
-            entity.Property(e => e.DepartamentName)
+            entity.Property(e => e.IdDepartment).HasColumnName("idDepartment");
+            entity.Property(e => e.DepartmentName)
                 .HasMaxLength(50)
                 .IsUnicode(false);
         });
@@ -177,7 +177,7 @@ public partial class PerfectMatchContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Image1_Publication");
         });
-
+       
         modelBuilder.Entity<Movement>(entity =>
         {
             entity.HasKey(e => e.IdMovement).HasName("PK__Movement__5B3BB2F5E4A1C9F0");
@@ -202,7 +202,7 @@ public partial class PerfectMatchContext : DbContext
                 .HasForeignKey(d => d.IdSeller)
                 .HasConstraintName("FK__Movement__idSell__3B75D760");
         });
-
+        
         modelBuilder.Entity<Notification>(entity =>
         {
             entity.HasKey(e => e.IdNotifacation).HasName("PK__Notifica__C24D00C423C065BF");
@@ -321,6 +321,8 @@ public partial class PerfectMatchContext : DbContext
         });
 
         OnModelCreatingPartial(modelBuilder);
+
+       // base.OnModelCreating(modelBuilder);
     }
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);

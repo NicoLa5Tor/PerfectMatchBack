@@ -12,7 +12,7 @@ namespace PerfectMatchBack.Services.Implementation
             _context = context;
         }
 
-        public async Task<List<Gender>> listGender()
+        public async Task<List<Gender>> ListGender()
         {
             try
             {
@@ -20,9 +20,9 @@ namespace PerfectMatchBack.Services.Implementation
                 return list;
 
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw ex;
+                return new();
             }
         }
     }

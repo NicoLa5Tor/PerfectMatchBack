@@ -12,7 +12,7 @@ namespace PerfectMatchBack.Services.Implementation
         {
             _context = context;
         }
-        public async Task<List<Role>> listRole()
+        public async Task<List<Role>> ListRole()
         {
             try
             {

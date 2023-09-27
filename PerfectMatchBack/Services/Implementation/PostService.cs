@@ -13,7 +13,7 @@ namespace PerfectMatchBack.Services.Implementation
             _context = context;
 
         }
-        public async Task<Publication> addPublication(Publication model)
+        public async Task<Publication> AddPublication(Publication model)
         {
             try
             {
@@ -26,7 +26,7 @@ namespace PerfectMatchBack.Services.Implementation
             }
         }
 
-        public async Task<bool> deletePublication(Publication model)
+        public async Task<bool> DeletePublication(Publication model)
         {
             try
             {
@@ -36,8 +36,8 @@ namespace PerfectMatchBack.Services.Implementation
                 _context.Publications.Remove(model);
                 await _context.SaveChangesAsync();
                 return true;
-            }catch (Exception ex) {
-                throw ex;
+            }catch (Exception) {
+                return false;
             }
         }
 
@@ -55,7 +55,7 @@ namespace PerfectMatchBack.Services.Implementation
                 throw ex;
             }
         }
-        public async Task<List<Publication>> listPublication()
+        public async Task<List<Publication>> ListPublication()
         {
             try
             {
@@ -70,16 +70,17 @@ namespace PerfectMatchBack.Services.Implementation
             }
         }
 
-        public async Task<bool> updatePublication(Publication model)
+        public async Task<bool> UpdatePublication(Publication model)
         {
             try
             {
+
                 _context.Publications.Update(model);    
                 await _context.SaveChangesAsync();
                 return true;
 
-            }catch (Exception ex) {
-                throw ex;
+            }catch (Exception) {
+                return false;
             }
         }
     }

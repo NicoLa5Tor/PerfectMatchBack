@@ -4,16 +4,14 @@ using PerfectMatchBack.Services.Contract;
 
 namespace PerfectMatchBack.Services.Implementation
 {
-    public class ImageService : IIMageService
+    public class ImageService : IImageService
     {
         private PerfectMatchContext _context;
         public ImageService(PerfectMatchContext context)
         {
-
             _context = context;
-
         }
-        public async Task<Image> addImage(Image image)
+        public async Task<Image> AddImage(Image image)
         {
             try
             {
@@ -21,8 +19,8 @@ namespace PerfectMatchBack.Services.Implementation
                 await _context.SaveChangesAsync();
                 return image;   
 
-            }catch (Exception ex) {
-                throw ex;
+            }catch (Exception) {
+                return null;
             }
         }
 
@@ -36,26 +34,26 @@ namespace PerfectMatchBack.Services.Implementation
             }
             catch (Exception ex)
             {
-                throw ex;
+                return null;
             }
         }
 
-        public async Task<List<Image>> listImage()
+        public async Task<List<Image>> ListImage()
         {
             try
             {
                 var list = await _context.Images.Include(naviga => naviga.IdPublicationNavigation).ToListAsync();
                 return list;    
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw ex;
+                return new();
             }
         }
 
       
 
-        public async Task<bool> removeImage(Image image)
+        public async Task<bool> RemoveImage(Image image)
         {
             try
             {
@@ -68,7 +66,7 @@ namespace PerfectMatchBack.Services.Implementation
             }
         }
 
-        public async Task<bool> Updatemgae(Image image)
+        public async Task<bool> UpdateImage(Image image)
         {
             try
             {
@@ -76,8 +74,8 @@ namespace PerfectMatchBack.Services.Implementation
                 await _context.SaveChangesAsync();  
                 return true;    
 
-            } catch (Exception ex) {
-                throw ex;
+            } catch (Exception) {
+                return false;
             }
 
         }

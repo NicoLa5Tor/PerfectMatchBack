@@ -4,6 +4,6 @@ namespace PerfectMatchBack.Services.Contract
 {
     public interface IRoleService
     {
-        Task<List<Role>> listRole();
+        Task<List<Role>> ListRole();
     }
 }

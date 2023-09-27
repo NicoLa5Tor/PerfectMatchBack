@@ -20,12 +20,12 @@ namespace PerfectMatchBack.Services.Implementation
                 await _context.SaveChangesAsync();  
                 return access;
 
-            }catch (Exception ex) {
-                throw ex;
+            }catch (Exception) {
+                return null;
             }
         }
 
-        public async Task<bool> deleteAccess(Access access)
+        public async Task<bool> DeleteAccess(Access access)
         {
             try
             {
@@ -33,8 +33,8 @@ namespace PerfectMatchBack.Services.Implementation
                 await _context.SaveChangesAsync();
                 return true;  
 
-            }catch (Exception ex) {
-                throw ex;
+            }catch (Exception) {
+                return false;
             }
         }
 
@@ -46,11 +46,11 @@ namespace PerfectMatchBack.Services.Implementation
                 return access;
 
             }catch (Exception ex) {
-                throw ex;
+                return null;
             }
         }
 
-        public async Task<List<Access>> listAccess()
+        public async Task<List<Access>> ListAccess()
         {
             try
             {
@@ -58,11 +58,11 @@ namespace PerfectMatchBack.Services.Implementation
                 return list;
 
             }catch (Exception ex) {
-                throw ex;
+                return new();
             }
         }
 
-        public async Task<bool> updateAccess(Access access)
+        public async Task<bool> UpdateAccess(Access access)
         {
             try
             {
@@ -70,10 +70,10 @@ namespace PerfectMatchBack.Services.Implementation
                 await _context.SaveChangesAsync();
                 return true;
 
-            }catch (Exception ex)
+            }catch (Exception)
             {
 
-                throw ex;
+                return false;
             }
         }
     }

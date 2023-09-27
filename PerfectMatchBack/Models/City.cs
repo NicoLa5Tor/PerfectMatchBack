@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PerfectMatchBack.Models;
 
@@ -7,11 +8,11 @@ public partial class City
 {
     public int IdCity { get; set; }
 
-    public int? IdDeparment { get; set; }
+    public int? IdDepartment { get; set; }
 
     public string CityName { get; set; } = null!;
 
-    public virtual Department? IdDeparmentNavigation { get; set; }
+    public virtual Department? IdDepartmentNavigation { get; set; }
 
     public virtual ICollection<Publication> Publications { get; set; } = new List<Publication>();
 

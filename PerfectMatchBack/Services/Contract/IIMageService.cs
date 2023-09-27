@@ -2,12 +2,12 @@
 
 namespace PerfectMatchBack.Services.Contract
 {
-    public interface IIMageService
+    public interface IImageService
     {
-        Task<List<Image>> listImage();
+        Task<List<Image>> ListImage();
         Task<Image> GetImage(int id);
-        Task<Image> addImage(Image image);
-        Task<bool> removeImage(Image image);
-        Task<bool> Updatemgae(Image image);
+        Task<Image> AddImage(Image image);
+        Task<bool> RemoveImage(Image image);
+        Task<bool> UpdateImage(Image image);
     }
 }

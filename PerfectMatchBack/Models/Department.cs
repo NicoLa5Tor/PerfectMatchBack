@@ -5,9 +5,9 @@ namespace PerfectMatchBack.Models;
 
 public partial class Department
 {
-    public int IdDeparment { get; set; }
+    public int IdDepartment { get; set; }
 
-    public string DepartamentName { get; set; } = null!;
+    public string DepartmentName { get; set; } = null!;
 
     public virtual ICollection<City> Cities { get; set; } = new List<City>();
 }

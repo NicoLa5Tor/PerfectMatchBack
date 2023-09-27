@@ -6,8 +6,8 @@ namespace PerfectMatchBack.Services.Implementation
 {
     public class PostService : IPostService
     {
-        private PerfectMatchContext _context;
-        public PostService(PerfectMatchContext context)
+        private PetFectMatchContext _context;
+        public PostService(PetFectMatchContext context)
         {
 
             _context = context;
@@ -17,11 +17,11 @@ namespace PerfectMatchBack.Services.Implementation
         {
             try
             {
-                _context.Publications.Add(model);   
-                await _context.SaveChangesAsync();  
+                _context.Publications.Add(model);
+                await _context.SaveChangesAsync();
                 return model;
 
-            }catch (Exception ex) {
+            } catch (Exception ex) {
                 throw ex;
             }
         }
@@ -32,11 +32,11 @@ namespace PerfectMatchBack.Services.Implementation
             {
                 var ima = await _context.Publications.Include(id => id.Images).FirstOrDefaultAsync(id => id.IdPublication == model.IdPublication);
                 _context.Images.RemoveRange(ima.Images);
-             
+
                 _context.Publications.Remove(model);
                 await _context.SaveChangesAsync();
                 return true;
-            }catch (Exception ex) {
+            } catch (Exception ex) {
                 throw ex;
             }
         }
@@ -51,7 +51,7 @@ namespace PerfectMatchBack.Services.Implementation
                     ;
                 return publication;
 
-            }catch (Exception ex) {
+            } catch (Exception ex) {
                 throw ex;
             }
         }
@@ -61,8 +61,8 @@ namespace PerfectMatchBack.Services.Implementation
             try
             {
                 var images = await _context.Images.Where(ide => ide.IdPublicationNavigation.IdPublication == id).ToListAsync();
-                return  images;
-            }catch(Exception ex)
+                return images;
+            } catch (Exception ex)
             {
                 throw ex;
             }
@@ -77,7 +77,7 @@ namespace PerfectMatchBack.Services.Implementation
                     ToListAsync();
                 return list;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw ex;
             }
@@ -87,11 +87,28 @@ namespace PerfectMatchBack.Services.Implementation
         {
             try
             {
-                _context.Publications.Update(model);    
+             
+                
+                _context.Publications.Update(model);
+
                 await _context.SaveChangesAsync();
                 return true;
 
             }catch (Exception ex) {
+                throw ex;
+            }
+        }
+
+        public async Task<List<Publication>> userPublications(int idUser)
+        {
+            try
+            {
+                var list = await _context.Publications.Include(navi => navi.IdOwnerNavigation).Include(navi => navi.IdCityNavigation).Include(navi => navi.IdAnimalTypeNavigation).Include(navi => navi.IdBreedNavigation).
+                    Include(id => id.IdGenderNavigation).Include(navi => navi.Images).Where(id => id.IdOwner == idUser).ToListAsync();
+                return list;
+
+            }catch(Exception ex)
+            {
                 throw ex;
             }
         }

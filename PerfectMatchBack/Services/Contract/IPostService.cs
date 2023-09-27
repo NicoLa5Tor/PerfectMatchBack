@@ -10,5 +10,6 @@ namespace PerfectMatchBack.Services.Contract
         Task<bool> updatePublication(Publication model);
         Task<bool> deletePublication(Publication model);
         Task<List<Image>> listImage(int id);
+        Task<List<Publication>> userPublications(int idUser);
     }
 }

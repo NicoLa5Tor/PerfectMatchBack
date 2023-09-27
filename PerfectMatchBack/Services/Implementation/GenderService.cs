@@ -6,8 +6,8 @@ namespace PerfectMatchBack.Services.Implementation
 {
     public class GenderService : IGenderService
     {
-        private PerfectMatchContext _context;
-        public GenderService(PerfectMatchContext context)
+        private PetFectMatchContext _context;
+        public GenderService(PetFectMatchContext context)
         {
             _context = context;
         }

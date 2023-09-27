@@ -1,5 +1,6 @@
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualBasic;
 using PerfectMatchBack.DTOs;
 using PerfectMatchBack.Models;
 using PerfectMatchBack.Services.Contract;
@@ -10,7 +11,7 @@ using System.Reflection.Metadata.Ecma335;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddDbContext<PerfectMatchContext>(option => option.UseSqlServer
+builder.Services.AddDbContext<PetFectMatchContext>(option => option.UseSqlServer
 (builder.Configuration.GetConnectionString("Connection")));
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -43,6 +44,24 @@ if (app.Environment.IsDevelopment())
 }
 
 #region Peticiones API REST
+#region Access
+app.MapGet("Access/List",async (
+    IMapper _mapper,
+    IAccessService _service
+    ) => {
+        var acc = await _service.listAccess();
+        var listDTO = _mapper.Map<List<AccessDTO>>(acc);
+        if(listDTO.Count > 0)
+        {
+            return Results.Ok(listDTO);
+        }
+        else
+        {
+            return Results.NotFound();
+        }
+    });
+#endregion
+
 #region AnimalType
 app.MapGet("AnimalType/List", async (
     IMapper _mapper,
@@ -62,7 +81,7 @@ app.MapGet("AnimalType/List", async (
 });
 #endregion
 #region Breed
-app.MapPost("Breed/List", async (
+app.MapGet("Breed/List", async (
     IMapper _mapper,
     IBreedService _service
     ) =>
@@ -153,26 +172,7 @@ app.MapPost("Image/Add", async (
         }
     });
 //las imagenes solo se pueden actualizar para ser cambiadas, no se cambiaran el id de publicación para no hacer mas tedioso el proceso
-app.MapPut("Image/Update/{idImage}",async ( 
-    int idImage,
-    ImageDTO model,
-    IMapper _mapper,
-    IIMageService _service
-    
-    ) => {
-        var image = await _service.GetImage(idImage);
-        if (image is null) return Results.NotFound();
-        var mapImage = _mapper.Map<Image>(model);
-        image.DataImage = mapImage.DataImage;
-        var result = await _service.Updatemgae(image);
-        if (result) {
-            return Results.Ok(_mapper.Map<ImageDTO>(image));
-        }
-        else
-        {
-            return Results.StatusCode(StatusCodes.Status500InternalServerError);
-        }
-    });
+
 app.MapDelete("Image/Delete/{idImage}", async (
     int idImage,
     IIMageService _service
@@ -223,6 +223,24 @@ app.MapGet("Publication/listImages/{id}",async (
         }
     
     });
+app.MapGet("Publication/userList/{idUser}",async (
+    int idUser,
+    IMapper _mapper,
+    IPostService _service
+    ) => {
+    var list = await _service.userPublications(idUser);
+        var listDTO = _mapper.Map<List<PublicationDTO>>(list);
+        if (listDTO is not null)
+        {
+            return Results.Ok(listDTO);
+
+        }
+        else
+        {
+            return Results.NotFound();
+        }
+
+    });
 app.MapGet("Publication/List", async (
     IMapper _mapper,
     IPostService _service
@@ -260,6 +278,7 @@ app.MapPut("Publication/Update/{idPublication}", async (
     int idPublication,
     PublicationDTO model,
     IPostService _service,
+    IIMageService _serviceImage,
     IMapper _mapper
     ) =>
 {
@@ -267,13 +286,28 @@ app.MapPut("Publication/Update/{idPublication}", async (
     if (modelTrue is null) return Results.NotFound();
     var publication = _mapper.Map<Publication>(model);
     modelTrue.Age = publication.Age;
+    modelTrue.IdOwner = publication.IdOwner;
     modelTrue.Description = publication.Description;
     modelTrue.Comments = publication.Comments;
     modelTrue.AnimalName = publication.AnimalName;
     modelTrue.IdBreed = publication.IdBreed;
     modelTrue.IdAnimalType = publication.IdAnimalType;
+    modelTrue.Price = publication.Price;
     modelTrue.IdGender = publication.IdGender;
     modelTrue.Weight = publication.Weight;
+    if (publication.Images.Count > 0)
+    {
+        foreach (var im in publication.Images)
+        {
+            var images = await _serviceImage.GetImage(im.IdImage);
+            if (images is not null)
+            {
+                images.DataImage = im.DataImage;
+                await _serviceImage.Updatemgae(images);
+            }
+
+        }
+    }
     var ouput = await _service.updatePublication(modelTrue);
     if (ouput)
     {
@@ -365,6 +399,7 @@ app.MapPut("User/Update/{idUser}",async (
         userTrue.IdCity = model.IdCity;
         userTrue.BirthDate = DateTime.ParseExact(model.BirthDate, "dd/MM/yyyy", CultureInfo.InvariantCulture);
         userTrue.IdRole = model.IdRole; 
+        userTrue.CodePay = model.CodePay;
      var userUpdate = await userService.updateUser(userTrue);
         if (userUpdate) {
             return Results.Ok(_mapper.Map<UserDTO>(userTrue));

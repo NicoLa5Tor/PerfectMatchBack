@@ -20,5 +20,7 @@
         public string? NameCity { get; set; }   
 
         public string Email { get; set; } = null!;
+
+        public string CodePay { get; set; } = null!;
     }
 }

@@ -6,8 +6,8 @@ namespace PerfectMatchBack.Services.Implementation
 {
     public class ImageService : IIMageService
     {
-        private PerfectMatchContext _context;
-        public ImageService(PerfectMatchContext context)
+        private PetFectMatchContext _context;
+        public ImageService(PetFectMatchContext context)
         {
 
             _context = context;
@@ -53,7 +53,7 @@ namespace PerfectMatchBack.Services.Implementation
             }
         }
 
-     
+       
 
         public async Task<bool> removeImage(Image image)
         {
@@ -72,8 +72,11 @@ namespace PerfectMatchBack.Services.Implementation
         {
             try
             {
-                _context.Images.Update(image);
-                await _context.SaveChangesAsync();  
+                if (image is not null) {
+                    _context.Images.Update(image);
+                }
+                 await _context.SaveChangesAsync();
+
                 return true;    
 
             } catch (Exception ex) {

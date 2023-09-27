@@ -6,8 +6,8 @@ namespace PerfectMatchBack.Services.Implementation
 {
     public class AnimalTypeService : IAnimalTypeService
     {
-        private PerfectMatchContext _context;
-        public AnimalTypeService(PerfectMatchContext context)
+        private PetFectMatchContext _context;
+        public AnimalTypeService(PetFectMatchContext context)
         {
             this._context = context;
         }

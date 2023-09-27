@@ -6,8 +6,8 @@ namespace PerfectMatchBack.Services.Implementation
 {
     public class BreedService : IBreedService
     {
-        private PerfectMatchContext _context;
-        public BreedService (PerfectMatchContext context)
+        private PetFectMatchContext _context;
+        public BreedService (PetFectMatchContext context)
         {
             _context = context; 
         }

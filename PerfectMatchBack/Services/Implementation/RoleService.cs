@@ -7,8 +7,8 @@ namespace PerfectMatchBack.Services.Implementation
     public class RoleService : IRoleService
     {
 
-        private PerfectMatchContext _context;   
-        public RoleService(PerfectMatchContext context)
+        private PetFectMatchContext _context;   
+        public RoleService(PetFectMatchContext context)
         {
             _context = context;
         }

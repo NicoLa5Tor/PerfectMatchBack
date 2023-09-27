@@ -9,5 +9,6 @@ namespace PerfectMatchBack.Services.Contract
         Task<Image> addImage(Image image);
         Task<bool> removeImage(Image image);
         Task<bool> Updatemgae(Image image);
+
     }
 }

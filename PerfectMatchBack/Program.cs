@@ -438,13 +438,10 @@ app.MapDelete("User/Delete/{idUser}",async (
 #endregion
 #endregion
 */
-<<<<<<< HEAD
 app.UseHttpsRedirection();
 app.UseRouting();
-=======
 
 
->>>>>>> David2
 app.MapControllers();
 app.UseCors("NuevaPolitica");
 app.Run();

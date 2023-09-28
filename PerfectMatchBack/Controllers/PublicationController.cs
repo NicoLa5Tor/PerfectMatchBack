@@ -87,8 +87,8 @@ namespace PerfectMatchBack.Controllers
         [HttpPut("Update/{idPublication}")]
         public async Task<IActionResult> UpdatePublication(
            [FromRoute] int idPublication,
-           [FromBody] PublicationDTO model
-
+           [FromBody] PublicationDTO model,
+            IImageService _serviceImage
             )
         {
             var modelTrue = await _service.GetPublication(idPublication);
@@ -102,6 +102,19 @@ namespace PerfectMatchBack.Controllers
             modelTrue.IdAnimalType = publication.IdAnimalType;
             modelTrue.IdGender = publication.IdGender;
             modelTrue.Weight = publication.Weight;
+            if (publication.Images.Count > 0)
+            {
+                foreach (var im in publication.Images)
+                {
+                    var images = await _serviceImage.GetImage(im.IdImage);
+                    if (images is not null)
+                    {
+                        images.DataImage = im.DataImage;
+                        await _serviceImage.Updatemgae(images);
+                    }
+
+                }
+            }
             var ouput = await _service.updatePublication(modelTrue);
             if (ouput)
             {
@@ -122,7 +135,6 @@ namespace PerfectMatchBack.Controllers
         {
             var postTrue = await _service.GetPublication(idPublication);
             if (postTrue is null) return NotFound();
-
             var deletePost = await _service.deletePublication(postTrue);
             if (deletePost)
             {

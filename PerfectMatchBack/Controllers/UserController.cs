@@ -97,7 +97,7 @@ namespace PerfectMatchBack.Controllers
         [HttpPut("Update/{idUser}")]
         public async Task<IActionResult> UpdateUser(
     [FromRoute] UserDTO model,
-   [FromRoute] int idUser
+    [FromRoute] int idUser
     )
         {
             var userTrue = await _userService.getUser(idUser);

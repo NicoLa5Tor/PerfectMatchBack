@@ -14,7 +14,6 @@ public partial class Movement
     public int? IdPublication { get; set; }
 
     public double? Amount { get; set; }
-    public DateTime Date { get; set; }
 
     public DateTime? Date { get; set; }
 

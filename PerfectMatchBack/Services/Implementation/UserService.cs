@@ -85,5 +85,23 @@ namespace PerfectMatchBack.Services.Implementation
                 throw ex;   
             }
         }
+        public async Task<List<User>> listSellers()
+        {
+
+            var users = _context.Users.Include(navi => navi.Publications).Include(nave => nave.IdCityNavigation).Include(navi => navi.IdRoleNavigation).ToList();
+            var sellers = new List<User>();
+            try
+            {
+                users.ForEach(x => { if (x.Publications.Count > 0) sellers.Add(x); });
+                await _context.SaveChangesAsync();
+                return sellers;
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
     }
 }

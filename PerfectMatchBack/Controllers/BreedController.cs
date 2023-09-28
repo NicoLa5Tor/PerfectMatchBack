@@ -23,7 +23,7 @@ namespace PerfectMatchBack.Controllers
         [HttpGet("List")]
         public async Task<IActionResult> ListBreed() 
         { 
-           var list = await _service.ListBreed();
+           var list = await _service.listBreed();
                 var listDTO = _mapper.Map<List<BreedDTO>>(list);
             if (listDTO.Count > 0)
             {

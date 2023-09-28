@@ -2,7 +2,7 @@
 
 namespace PerfectMatchBack.Services.Contract
 {
-    public interface IIMageService
+    public interface IImageService
     {
         Task<List<Image>> listImage();
         Task<Image> GetImage(int id);

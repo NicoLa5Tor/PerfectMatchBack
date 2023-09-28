@@ -23,7 +23,7 @@ namespace PerfectMatchBack.Controllers
         [HttpGet("List")]
         public async Task<IActionResult> ListCity()
         {
-            var list = await _service.ListCity();
+            var list = await _service.listCity();
                 var listDTO = _mapper.Map<List<CityDTO>>(list);
             if (listDTO.Count > 0) {
             return Ok(listDTO);

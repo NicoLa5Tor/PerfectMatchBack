@@ -21,7 +21,7 @@ namespace PerfectMatchBack.Controllers
         [HttpGet("List")]
         public async Task<IActionResult> ListGenders()
         {
-            var list = await _service.ListGender();
+            var list = await _service.listGender();
             var listDTO = _mapper.Map<List<GenderDTO>>(list);
             if (listDTO.Count > 0)
             {

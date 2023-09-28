@@ -22,7 +22,7 @@ namespace PerfectMatchBack.Controllers
         [HttpGet("List")]
         public async Task<IActionResult> ListRoles()
         {
-            var list = await _service.ListRole();
+            var list = await _service.listRole();
             var listDTO = _mapper.Map<List<RoleDTO>>(list);
             if(listDTO.Count > 0)
             {

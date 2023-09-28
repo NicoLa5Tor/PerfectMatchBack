@@ -19,10 +19,46 @@ namespace PerfectMatchBack.Controllers
             _service = service;
             _mapper = mapper;
         }
+
+        [HttpGet("listImages/{id}")]
+        public async Task<IActionResult> ListImagesById(
+       [FromRoute] int id
+       )
+        {
+            var list = await _service.listImage(id);
+            var listDTO = _mapper.Map<List<ImageDTO>>(list);
+            if (listDTO is not null)
+            {
+                return Ok(listDTO);
+            }
+            else
+            {
+                return NotFound();
+            }
+
+        }
+        [HttpGet("userList/{idUser}")]
+        public async Task<IActionResult> ListPublicationsUser(
+        [FromRoute] int idUser
+        )
+        {
+            var list = await _service.userPublications(idUser);
+            var listDTO = _mapper.Map<List<PublicationDTO>>(list);
+            if (listDTO is not null)
+            {
+                return Ok(listDTO);
+
+            }
+            else
+            {
+                return NotFound();
+            }
+
+        }
         [HttpGet("List")]
         public async Task<IActionResult> ListPublications()
         {
-            var list = await _service.ListPublication();
+            var list = await _service.listPublication();
             var listDTO = _mapper.Map<List<PublicationDTO>>(list);
             if (listDTO.Count > 0)
             {
@@ -37,7 +73,7 @@ namespace PerfectMatchBack.Controllers
         public async Task<IActionResult> AddPublication(PublicationDTO model)
         {
             var post = _mapper.Map<Publication>(model);
-            var postAdd = await _service.AddPublication(post);
+            var postAdd = await _service.addPublication(post);
             if (postAdd.IdPublication != 0)
             {
                 return Ok(_mapper.Map<PublicationDTO>(postAdd));
@@ -48,11 +84,11 @@ namespace PerfectMatchBack.Controllers
             }
 
         }
-        [HttpPut("Update/{idPublication}")] 
+        [HttpPut("Update/{idPublication}")]
         public async Task<IActionResult> UpdatePublication(
            [FromRoute] int idPublication,
-           [FromBody] PublicationDTO model  
-            
+           [FromBody] PublicationDTO model
+
             )
         {
             var modelTrue = await _service.GetPublication(idPublication);
@@ -66,7 +102,7 @@ namespace PerfectMatchBack.Controllers
             modelTrue.IdAnimalType = publication.IdAnimalType;
             modelTrue.IdGender = publication.IdGender;
             modelTrue.Weight = publication.Weight;
-            var ouput = await _service.UpdatePublication(modelTrue);
+            var ouput = await _service.updatePublication(modelTrue);
             if (ouput)
             {
                 return Ok(_mapper.Map<PublicationDTO>(modelTrue));
@@ -82,12 +118,12 @@ namespace PerfectMatchBack.Controllers
             IPostService _service,
             IImageService _imageService
 
-            ) 
+            )
         {
             var postTrue = await _service.GetPublication(idPublication);
             if (postTrue is null) return NotFound();
 
-            var deletePost = await _service.DeletePublication(postTrue);
+            var deletePost = await _service.deletePublication(postTrue);
             if (deletePost)
             {
 

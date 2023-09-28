@@ -4,7 +4,7 @@ using PerfectMatchBack.Services.Contract;
 
 namespace PerfectMatchBack.Services.Implementation
 {
-    public class ImageService : IIMageService
+    public class ImageService : IImageService
     {
         private PetFectMatchContext _context;
         public ImageService(PetFectMatchContext context)

@@ -4,8 +4,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PerfectMatchBack.DTOs;
 using PerfectMatchBack.Models;
-using PerfectMatchBack.Models.Response;
 using PerfectMatchBack.Services.Contract;
+using System.Globalization;
 
 namespace PerfectMatchBack.Controllers
 {
@@ -15,13 +15,16 @@ namespace PerfectMatchBack.Controllers
     {
         private IUserService _userService;
         private IMapper _mapper;
-        public UserController(IMapper mapper,IUserService userService)
+        private readonly IAccessService _accessService;
+
+        public UserController(IMapper mapper, IUserService userService, IAccessService accessService)
         {
             _userService = userService;
             _mapper = mapper;
+            _accessService = accessService;
         }
-        
-        [HttpPost]
+
+        /*[HttpPost]
         public async Task<IActionResult> Authenticate(UserAccessDTO userAccessDTO)
         {
             var response = new Response();
@@ -36,12 +39,12 @@ namespace PerfectMatchBack.Controllers
             response.success = 1;
             response.data=userResponse;
             return Ok(response);
-        }
-        [HttpGet("List")] 
+        }*/
+        [HttpGet("List")]
         public async Task<IActionResult> ListUsers()
         {
             var list = await _userService.listUser();
-                var listDTO = _mapper.Map<List<UserDTO>>(list);
+            var listDTO = _mapper.Map<List<UserDTO>>(list);
             if (listDTO.Count > 0)
             {
                 return Ok(listDTO);
@@ -52,7 +55,7 @@ namespace PerfectMatchBack.Controllers
             }
         }
         [HttpGet("Seller")]
-        public async Task<IActionResult>  ListSellers()
+        public async Task<IActionResult> ListSellers()
         {
             var list = await _userService.listSellers();
             var listDTO = _mapper.Map<List<UserDTO>>(list);
@@ -67,6 +70,72 @@ namespace PerfectMatchBack.Controllers
             {
 
             }
+        }
+        [HttpPost("Add")]
+        public async Task<IActionResult> AddUser(
+    [FromBody] UserDTO model
+    )
+        {
+            Encryption enc = new Encryption();
+            Access access = new Access();
+            //if (addAcces is null) return StatusCode(StatusCodes.Status500InternalServerError);
+
+            var modelDTO = _mapper.Map<User>(model);
+            //modelDTO.IdAccess = addAcces.IdAccess;
+            var addUser = await _userService.addUser(modelDTO);
+
+            if (addUser is not null)
+            {
+                return Ok(_mapper.Map<UserDTO>(addUser));
+            }
+            else
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+
+        }
+        [HttpPut("Update/{idUser}")]
+        public async Task<IActionResult> UpdateUser(
+    [FromRoute] UserDTO model,
+   [FromRoute] int idUser
+    )
+        {
+            var userTrue = await _userService.getUser(idUser);
+            if (userTrue is null) return StatusCode(StatusCodes.Status500InternalServerError);
+            userTrue.Name = model.Name;
+            userTrue.Email = model.Email;
+            userTrue.IdCity = model.IdCity;
+            userTrue.BirthDate = DateTime.ParseExact(model.BirthDate, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+            userTrue.IdRole = model.IdRole;
+            var userUpdate = await _userService.updateUser(userTrue);
+            if (userUpdate)
+            {
+                return Ok(_mapper.Map<UserDTO>(userTrue));
+            }
+            else
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+
+        }
+        [HttpDelete("Delete/{idUser}")]
+        public async Task<IActionResult> DeleteUser(
+            [FromRoute] int idUser
+            )
+        {
+            var userTrue = await _userService.getUser(idUser);
+            if (userTrue is null) return NotFound();
+            var deleteUser = await _userService.deleteUser(userTrue);
+            if (deleteUser)
+            {
+
+                return Ok();
+            }
+            else
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+
         }
     }
 }

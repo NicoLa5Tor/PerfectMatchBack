@@ -20,11 +20,7 @@ public partial class User
     public string Email { get; set; } = null!;
     public DateTime? AccountDate { get; set; }
 
-<<<<<<< HEAD
-    public DateTime? AccountDate { get; set; }
 
-=======
->>>>>>> David2
     public string? CodePay { get; set; }
 
     public virtual ICollection<Comment> Comments { get; set; } = new List<Comment>();

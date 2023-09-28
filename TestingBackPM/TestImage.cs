@@ -12,19 +12,19 @@ namespace TestingBackPM
 {
     public class TestImage
     {
-        private readonly PerfectMatchContext _context;
+        private readonly PetFectMatchContext _context;
         private readonly IImageService _service;
         private Image Image;
         public TestImage()
         {
-            _context = new PerfectMatchContext();
+            _context = new PetFectMatchContext();
             _service = new ImageService(_context);
             Image = new() { DataImage  ="test" ,IdPublication=2};
         }
         [Fact]
         public async Task AddImage()
         {
-            var result = await _service.AddImage(Image);
+            var result = await _service.addImage(Image);
             var resultImage = Assert.IsType<Image?>(result);
             Assert.True(resultImage != null);
         }
@@ -40,7 +40,7 @@ namespace TestingBackPM
         public async Task UpdateImage()
         {
             await GetLastImage();
-            var result = await _service.UpdateImage(Image);
+            var result = await _service.Updatemgae(Image);
             var imageResult = Assert.IsType<bool>(result);
             Assert.True(imageResult != false);
 
@@ -49,7 +49,7 @@ namespace TestingBackPM
         public async Task DeleteImage()
         {
             await GetLastImage();
-            var result = await _service.RemoveImage(Image);
+            var result = await _service.removeImage(Image);
             var imageResult = Assert.IsType<bool>(result);
             Assert.True(imageResult != false);
 

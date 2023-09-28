@@ -12,19 +12,19 @@ namespace TestingBackPM
 {
     public class TestPost
     {
-        private readonly PerfectMatchContext _context;
+        private readonly PetFectMatchContext _context;
         private readonly IPostService _postService;
         private  Publication post;
         public TestPost()
         {
-            _context = new PerfectMatchContext();
+            _context = new PetFectMatchContext();
             _postService = new PostService(_context);
             post = new() { AnimalName = "",IdBreed=2,IdAnimalType=2,Age=0,IdCity=2,IdGender=1,IdOwner=1,Weight=0 };
         }
         [Fact]
         public async Task AddPost()
         {
-            var Result = await _postService.AddPublication(post);
+            var Result = await _postService.addPublication(post);
             var postResult = Assert.IsType<Publication>(Result);
             Assert.True(postResult!=null);
         }
@@ -39,7 +39,7 @@ namespace TestingBackPM
         [Fact]
         public async Task GetListPosts()
         {
-            var Result = await _postService.ListPublication();
+            var Result = await _postService.listPublication();
             var postResult = Assert.IsType<List<Publication>>(Result);
             Assert.True(postResult.Count>0);
         }
@@ -48,7 +48,7 @@ namespace TestingBackPM
         {
             await GetLastPost();
             post.Description= "DescriptionTest";
-            var Result = await _postService.UpdatePublication(post);
+            var Result = await _postService.updatePublication(post);
             var postResult = Assert.IsType<bool>(Result);
             Assert.True(postResult !=false);
         }
@@ -56,7 +56,7 @@ namespace TestingBackPM
         public async Task DeletePost()
         {
             await GetLastPost();
-            var Result = await _postService.DeletePublication(post);
+            var Result = await _postService.deletePublication(post);
             var postResult = Assert.IsType<bool>(Result);
             Assert.True(postResult!=false);
         }

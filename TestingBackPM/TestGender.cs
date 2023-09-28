@@ -11,17 +11,17 @@ namespace TestingBackPM
 {
     public class TestGender
     {
-        private readonly PerfectMatchContext _context;
+        private readonly PetFectMatchContext _context;
         private readonly IGenderService _service;
         public TestGender()
         {
-            _context = new PerfectMatchContext();
+            _context = new PetFectMatchContext();
             _service = new GenderService(_context);
         }
         [Fact]
         public async Task GetListGender()
         {
-            var result = await _service.ListGender();
+            var result = await _service.listGender();
             var resultGender = Assert.IsType<List<Gender>>(result);
             Assert.True(resultGender.Count>0);
         }

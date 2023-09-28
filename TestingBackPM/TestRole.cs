@@ -11,7 +11,7 @@ namespace TestingBackPM
 {
     public class TestRole
     {
-        private readonly PerfectMatchContext _context;
+        private readonly PetFectMatchContext _context;
         private readonly IRoleService _service;
         private readonly Role _role;
         public TestRole() 
@@ -23,7 +23,7 @@ namespace TestingBackPM
         [Fact]
         public async Task GetListRoles()
         {
-            var result = await _service.ListRole();
+            var result = await _service.listRole();
             var roleResult = Assert.IsType<List<Role>>(result);
             Assert.True(roleResult.Count > 0);
         }

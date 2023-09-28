@@ -7,12 +7,12 @@ namespace TestingBackPM
 {
     public class TestUser
     {
-        private readonly PerfectMatchContext _context;
+        private readonly PetFectMatchContext _context;
         private readonly IUserService _userService;
         private User user;
         public TestUser()
         {
-            _context = new PerfectMatchContext();
+            _context = new PetFectMatchContext();
             _userService = new UserService(_context);
             user = new() {  IdCity = 1, IdRole = 1, Name = "Test", BirthDate = DateTime.Now, IdAccessNavigation = new Access() { Password = "123" }, Email = "prueba@prueba.com" }; 
         }

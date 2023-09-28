@@ -15,6 +15,8 @@ public partial class Movement
 
     public double? Amount { get; set; }
 
+    public DateTime? Date { get; set; }
+
     public virtual User? IdBuyerNavigation { get; set; }
 
     public virtual Publication? IdPublicationNavigation { get; set; }

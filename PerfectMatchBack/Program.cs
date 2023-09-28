@@ -13,8 +13,12 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<PetFectMatchContext>(option => option.UseSqlServer
 (builder.Configuration.GetConnectionString("Connection")));
+
+
+builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
 builder.Services.AddScoped<IAccessService, AccessService>();
 builder.Services.AddScoped<IAnimalTypeService,AnimalTypeService>();
 builder.Services.AddScoped<IBreedService, BreedService>();
@@ -22,6 +26,7 @@ builder.Services.AddScoped<IGenderService, GenderService>();
 builder.Services.AddScoped<ICityService, CityService>();    
 builder.Services.AddScoped<IIMageService, ImageService>();
 builder.Services.AddScoped<IPostService, PostService>();
+builder.Services.AddScoped<IReportService, ReportService>();
 builder.Services.AddScoped<IRoleService, RoleService>();    
 builder.Services.AddScoped<IUserService,UserService>();
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
@@ -433,7 +438,9 @@ app.MapDelete("User/Delete/{idUser}",async (
 #endregion
 #endregion
 
-
+app.UseHttpsRedirection();
+app.UseRouting();
+app.MapControllers();
 app.UseCors("NuevaPolitica");
 app.Run();
 

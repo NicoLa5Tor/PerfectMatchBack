@@ -19,7 +19,9 @@ public partial class User
 
     public string Email { get; set; } = null!;
 
-    public string CodePay { get; set; } = null!;
+    public DateTime? AccountDate { get; set; }
+
+    public string? CodePay { get; set; }
 
     public virtual ICollection<Comment> Comments { get; set; } = new List<Comment>();
 

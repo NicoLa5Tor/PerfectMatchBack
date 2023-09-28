@@ -37,12 +37,14 @@ public partial class PetFectMatchContext : DbContext
 
     public virtual DbSet<Publication> Publications { get; set; }
 
+    public virtual DbSet<ReportPath> ReportPaths { get; set; }
+
     public virtual DbSet<Role> Roles { get; set; }
 
     public virtual DbSet<User> Users { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseSqlServer("Name=Connection");
+        => optionsBuilder.UseSqlServer("Name= Connection");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -203,6 +205,9 @@ public partial class PetFectMatchContext : DbContext
 
             entity.Property(e => e.IdMovement).HasColumnName("idMovement");
             entity.Property(e => e.Amount).HasColumnName("amount");
+            entity.Property(e => e.Date)
+                .HasColumnType("date")
+                .HasColumnName("date");
             entity.Property(e => e.IdBuyer).HasColumnName("idBuyer");
             entity.Property(e => e.IdPublication).HasColumnName("idPublication");
             entity.Property(e => e.IdSeller).HasColumnName("idSeller");
@@ -301,6 +306,20 @@ public partial class PetFectMatchContext : DbContext
                 .HasConstraintName("FK__Publicati__idOwn__403A8C7D");
         });
 
+        modelBuilder.Entity<ReportPath>(entity =>
+        {
+            entity.HasKey(e => e.IdReport);
+
+            entity.ToTable("ReportPath");
+
+            entity.Property(e => e.Path)
+                .HasMaxLength(100)
+                .IsUnicode(false);
+            entity.Property(e => e.ReportName)
+                .HasMaxLength(50)
+                .IsUnicode(false);
+        });
+
         modelBuilder.Entity<Role>(entity =>
         {
             entity.HasKey(e => e.IdRole).HasName("PK__Role__E5045C54775D45A0");
@@ -327,14 +346,13 @@ public partial class PetFectMatchContext : DbContext
             entity.HasIndex(e => e.IdRole, "IX_User_idRole");
 
             entity.Property(e => e.IdUser).HasColumnName("idUser");
+            entity.Property(e => e.AccountDate).HasColumnType("date");
             entity.Property(e => e.BirthDate)
                 .HasColumnType("datetime")
                 .HasColumnName("birthDate");
             entity.Property(e => e.CodePay)
-                .HasMaxLength(100)
-                .IsUnicode(false)
-                .HasDefaultValueSql("((0))")
-                .HasColumnName("codePay");
+                .HasMaxLength(200)
+                .IsUnicode(false);
             entity.Property(e => e.Email)
                 .HasMaxLength(150)
                 .IsUnicode(false)

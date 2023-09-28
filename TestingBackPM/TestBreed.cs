@@ -11,17 +11,17 @@ namespace TestingBackPM
 {
     public class TestBreed
     {
-        private readonly PetFectMatchContext _context;
+        private readonly PerfectMatchContext _context;
         private readonly IBreedService _service;
         public TestBreed()
         {
-            _context = new PetFectMatchContext();
+            _context = new PerfectMatchContext();
             _service = new BreedService(_context);
         }
         [Fact]
         public async Task GetListRoles()
         {
-            var result = await _service.listBreed();
+            var result = await _service.ListBreed();
             var breedResult = Assert.IsType<List<Breed>>(result);
             Assert.True(breedResult.Count > 0);
         }

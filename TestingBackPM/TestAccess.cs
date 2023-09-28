@@ -12,12 +12,12 @@ namespace TestingBackPM
 {
     public class TestAccess
     {
-        private readonly PetFectMatchContext _context;
+        private readonly PerfectMatchContext _context;
         private readonly IAccessService _accessService;
         private Access access;
         public TestAccess()
         {
-            _context = new PetFectMatchContext();
+            _context = new PerfectMatchContext();
             _accessService = new AccessService(_context);
             access = new() {Password="test"};
         }
@@ -41,14 +41,14 @@ namespace TestingBackPM
         public async Task UpdateUser()
         {
             await GetTestAccess();
-            var result = await _accessService.updateAccess(access);
+            var result = await _accessService.UpdateAccess(access);
             var userTest = Assert.IsType<bool>(result);
             Assert.True(userTest == true);
         }
         [Fact]
         public async Task GetListAccess()
         {
-            var result = await _accessService.listAccess();
+            var result = await _accessService.ListAccess();
             var accessTest = Assert.IsType<List<Access>?>(result);
             Assert.True(accessTest.Count > 0);
         }
@@ -56,7 +56,7 @@ namespace TestingBackPM
         public async Task DeleteAccess()
         {
             await GetTestAccess();
-            var result = await _accessService.deleteAccess(access);
+            var result = await _accessService.DeleteAccess(access);
             var userTest = Assert.IsType<bool>(result);
             Assert.True(userTest != false);
         }

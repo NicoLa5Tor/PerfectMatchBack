@@ -37,12 +37,14 @@ public partial class PetFectMatchContext : DbContext
 
     public virtual DbSet<Publication> Publications { get; set; }
 
+    public virtual DbSet<ReportPath> ReportPaths { get; set; }
+
     public virtual DbSet<Role> Roles { get; set; }
 
     public virtual DbSet<User> Users { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseSqlServer("Name=Connection");
+        => optionsBuilder.UseSqlServer("name=connection");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -57,41 +59,6 @@ public partial class PetFectMatchContext : DbContext
                 .HasMaxLength(150)
                 .IsUnicode(false)
                 .HasColumnName("password");
-        });
-
-
-        modelBuilder.Entity<Publication>(entity =>
-        {
-            entity.HasKey(e => e.IdPublication).HasName("PK__Publicat__ECEE91EED6DB5C2C");
-
-            entity.ToTable("Publication");
-
-            entity.HasIndex(e => e.IdAnimalType, "IX_Publication_idAnimalType");
-
-            entity.HasIndex(e => e.IdBreed, "IX_Publication_idBreed");
-
-            entity.HasIndex(e => e.IdCity, "IX_Publication_idCity");
-
-            entity.HasIndex(e => e.IdGender, "IX_Publication_idGender");
-
-            entity.HasIndex(e => e.IdOwner, "IX_Publication_idOwner");
-
-            entity.Property(e => e.IdPublication).HasColumnName("idPublication");
-            entity.Property(e => e.Age).HasColumnName("age");
-            entity.Property(e => e.AnimalName)
-                .HasMaxLength(100)
-                .IsUnicode(false)
-                .HasColumnName("animalName");
-            entity.Property(e => e.Description)
-                .HasMaxLength(400)
-                .IsUnicode(false)
-                .HasColumnName("description");
-            entity.Property(e => e.IdAnimalType).HasColumnName("idAnimalType");
-            entity.Property(e => e.IdBreed).HasColumnName("idBreed");
-            entity.Property(e => e.IdCity).HasColumnName("idCity");
-            entity.Property(e => e.IdGender).HasColumnName("idGender");
-            entity.Property(e => e.IdOwner).HasColumnName("idOwner");
-            entity.Property(e => e.Weight).HasColumnName("weight");
         });
 
         modelBuilder.Entity<AnimalType>(entity =>
@@ -238,6 +205,9 @@ public partial class PetFectMatchContext : DbContext
 
             entity.Property(e => e.IdMovement).HasColumnName("idMovement");
             entity.Property(e => e.Amount).HasColumnName("amount");
+            entity.Property(e => e.Date)
+                .HasColumnType("date")
+                .HasColumnName("date");
             entity.Property(e => e.IdBuyer).HasColumnName("idBuyer");
             entity.Property(e => e.IdPublication).HasColumnName("idPublication");
             entity.Property(e => e.IdSeller).HasColumnName("idSeller");
@@ -284,6 +254,16 @@ public partial class PetFectMatchContext : DbContext
 
             entity.ToTable("Publication");
 
+            entity.HasIndex(e => e.IdAnimalType, "IX_Publication_idAnimalType");
+
+            entity.HasIndex(e => e.IdBreed, "IX_Publication_idBreed");
+
+            entity.HasIndex(e => e.IdCity, "IX_Publication_idCity");
+
+            entity.HasIndex(e => e.IdGender, "IX_Publication_idGender");
+
+            entity.HasIndex(e => e.IdOwner, "IX_Publication_idOwner");
+
             entity.Property(e => e.IdPublication).HasColumnName("idPublication");
             entity.Property(e => e.Age).HasColumnName("age");
             entity.Property(e => e.AnimalName)
@@ -299,7 +279,6 @@ public partial class PetFectMatchContext : DbContext
             entity.Property(e => e.IdCity).HasColumnName("idCity");
             entity.Property(e => e.IdGender).HasColumnName("idGender");
             entity.Property(e => e.IdOwner).HasColumnName("idOwner");
-            entity.Property(e => e.Price).HasColumnName("price");
             entity.Property(e => e.Weight).HasColumnName("weight");
 
             entity.HasOne(d => d.IdAnimalTypeNavigation).WithMany(p => p.Publications)
@@ -321,10 +300,23 @@ public partial class PetFectMatchContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Publication_Gender");
 
-
             entity.HasOne(d => d.IdOwnerNavigation).WithMany(p => p.Publications)
                 .HasForeignKey(d => d.IdOwner)
                 .HasConstraintName("FK__Publicati__idOwn__403A8C7D");
+        });
+
+        modelBuilder.Entity<ReportPath>(entity =>
+        {
+            entity.HasKey(e => e.IdReport);
+
+            entity.ToTable("ReportPath");
+
+            entity.Property(e => e.Path)
+                .HasMaxLength(100)
+                .IsUnicode(false);
+            entity.Property(e => e.ReportName)
+                .HasMaxLength(50)
+                .IsUnicode(false);
         });
 
         modelBuilder.Entity<Role>(entity =>
@@ -340,7 +332,6 @@ public partial class PetFectMatchContext : DbContext
                 .HasColumnName("roleName");
         });
 
-
         modelBuilder.Entity<User>(entity =>
         {
             entity.HasKey(e => e.IdUser).HasName("PK__User__3717C98256EB3AB3");
@@ -354,6 +345,7 @@ public partial class PetFectMatchContext : DbContext
             entity.HasIndex(e => e.IdRole, "IX_User_idRole");
 
             entity.Property(e => e.IdUser).HasColumnName("idUser");
+            entity.Property(e => e.AccountDate).HasColumnType("date");
             entity.Property(e => e.BirthDate)
                 .HasColumnType("datetime")
                 .HasColumnName("birthDate");

@@ -18,6 +18,7 @@ public partial class User
     public int? IdCity { get; set; }
 
     public string Email { get; set; } = null!;
+    public DateTime? AccountDate { get; set; }
 
     public string? CodePay { get; set; }
 

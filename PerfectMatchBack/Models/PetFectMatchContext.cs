@@ -44,10 +44,14 @@ public partial class PetFectMatchContext : DbContext
     public virtual DbSet<User> Users { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+<<<<<<< HEAD
 
       => optionsBuilder.UseSqlServer("Name= Connection");
 
 
+=======
+        => optionsBuilder.UseSqlServer("name=connection");
+>>>>>>> David2
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -353,7 +357,10 @@ public partial class PetFectMatchContext : DbContext
                 .HasColumnType("datetime")
                 .HasColumnName("birthDate");
             entity.Property(e => e.CodePay)
+<<<<<<< HEAD
                 .HasMaxLength(200)
+=======
+>>>>>>> David2
                 .HasMaxLength(50)
                 .IsUnicode(false);
             entity.Property(e => e.Email)

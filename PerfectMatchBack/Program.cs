@@ -10,7 +10,7 @@ using System.Globalization;
 using System.Reflection.Metadata.Ecma335;
 
 var builder = WebApplication.CreateBuilder(args);
-
+builder.Services.AddControllers();
 builder.Services.AddDbContext<PetFectMatchContext>(option => option.UseSqlServer
 (builder.Configuration.GetConnectionString("Connection")));
 
@@ -24,7 +24,7 @@ builder.Services.AddScoped<IAnimalTypeService,AnimalTypeService>();
 builder.Services.AddScoped<IBreedService, BreedService>();
 builder.Services.AddScoped<IGenderService, GenderService>();
 builder.Services.AddScoped<ICityService, CityService>();    
-builder.Services.AddScoped<IIMageService, ImageService>();
+builder.Services.AddScoped<IImageService, ImageService>();
 builder.Services.AddScoped<IPostService, PostService>();
 builder.Services.AddScoped<IReportService, ReportService>();
 builder.Services.AddScoped<IRoleService, RoleService>();    
@@ -148,7 +148,7 @@ app.MapGet("City/List", async (
 #region Image
 app.MapGet("Image/List", async (
     IMapper _mapper,
-    IIMageService _service
+    IImageService _service
 ) => {
     var list = await _service.listImage();
     var listDTO = _mapper.Map<List<ImageDTO>>(list);
@@ -163,7 +163,7 @@ app.MapGet("Image/List", async (
 });
 app.MapPost("Image/Add", async (
     ImageDTO model,
-    IIMageService service,
+    IImageService service,
     IMapper _mapper
     
     ) => {
@@ -180,7 +180,7 @@ app.MapPost("Image/Add", async (
 
 app.MapDelete("Image/Delete/{idImage}", async (
     int idImage,
-    IIMageService _service
+    IImageService _service
     ) => {
         var search = await _service.GetImage(idImage);
         if (search is null) return Results.NotFound();
@@ -283,7 +283,7 @@ app.MapPut("Publication/Update/{idPublication}", async (
     int idPublication,
     PublicationDTO model,
     IPostService _service,
-    IIMageService _serviceImage,
+    IImageService _serviceImage,
     IMapper _mapper
     ) =>
 {
@@ -326,7 +326,7 @@ app.MapPut("Publication/Update/{idPublication}", async (
 app.MapDelete("Publication/Delete/{idPublication}", async (
     int idPublication,
     IPostService _service,
-    IIMageService _imageService
+    IImageService _imageService
 
     ) =>
 
@@ -438,8 +438,13 @@ app.MapDelete("User/Delete/{idUser}",async (
 #endregion
 #endregion
 */
+<<<<<<< HEAD
 app.UseHttpsRedirection();
 app.UseRouting();
+=======
+
+
+>>>>>>> David2
 app.MapControllers();
 app.UseCors("NuevaPolitica");
 app.Run();

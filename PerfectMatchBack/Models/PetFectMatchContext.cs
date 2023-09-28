@@ -44,7 +44,10 @@ public partial class PetFectMatchContext : DbContext
     public virtual DbSet<User> Users { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseSqlServer("Name= Connection");
+
+      => optionsBuilder.UseSqlServer("Name= Connection");
+
+
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -279,7 +282,6 @@ public partial class PetFectMatchContext : DbContext
             entity.Property(e => e.IdCity).HasColumnName("idCity");
             entity.Property(e => e.IdGender).HasColumnName("idGender");
             entity.Property(e => e.IdOwner).HasColumnName("idOwner");
-            entity.Property(e => e.Price).HasColumnName("price");
             entity.Property(e => e.Weight).HasColumnName("weight");
 
             entity.HasOne(d => d.IdAnimalTypeNavigation).WithMany(p => p.Publications)
@@ -352,6 +354,7 @@ public partial class PetFectMatchContext : DbContext
                 .HasColumnName("birthDate");
             entity.Property(e => e.CodePay)
                 .HasMaxLength(200)
+                .HasMaxLength(50)
                 .IsUnicode(false);
             entity.Property(e => e.Email)
                 .HasMaxLength(150)

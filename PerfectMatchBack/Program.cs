@@ -47,7 +47,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
+/*
 #region Peticiones API REST
 #region Access
 app.MapGet("Access/List",async (
@@ -437,7 +437,7 @@ app.MapDelete("User/Delete/{idUser}",async (
 });
 #endregion
 #endregion
-
+*/
 app.UseHttpsRedirection();
 app.UseRouting();
 app.MapControllers();

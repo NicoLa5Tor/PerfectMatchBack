@@ -284,16 +284,6 @@ public partial class PetFectMatchContext : DbContext
 
             entity.ToTable("Publication");
 
-            entity.HasIndex(e => e.IdAnimalType, "IX_Publication_idAnimalType");
-
-            entity.HasIndex(e => e.IdBreed, "IX_Publication_idBreed");
-
-            entity.HasIndex(e => e.IdCity, "IX_Publication_idCity");
-
-            entity.HasIndex(e => e.IdGender, "IX_Publication_idGender");
-
-            entity.HasIndex(e => e.IdOwner, "IX_Publication_idOwner");
-
             entity.Property(e => e.IdPublication).HasColumnName("idPublication");
             entity.Property(e => e.Age).HasColumnName("age");
             entity.Property(e => e.AnimalName)
@@ -330,6 +320,7 @@ public partial class PetFectMatchContext : DbContext
                 .HasForeignKey(d => d.IdGender)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Publication_Gender");
+
 
             entity.HasOne(d => d.IdOwnerNavigation).WithMany(p => p.Publications)
                 .HasForeignKey(d => d.IdOwner)
@@ -380,6 +371,19 @@ public partial class PetFectMatchContext : DbContext
                 .HasMaxLength(100)
                 .IsUnicode(false)
                 .HasColumnName("name");
+
+            entity.HasOne(d => d.IdAccessNavigation).WithMany(p => p.Users)
+                .HasForeignKey(d => d.IdAccess)
+                .HasConstraintName("FK__User__idAccess__412EB0B6");
+
+            entity.HasOne(d => d.IdCityNavigation).WithMany(p => p.Users)
+                .HasForeignKey(d => d.IdCity)
+                .HasConstraintName("FK__User__idCity__4222D4EF");
+
+            entity.HasOne(d => d.IdRoleNavigation).WithMany(p => p.Users)
+                .HasForeignKey(d => d.IdRole)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__User__idRole__4316F928");
         });
 
         OnModelCreatingPartial(modelBuilder);

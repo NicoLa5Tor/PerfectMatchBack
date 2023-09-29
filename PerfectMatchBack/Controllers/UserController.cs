@@ -15,6 +15,8 @@ namespace PerfectMatchBack.Controllers
     {
         private IUserService _userService;
         private IMapper _mapper;
+        private IMapper mapper;
+        private IUserService @object;
         private readonly IAccessService _accessService;
 
         public UserController(IMapper mapper, IUserService userService, IAccessService accessService)
@@ -78,10 +80,13 @@ namespace PerfectMatchBack.Controllers
         {
             Encryption enc = new Encryption();
             Access access = new Access();
-            //if (addAcces is null) return StatusCode(StatusCodes.Status500InternalServerError);
+            access.Password = enc.Encrypt(model.password);
 
+            var addAcces = await _accessService.createAccess(access);
+            if (addAcces is null) return StatusCode(StatusCodes.Status500InternalServerError);
+            model.IdAccess = addAcces.IdAccess;
             var modelDTO = _mapper.Map<User>(model);
-            //modelDTO.IdAccess = addAcces.IdAccess;
+            modelDTO.IdAccess = addAcces.IdAccess;
             var addUser = await _userService.addUser(modelDTO);
 
             if (addUser is not null)

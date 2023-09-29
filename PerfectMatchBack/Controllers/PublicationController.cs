@@ -89,15 +89,16 @@ namespace PerfectMatchBack.Controllers
         public async Task<IActionResult> UpdatePublication(
             int idPublication,
              PublicationDTO model
-            
+
 
             )
         {
-          
+
             var modelTrue = await _service.GetPublication(idPublication);
             if (modelTrue is null) return NotFound();
             var publication = _mapper.Map<Publication>(model);
             modelTrue.Age = publication.Age;
+            modelTrue.IdOwner = publication.IdOwner;
             modelTrue.Description = publication.Description;
             modelTrue.Comments = publication.Comments;
             modelTrue.AnimalName = publication.AnimalName;
@@ -105,8 +106,8 @@ namespace PerfectMatchBack.Controllers
             modelTrue.IdAnimalType = publication.IdAnimalType;
             modelTrue.IdGender = publication.IdGender;
             modelTrue.Weight = publication.Weight;
-            if (publication.Images.Count > 0)
-            {
+            if (publication.Images is null) { 
+           
                 foreach (var im in publication.Images)
                 {
                     var images = await _serviceImage.GetImage(im.IdImage);
@@ -117,6 +118,7 @@ namespace PerfectMatchBack.Controllers
                     }
 
                 }
+            
             }
             var ouput = await _service.updatePublication(modelTrue);
             if (ouput)

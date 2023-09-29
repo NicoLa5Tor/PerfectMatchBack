@@ -13,6 +13,7 @@ namespace TestingBackPM
     public class TestUser
     {
         private readonly Mock<IUserService> _service;
+        private readonly IAccessService _accessService;
         private readonly UserController controller;
 
         public TestUser()
@@ -20,7 +21,7 @@ namespace TestingBackPM
             _service = new Mock<IUserService>();
             var config = new MapperConfiguration(cfg => cfg.AddProfile<AutoMapperProfile>());
             IMapper mapper = config.CreateMapper();
-            controller = new UserController(mapper,_service.Object );
+            controller = new UserController(mapper, _service.Object, _accessService );
         }
 
 

@@ -438,11 +438,12 @@ app.MapDelete("User/Delete/{idUser}",async (
 #endregion
 #endregion
 */
+app.UseCors("NuevaPolitica");
 app.UseHttpsRedirection();
 app.UseRouting();
 
 
 app.MapControllers();
-app.UseCors("NuevaPolitica");
+
 app.Run();
 

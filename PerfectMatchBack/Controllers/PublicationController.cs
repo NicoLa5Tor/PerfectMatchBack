@@ -14,6 +14,7 @@ namespace PerfectMatchBack.Controllers
 
         private readonly IMapper _mapper;
         private readonly IPostService _service;
+        private readonly IImageService _serviceImage;
         public PublicationController(IMapper mapper, IPostService service)
         {
             _service = service;
@@ -86,11 +87,13 @@ namespace PerfectMatchBack.Controllers
         }
         [HttpPut("Update/{idPublication}")]
         public async Task<IActionResult> UpdatePublication(
-           [FromRoute] int idPublication,
-           [FromBody] PublicationDTO model,
-            IImageService _serviceImage
+            int idPublication,
+             PublicationDTO model
+            
+
             )
         {
+          
             var modelTrue = await _service.GetPublication(idPublication);
             if (modelTrue is null) return NotFound();
             var publication = _mapper.Map<Publication>(model);

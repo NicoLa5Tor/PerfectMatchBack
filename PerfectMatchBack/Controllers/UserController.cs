@@ -17,11 +17,20 @@ namespace PerfectMatchBack.Controllers
         private IMapper _mapper;
         private readonly IAccessService _accessService;
 
+        public IMapper Mapper { get; }
+        public IUserService Object { get; }
+
         public UserController(IMapper mapper, IUserService userService, IAccessService accessService)
         {
             _userService = userService;
             _mapper = mapper;
             _accessService = accessService;
+        }
+
+        public UserController(IMapper mapper, IUserService @object)
+        {
+            Mapper = mapper;
+            Object = @object;
         }
 
         /*[HttpPost]

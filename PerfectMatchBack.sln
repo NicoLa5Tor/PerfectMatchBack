@@ -5,7 +5,7 @@ VisualStudioVersion = 17.5.33414.496
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PerfectMatchBack", "PerfectMatchBack\PerfectMatchBack.csproj", "{9C1864AD-67C1-4D1F-A35F-46376B9CC768}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestingBackPM", "..\..\TestingBackPM\TestingBackPM\TestingBackPM.csproj", "{B5741467-DFB4-484B-A745-B63895CAD362}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestingBackPM", "TestingBackPM\TestingBackPM.csproj", "{AFBF03CC-791B-49F4-9059-62B52551C009}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,10 @@ Global
 		{9C1864AD-67C1-4D1F-A35F-46376B9CC768}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9C1864AD-67C1-4D1F-A35F-46376B9CC768}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9C1864AD-67C1-4D1F-A35F-46376B9CC768}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B5741467-DFB4-484B-A745-B63895CAD362}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B5741467-DFB4-484B-A745-B63895CAD362}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B5741467-DFB4-484B-A745-B63895CAD362}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B5741467-DFB4-484B-A745-B63895CAD362}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AFBF03CC-791B-49F4-9059-62B52551C009}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AFBF03CC-791B-49F4-9059-62B52551C009}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AFBF03CC-791B-49F4-9059-62B52551C009}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AFBF03CC-791B-49F4-9059-62B52551C009}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

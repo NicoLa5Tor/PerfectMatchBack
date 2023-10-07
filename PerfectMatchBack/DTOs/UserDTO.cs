@@ -12,7 +12,7 @@
 
         public string? BirthDate { get; set; }
 
-        public int? IdAccess { get; set; }
+        public int IdAccess { get; set; }
         public string? password { get; set; }   
 
         public int? IdCity { get; set; }

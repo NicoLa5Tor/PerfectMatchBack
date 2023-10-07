@@ -130,6 +130,7 @@ namespace PerfectMatchBack.Controllers
         {
             var userTrue = await _userService.getUser(idUser);
             if (userTrue is null) return NotFound();
+            var access = await _accessService.getAccess(userTrue.IdAccess);
             var deleteUser = await _userService.deleteUser(userTrue);
             if (deleteUser)
             {

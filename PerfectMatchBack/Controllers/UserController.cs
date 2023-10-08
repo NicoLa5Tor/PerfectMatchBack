@@ -18,6 +18,7 @@ namespace PerfectMatchBack.Controllers
         private IMapper mapper;
         private IUserService @object;
         private readonly IAccessService _accessService;
+        Encryption enc = new Encryption();
 
         public UserController(IMapper mapper, IUserService userService, IAccessService accessService)
         {
@@ -25,7 +26,7 @@ namespace PerfectMatchBack.Controllers
             _mapper = mapper;
             _accessService = accessService;
         }
-        [Authorize]
+       
         [HttpGet("List")]
         public async Task<IActionResult> ListUsers()
         {
@@ -64,7 +65,7 @@ namespace PerfectMatchBack.Controllers
     [FromBody] UserDTO model
     )
         {
-            Encryption enc = new Encryption();
+            
             Access access = new Access();
             access.Password = enc.Encrypt(model.password);
 
@@ -124,6 +125,26 @@ namespace PerfectMatchBack.Controllers
             {
 
                 return Ok();
+            }
+            else
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+
+        }
+        [HttpPut("UpdatePass/{idPass}")]
+        public async Task<IActionResult> UpdatePassword(
+             AccessDTO access,
+             int idPass
+
+            )
+        {
+            var acces = await _accessService.getAccess(idPass);
+            if (acces is null) return NotFound();
+            acces.Password =  enc.Encrypt(access.Password);
+            var updateAcces = await _accessService.updateAccess(acces);
+            if (updateAcces) {
+                return Ok(_mapper.Map<AccessDTO>(acces));
             }
             else
             {

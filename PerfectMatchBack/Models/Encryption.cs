@@ -1,33 +1,57 @@
-﻿namespace PerfectMatchBack.Models
+﻿using System.Security.Cryptography;
+using System.Text;
+
+namespace PerfectMatchBack.Models
 {
     public class Encryption
     {
-        public string Encrypt(string clave)
+        private const string key = "unGaynoconBigote"; // Cambia esto a tu clave secreta
+        private const string iv = "7f6d8a1e9c2b450a"; // Cambia esto a tu vector de inicialización
+
+        public string Encrypt(string plainText)
         {
-            string result = string.Empty;
-            byte[] encryted = System.Text.Encoding.Unicode.GetBytes(clave);
-            result = Convert.ToBase64String(encryted);
-            Console.WriteLine("clave encriptada" + result);
-            return result;
+            using (Aes aesAlg = Aes.Create())
+            {
+                aesAlg.Key = Encoding.UTF8.GetBytes(key);
+                aesAlg.IV = Encoding.UTF8.GetBytes(iv);
+
+                ICryptoTransform encryptor = aesAlg.CreateEncryptor(aesAlg.Key, aesAlg.IV);
+
+                using (MemoryStream msEncrypt = new MemoryStream())
+                {
+                    using (CryptoStream csEncrypt = new CryptoStream(msEncrypt, encryptor, CryptoStreamMode.Write))
+                    {
+                        using (StreamWriter swEncrypt = new StreamWriter(csEncrypt))
+                        {
+                            swEncrypt.Write(plainText);
+                        }
+                    }
+                    return Convert.ToBase64String(msEncrypt.ToArray());
+                }
+            }
         }
-        public string Decrypt(string claveE)
+
+        public string Decrypt(string cipherText)
         {
-            try
+            using (Aes aesAlg = Aes.Create())
             {
-                string result = string.Empty;
-                byte[] decryted = Convert.FromBase64String(claveE);
-                //result = System.Text.Encoding.Unicode.GetString(decryted, 0, decryted.ToArray().Length);
-                result = System.Text.Encoding.Unicode.GetString(decryted);
-                Console.WriteLine("clave desencriptada" + result);
-                return result;
+                aesAlg.Key = Encoding.UTF8.GetBytes(key);
+                aesAlg.IV = Encoding.UTF8.GetBytes(iv);
+
+                ICryptoTransform decryptor = aesAlg.CreateDecryptor(aesAlg.Key, aesAlg.IV);
+
+                using (MemoryStream msDecrypt = new MemoryStream(Convert.FromBase64String(cipherText)))
+                {
+                    using (CryptoStream csDecrypt = new CryptoStream(msDecrypt, decryptor, CryptoStreamMode.Read))
+                    {
+                        using (StreamReader srDecrypt = new StreamReader(csDecrypt))
+                        {
+                            return srDecrypt.ReadToEnd();
+                        }
+                    }
+                }
             }
-            catch (Exception ex)
-            {
-                return claveE;
-            }
-
-
-
         }
     }
+
 }

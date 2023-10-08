@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PerfectMatchBack.Models;
 using PerfectMatchBack.Services.Contract;
@@ -19,19 +20,20 @@ namespace PerfectMatchBack.Controllers
             this._context = context;
             this._reportService = reportService;
         }
+        [Authorize]
 
         [HttpGet("ReportType")]
         public async Task<List<string>> GetReportTypes()
         {
             return await _reportService.listReportType();
         }
-
+        [Authorize]
         [HttpGet("ReportPath/{reportName}")]
         public async Task<string> GetReportPath(string reportName)
         {
             return await _reportService.GetReportPath(reportName);
         }
-
+        [Authorize]
         [HttpGet("{reportName}")]
         public async Task<IActionResult> GetReport(string reportName)
         {
@@ -60,7 +62,7 @@ namespace PerfectMatchBack.Controllers
                 }
             }
         }
-
+        [Authorize]
         [HttpGet("{reportName}/{param1Value}/{param2Value}")]
         public async Task<IActionResult> GetReportParams(string reportName, string param1Value, string param2Value)
         {

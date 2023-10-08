@@ -25,23 +25,7 @@ namespace PerfectMatchBack.Controllers
             _mapper = mapper;
             _accessService = accessService;
         }
-
-        /*[HttpPost]
-        public async Task<IActionResult> Authenticate(UserAccessDTO userAccessDTO)
-        {
-            var response = new Response();
-            var access = _mapper.Map<Access>(userAccessDTO.accessDto);
-            var user = _mapper.Map<User>(userAccessDTO.userDto);
-            var userResponse = await _userService.Auth(user, access);
-            if (userResponse == null)
-            {
-                response.messageError = "User or pass incorrect";
-                return BadRequest(response); 
-            }
-            response.success = 1;
-            response.data=userResponse;
-            return Ok(response);
-        }*/
+        [Authorize]
         [HttpGet("List")]
         public async Task<IActionResult> ListUsers()
         {
@@ -56,6 +40,7 @@ namespace PerfectMatchBack.Controllers
                 return NotFound();
             }
         }
+        [Authorize]
         [HttpGet("Seller")]
         public async Task<IActionResult> ListSellers()
         {
@@ -73,6 +58,7 @@ namespace PerfectMatchBack.Controllers
 
             }
         }
+        [Authorize]
         [HttpPost("Add")]
         public async Task<IActionResult> AddUser(
     [FromBody] UserDTO model
@@ -99,6 +85,7 @@ namespace PerfectMatchBack.Controllers
             }
 
         }
+        [Authorize]
         [HttpPut("Update/{idUser}")]
         public async Task<IActionResult> UpdateUser(
     [FromRoute] UserDTO model,
@@ -123,6 +110,7 @@ namespace PerfectMatchBack.Controllers
             }
 
         }
+        [Authorize]
         [HttpDelete("Delete/{idUser}")]
         public async Task<IActionResult> DeleteUser(
             [FromRoute] int idUser

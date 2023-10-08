@@ -9,7 +9,7 @@ public partial class Publication
 
     public int? IdOwner { get; set; }
 
-    public string? AnimalName { get; set; }
+    public string AnimalName { get; set; }
 
     public int? IdCity { get; set; }
 
@@ -23,21 +23,21 @@ public partial class Publication
 
     public int IdBreed { get; set; }
 
-    public string? Description { get; set; }
+    public string Description { get; set; }
 
     public long? Price { get; set; }
 
     public virtual ICollection<Comment> Comments { get; set; } = new List<Comment>();
 
-    public virtual AnimalType IdAnimalTypeNavigation { get; set; } = null!;
+    public virtual AnimalType IdAnimalTypeNavigation { get; set; }
 
-    public virtual Breed IdBreedNavigation { get; set; } = null!;
+    public virtual Breed IdBreedNavigation { get; set; }
 
-    public virtual City? IdCityNavigation { get; set; }
+    public virtual City IdCityNavigation { get; set; }
 
-    public virtual Gender IdGenderNavigation { get; set; } = null!;
+    public virtual Gender IdGenderNavigation { get; set; }
 
-    public virtual User? IdOwnerNavigation { get; set; }
+    public virtual User IdOwnerNavigation { get; set; }
 
     public virtual ICollection<Image> Images { get; set; } = new List<Image>();
 

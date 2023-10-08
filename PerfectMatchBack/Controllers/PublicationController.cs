@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PerfectMatchBack.DTOs;
@@ -7,6 +8,7 @@ using PerfectMatchBack.Services.Contract;
 
 namespace PerfectMatchBack.Controllers
 {
+    
     [Route("[controller]")]
     [ApiController]
     public class PublicationController : ControllerBase
@@ -20,7 +22,7 @@ namespace PerfectMatchBack.Controllers
             _service = service;
             _mapper = mapper;
         }
-
+        [Authorize]
         [HttpGet("listImages/{id}")]
         public async Task<IActionResult> ListImagesById(
        [FromRoute] int id
@@ -38,6 +40,7 @@ namespace PerfectMatchBack.Controllers
             }
 
         }
+        [Authorize]
         [HttpGet("userList/{idUser}")]
         public async Task<IActionResult> ListPublicationsUser(
         [FromRoute] int idUser
@@ -56,7 +59,9 @@ namespace PerfectMatchBack.Controllers
             }
 
         }
-        [HttpGet("List")]
+        [Authorize]
+        [HttpGet]
+        [Route("List")]
         public async Task<IActionResult> ListPublications()
         {
             var list = await _service.listPublication();
@@ -70,6 +75,7 @@ namespace PerfectMatchBack.Controllers
                 return NotFound();
             }
         }
+        [Authorize]
         [HttpPost("Add")]
         public async Task<IActionResult> AddPublication(PublicationDTO model)
         {
@@ -85,6 +91,7 @@ namespace PerfectMatchBack.Controllers
             }
 
         }
+        [Authorize]
         [HttpPut("Update/{idPublication}")]
         public async Task<IActionResult> UpdatePublication(
             int idPublication,
@@ -130,6 +137,7 @@ namespace PerfectMatchBack.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
+        [Authorize]
         [HttpDelete("Delete/{idPublication}")]
         public async Task<IActionResult> DeletePublication(
             int idPublication,

@@ -7,7 +7,7 @@ public partial class Gender
 {
     public int IdGender { get; set; }
 
-    public string GenderName { get; set; } = null!;
+    public string GenderName { get; set; }
 
     public virtual ICollection<Publication> Publications { get; set; } = new List<Publication>();
 }

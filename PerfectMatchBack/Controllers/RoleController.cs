@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PerfectMatchBack.DTOs;
 using PerfectMatchBack.Services.Contract;
@@ -18,6 +19,7 @@ namespace PerfectMatchBack.Controllers
             _mapper = mapper;
             _service = service;
         }
+        [Authorize]
 
         [HttpGet("List")]
         public async Task<IActionResult> ListRoles()

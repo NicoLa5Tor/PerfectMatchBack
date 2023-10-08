@@ -17,9 +17,9 @@ public partial class Movement
 
     public DateTime? Date { get; set; }
 
-    public virtual User? IdBuyerNavigation { get; set; }
+    public virtual User IdBuyerNavigation { get; set; }
 
-    public virtual Publication? IdPublicationNavigation { get; set; }
+    public virtual Publication IdPublicationNavigation { get; set; }
 
-    public virtual User? IdSellerNavigation { get; set; }
+    public virtual User IdSellerNavigation { get; set; }
 }

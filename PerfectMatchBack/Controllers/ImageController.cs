@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PerfectMatchBack.DTOs;
@@ -18,6 +19,7 @@ namespace PerfectMatchBack.Controllers
             _service = service;
             _mapper = mapper;
         }
+        [Authorize]
         [HttpGet("List")]
         public async Task<IActionResult> ListImage()
         {
@@ -33,6 +35,7 @@ namespace PerfectMatchBack.Controllers
                 return NotFound();
             }
         }
+        [Authorize]
         [HttpPost("Add")]
         public async Task<IActionResult> AddImage(ImageDTO model)
         {
@@ -48,6 +51,7 @@ namespace PerfectMatchBack.Controllers
             }
         }
         //las imagenes solo se pueden actualizar para ser cambiadas, no se cambiaran el id de publicaci�n para no hacer mas tedioso el proceso
+        [Authorize]
         [HttpPut("Update/{idImage}")]
         public async Task<IActionResult> UpdateImage(
 
@@ -70,6 +74,7 @@ namespace PerfectMatchBack.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
+        [Authorize]
         [HttpDelete("Delete/{idImage}")]
         public async Task<IActionResult> DeleteImage(
             int idImage

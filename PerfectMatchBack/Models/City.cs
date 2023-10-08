@@ -9,9 +9,9 @@ public partial class City
 
     public int? IdDepartment { get; set; }
 
-    public string CityName { get; set; } = null!;
+    public string CityName { get; set; }
 
-    public virtual Department? IdDepartmentNavigation { get; set; }
+    public virtual Department IdDepartmentNavigation { get; set; }
 
     public virtual ICollection<Publication> Publications { get; set; } = new List<Publication>();
 

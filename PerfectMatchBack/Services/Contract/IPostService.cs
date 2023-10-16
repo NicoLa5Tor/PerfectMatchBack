@@ -4,13 +4,13 @@ namespace PerfectMatchBack.Services.Contract
 {
     public interface IPostService
     {
-        Task<List<Publication>> listPublication();
+        Task<List<Publication>> ListPublication();
         Task<Publication> GetPublication(int id);
-        Task<Publication> addPublication(Publication model);
-        Task<bool> updatePublication(Publication model);
-        Task<bool> deletePublication(Publication model);
-        Task<List<Image>> listImage(int id);
-        Task<List<Publication>> userPublications(int idUser);
+        Task<Publication> AddPublication(Publication model);
+        Task<bool> UpdatePublication(Publication model);
+        Task<bool> DeletePublication(Publication model);
+        Task<List<Image>> ListImage(int id);
+        Task<List<Publication>> UserPublications(int idUser);
        
     }
 }

@@ -44,6 +44,7 @@ public partial class PetFectMatchContext : DbContext
     public virtual DbSet<Role> Roles { get; set; }
 
     public virtual DbSet<User> Users { get; set; }
+    public virtual DbSet<RecoverPass> RecoverPass { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         => optionsBuilder.UseSqlServer("Name=Connection");
@@ -249,23 +250,34 @@ public partial class PetFectMatchContext : DbContext
 
         modelBuilder.Entity<Notification>(entity =>
         {
-            entity.HasKey(e => e.IdNotifacation).HasName("PK_Notifica_C24D00C423C065BF");
+            entity.HasKey(e => e.IdNotification).HasName("PK_Notifica_C24D00C423C065BF");
 
             entity.ToTable("Notification");
 
-            entity.Property(e => e.IdNotifacation).HasColumnName("idNotifacation");
+            entity.Property(e => e.IdNotification).HasColumnName("idNotification");
             entity.Property(e => e.Date)
                 .HasColumnType("datetime")
                 .HasColumnName("date");
-            entity.Property(e => e.Description)
-                .HasMaxLength(200)
+            entity.Property(e => e.TypeNotification)
+               .HasColumnType("int")
+               .HasColumnName("typeNotification");
+
+            entity.Property(e => e.State)
+                .HasColumnType("int")
+                .HasColumnName("state");
+            entity.Property(e => e.AccessLink)
+                .HasMaxLength(150)
                 .IsUnicode(false)
-                .HasColumnName("description");
+                .HasColumnName("accessLink");
             entity.Property(e => e.IdUser).HasColumnName("idUser");
 
             entity.HasOne(d => d.IdUserNavigation).WithMany(p => p.Notifications)
                 .HasForeignKey(d => d.IdUser)
                 .HasConstraintName("FK_NotificatidUse_3C69FB99");
+            entity.Property(e => e.IdUser).HasColumnName("idUser");
+            entity.HasOne(d => d.IdPublicationNavigation).WithMany(p => p.Notifications)
+                .HasForeignKey(d => d.IdPublication)
+                .HasConstraintName("FK__Notificat__idPublicaion__3C69FB99");
         });
 
         modelBuilder.Entity<Publication>(entity =>
@@ -383,6 +395,22 @@ public partial class PetFectMatchContext : DbContext
                 .HasForeignKey(d => d.IdRole)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_UseridRole_4316F928");
+        });
+
+        modelBuilder.Entity<RecoverPass>(entity =>
+        {
+            entity.HasKey(e => e.IdRecover).HasName("PK_RecoverPass");
+
+            entity.ToTable("RecoverPass");
+            entity.HasIndex(e => e.IdUser, "RecoverPass_idUser");
+
+            entity.Property(e => e.IdRecover).HasColumnName("idRecover");
+            entity.Property(e => e.Token)
+                .HasColumnName("token");
+            entity.Property(e => e.IdUser).HasColumnName("idUser");
+            entity.HasOne(d => d.IdUserNavigation).WithMany(p => p.RecoverPasss)
+                .HasForeignKey(d => d.IdUser)
+                .HasConstraintName("FK__Recover__idUser__3C69B99");
         });
 
         OnModelCreatingPartial(modelBuilder);

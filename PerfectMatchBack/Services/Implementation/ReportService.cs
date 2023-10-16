@@ -46,7 +46,7 @@ namespace PerfectMatchBack.Services.Implementation
             }
         }
 
-        public async Task<List<string>> listReportType()
+        public async Task<List<string>> ListReportType()
         {
             try
             {

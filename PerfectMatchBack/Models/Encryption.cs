@@ -3,12 +3,12 @@ using System.Text;
 
 namespace PerfectMatchBack.Models
 {
-    public class Encryption
+    public static class Encryption
     {
         private const string key = "unGaynoconBigote"; // Cambia esto a tu clave secreta
         private const string iv = "7f6d8a1e9c2b450a"; // Cambia esto a tu vector de inicialización
 
-        public string Encrypt(string plainText)
+        public static string Encrypt(string plainText)
         {
             using (Aes aesAlg = Aes.Create())
             {
@@ -31,7 +31,7 @@ namespace PerfectMatchBack.Models
             }
         }
 
-        public string Decrypt(string cipherText)
+        public static string Decrypt(string cipherText)
         {
             using (Aes aesAlg = Aes.Create())
             {
@@ -51,6 +51,14 @@ namespace PerfectMatchBack.Models
                     }
                 }
             }
+        }
+        public static string GetSha256(string str)
+        {
+            ASCIIEncoding encoding = new();
+            StringBuilder sb = new();
+            byte[] stream = SHA256.HashData(encoding.GetBytes(str));
+            for (int i = 0; i < stream.Length; i++) sb.AppendFormat("{0:x2}", stream[i]);
+            return sb.ToString();
         }
     }
 

@@ -28,14 +28,14 @@ namespace TestingBackPM
         [Fact]
         public async Task ListUsers()
         {
-            _service.Setup(s => s.listUser()).ReturnsAsync(new List<User> { { new User { } } });
+            _service.Setup(s => s.ListUser()).ReturnsAsync(new List<User> { { new User { } } });
             var result = await controller.ListUsers();
             Assert.IsType<OkObjectResult>(result);
         }
         [Fact]
         public async Task ListSellers()
         {
-            _service.Setup(s => s.listSellers()).ReturnsAsync(new List<User> { { new User { } } });
+            _service.Setup(s => s.ListSellers()).ReturnsAsync(new List<User> { { new User { } } });
             var result = await controller.ListSellers();
             Assert.IsType<OkObjectResult>(result);
         }

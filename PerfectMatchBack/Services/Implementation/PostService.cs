@@ -13,7 +13,7 @@ namespace PerfectMatchBack.Services.Implementation
             _context = context;
 
         }
-        public async Task<Publication> addPublication(Publication model)
+        public async Task<Publication> AddPublication(Publication model)
         {
             try
             {
@@ -28,7 +28,7 @@ namespace PerfectMatchBack.Services.Implementation
 
      
 
-        public async Task<bool> deletePublication(Publication model)
+        public async Task<bool> DeletePublication(Publication model)
         {
             try
             {
@@ -47,18 +47,18 @@ namespace PerfectMatchBack.Services.Implementation
         {
             try
             {
-                var publication = await _context.Publications.Include(navi => navi.IdOwnerNavigation).Include(navi => navi.IdCityNavigation).Include(navi => navi.IdAnimalTypeNavigation)
+                var publication = await _context.Publications.Where(model => model.IdPublication == id).Include(navi => navi.IdOwnerNavigation).Include(navi => navi.IdCityNavigation).Include(navi => navi.IdAnimalTypeNavigation)
                     .Include(navi => navi.IdBreedNavigation).Include(navi => navi.Images)
-                    .Where(model => model.IdPublication == id).FirstOrDefaultAsync()
+                    .FirstOrDefaultAsync()
                     ;
                 return publication;
 
-            } catch (Exception ex) {
-                throw ex;
+            } catch (Exception) {
+                return null;
             }
         }
 
-        public async Task<List<Image>> listImage(int id)
+        public async Task<List<Image>> ListImage(int id)
         {
             try
             {
@@ -70,7 +70,7 @@ namespace PerfectMatchBack.Services.Implementation
             }
         }
 
-        public async Task<List<Publication>> listPublication()
+        public async Task<List<Publication>> ListPublication()
         {
             try
             {
@@ -85,7 +85,7 @@ namespace PerfectMatchBack.Services.Implementation
             }
         }
 
-        public async Task<bool> updatePublication(Publication model)
+        public async Task<bool> UpdatePublication(Publication model)
         {
             try
             {
@@ -101,7 +101,7 @@ namespace PerfectMatchBack.Services.Implementation
             }
         }
 
-        public async Task<List<Publication>> userPublications(int idUser)
+        public async Task<List<Publication>> UserPublications(int idUser)
         {
             try
             {

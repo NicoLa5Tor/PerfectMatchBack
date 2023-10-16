@@ -9,7 +9,6 @@ namespace PerfectMatchBack.Utilitles
     {
         public AutoMapperProfile()
         {
-            Encryption key = new Encryption();
             #region AccessDTO
             CreateMap<AccessDTO, Access>().ReverseMap();
             #endregion
@@ -63,14 +62,26 @@ namespace PerfectMatchBack.Utilitles
                 ForMember(destiny => destiny.NameCity, origin => origin.MapFrom(dest => dest.IdCityNavigation.CityName)).
                 ForMember(destiny => destiny.BirthDate, origin => origin.MapFrom(
                 dest => dest.BirthDate.Value.ToString("dd/MM/yyyy"))).
-                   ForMember(destiny => destiny.password, origin => origin.MapFrom(dest => key.Decrypt(dest.IdAccessNavigation.Password)));
+                   ForMember(destiny => destiny.password, origin => origin.MapFrom(dest => Encryption.Decrypt(dest.IdAccessNavigation.Password)));
             #endregion
             #region Gender
 
             CreateMap<GenderDTO, Gender>()
                 .ReverseMap();
             #endregion
-
+            #region Notification
+            CreateMap<NotificationDTO, Notification>().
+                ForMember(destiny => destiny.IdUserNavigation, origin => origin.Ignore()).
+                ForMember(destiny => destiny.IdPublicationNavigation, origin => origin.Ignore()).
+                ForMember(destiny => destiny.Date, origin => origin.Ignore());
+            CreateMap<Notification, NotificationDTO>().
+                ForMember(destiny => destiny.NameUser, origin => origin.MapFrom(dest => dest.IdUserNavigation.Name)).
+                ForMember(destiny => destiny.Description, origin => origin.MapFrom(dest => dest.IdPublicationNavigation.Description)).
+                ForMember(destiny => destiny.NamePublication, origin => origin.MapFrom(dest => dest.IdPublicationNavigation.AnimalName)).
+                ForMember(destiny => destiny.ImagePublication, origin => origin.MapFrom(dest => dest.IdPublicationNavigation.Images.FirstOrDefault().DataImage)).
+                ForMember(destiny => destiny.Date, origin => origin.MapFrom(
+                dest => dest.Date.Value.ToString("dd/MM/yyyy")));
+            #endregion
         }
     }
 }

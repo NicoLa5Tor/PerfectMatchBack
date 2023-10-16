@@ -13,7 +13,7 @@ namespace PerfectMatchBack.Services.Implementation
             _context = context; 
 
         }
-        public async Task<User> addUser(User model)
+        public async Task<User> AddUser(User model)
         {
             try
             {
@@ -26,7 +26,7 @@ namespace PerfectMatchBack.Services.Implementation
             }
         }
 
-        public async Task<bool> deleteUser(User model)
+        public async Task<bool> DeleteUser(User model)
         {
             try
             {
@@ -40,7 +40,7 @@ namespace PerfectMatchBack.Services.Implementation
             }
         }
 
-        public async Task<User> getUser(int id)
+        public async Task<User> GetUser(int id)
 
         {
             try {
@@ -55,7 +55,7 @@ namespace PerfectMatchBack.Services.Implementation
          
         }
 
-        public  async Task<List<User>> listUser()
+        public  async Task<List<User>> ListUser()
         {
             try
             {
@@ -71,7 +71,7 @@ namespace PerfectMatchBack.Services.Implementation
           
         }
 
-        public async Task<bool> updateUser(User model)
+        public async Task<bool> UpdateUser(User model)
         {
             try
             {
@@ -85,7 +85,7 @@ namespace PerfectMatchBack.Services.Implementation
                 throw ex;   
             }
         }
-        public async Task<List<User>> listSellers()
+        public async Task<List<User>> ListSellers()
         {
 
             var users = _context.Users.Include(navi => navi.Publications).Include(nave => nave.IdCityNavigation).Include(navi => navi.IdRoleNavigation).ToList();

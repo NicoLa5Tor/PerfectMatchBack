@@ -4,11 +4,11 @@ namespace PerfectMatchBack.Services.Contract
 {
     public interface IAccessService
     {
-        Task<List<Access>> listAccess();
-        Task<Access> getAccess(int id);
-        Task<bool> updateAccess(Access access);
-        Task<bool> deleteAccess(Access access);
+        Task<List<Access>> ListAccess();
+        Task<Access> GetAccess(int id);
+        Task<bool> UpdateAccess(Access access);
+        Task<bool> DeleteAccess(Access access);
 
-        Task<Access> createAccess(Access access);
+        Task<Access> CreateAccess(Access access);
     }
 }

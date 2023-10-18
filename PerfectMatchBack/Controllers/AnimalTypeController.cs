@@ -18,7 +18,7 @@ namespace PerfectMatchBack.Controllers
             _service = service;
             _mapper = mapper;
         }
-
+        [Authorize]
         [HttpGet("List")]
         public async Task<IActionResult> ListAnimalType()
         {

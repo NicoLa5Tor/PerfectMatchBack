@@ -39,7 +39,7 @@ namespace PerfectMatchBack.Services.Implementation
             var tokenDetails = new SecurityTokenDescriptor
             {
                 Subject = claims,
-                Expires = DateTime.UtcNow.AddMinutes(5),
+                Expires = DateTime.UtcNow.AddMinutes(1),
                 SigningCredentials = credentialsToken
             };
             var tokenHandler = new JwtSecurityTokenHandler();
@@ -70,7 +70,7 @@ namespace PerfectMatchBack.Services.Implementation
                 Token = token,
                 RefreshToken = refreshToken,
                 DateCreate = DateTime.UtcNow,
-                DateExpiration = DateTime.UtcNow.AddMinutes(30)
+                DateExpiration = DateTime.UtcNow.AddDays(7)
 
             };
             await _context.HistorialRefreshTokens.AddAsync(historialRefreshToken);

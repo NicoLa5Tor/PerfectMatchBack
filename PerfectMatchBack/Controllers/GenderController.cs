@@ -19,6 +19,7 @@ namespace PerfectMatchBack.Controllers
             _mapper = mapper;
             _service = service;
         }
+        [Authorize]
         [HttpGet("List")]
         public async Task<IActionResult> ListGenders()
         {

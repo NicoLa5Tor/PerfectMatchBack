@@ -103,5 +103,19 @@ namespace PerfectMatchBack.Services.Implementation
                 throw ex;
             }
         }
+
+        public async Task<bool> EmailExist(string email)
+        {
+            try
+            {
+                var emailTrue = await _context.Users.FirstOrDefaultAsync(e => e.Email == email);
+                if (emailTrue is null) return true;
+                return false;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }

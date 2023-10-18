@@ -9,7 +9,8 @@ namespace PerfectMatchBack.Services.Contract
         Task<List<User>> listSellers();
         Task<bool> deleteUser(User model);
         Task<bool> updateUser(User model);  
-        Task<User> addUser(User model);  
+        Task<User> addUser(User model);
+        Task<bool> EmailExist(string email);
 
     }
 }

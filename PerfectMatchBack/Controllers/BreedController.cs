@@ -20,7 +20,7 @@ namespace PerfectMatchBack.Controllers
             _mapper = mapper;
         }
 
-
+        [Authorize]
         [HttpGet("List")]
         public async Task<IActionResult> ListBreed() 
         { 

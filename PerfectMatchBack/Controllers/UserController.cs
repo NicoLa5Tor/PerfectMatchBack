@@ -59,7 +59,7 @@ namespace PerfectMatchBack.Controllers
 
             }
         }
-        [Authorize]
+       
         [HttpPost("Add")]
         public async Task<IActionResult> AddUser(
     [FromBody] UserDTO model
@@ -132,6 +132,7 @@ namespace PerfectMatchBack.Controllers
             }
 
         }
+        [Authorize]
         [HttpPut("UpdatePass/{idPass}")]
         public async Task<IActionResult> UpdatePassword(
              AccessDTO access,
@@ -151,6 +152,18 @@ namespace PerfectMatchBack.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
 
+        }
+        [HttpGet("EmailExist/{email}")]
+        public async Task<IActionResult> EmailExist(string email)
+        {
+            if (email is not null) { 
+            var result = await _userService.EmailExist(email);
+            return Ok(result);
+            }
+            else
+            {
+                return Ok("todo bien, todo correcto");
+            }
         }
     }
 }

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PerfectMatchBack.DTOs;
 using PerfectMatchBack.Models;
+using PerfectMatchBack.Models.Response;
 using PerfectMatchBack.Services.Contract;
 using System.Globalization;
 
@@ -15,18 +16,60 @@ namespace PerfectMatchBack.Controllers
     {
         private IUserService _userService;
         private IMapper _mapper;
-        private IMapper mapper;
-        private IUserService @object;
         private readonly IAccessService _accessService;
-        Encryption enc = new Encryption();
+        private readonly INotificationService _notificationService;
 
-        public UserController(IMapper mapper, IUserService userService, IAccessService accessService)
+        public UserController(INotificationService notificationservice,  IMapper mapper, IUserService userService, IAccessService accessService)
         {
             _userService = userService;
             _mapper = mapper;
             _accessService = accessService;
+            _notificationService = notificationservice;
         }
-       
+        [HttpPost("Notification")]
+        public async Task<IActionResult> AddNotification(NotificationDTO notification)
+        {
+            try
+            {
+                await _notificationService.AddNotification(notification);
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        [HttpGet("Notifications/{id}")]
+        public async Task<IActionResult> GetNotifications(int id)
+        {
+            try
+            {
+                return Ok(await _notificationService.GetNotifications(id));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        [HttpDelete("Notification/{id}")]
+        public async Task<IActionResult> RemoveNotifications(int id)
+        {
+            var response = new Response();
+            try
+            {
+                await _notificationService.RemoveNotification(id);
+                response.State = 1;
+                response.Message = "Notificacion eliminada";
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                response.Message = ex.Message;
+                return BadRequest(response);
+            }
+        }
+
         [HttpGet("List")]
         public async Task<IActionResult> ListUsers()
         {
@@ -55,9 +98,6 @@ namespace PerfectMatchBack.Controllers
             {
                 return NotFound();
             }
-            {
-
-            }
         }
        
         [HttpPost("Add")]
@@ -67,9 +107,9 @@ namespace PerfectMatchBack.Controllers
         {
             
             Access access = new Access();
-            access.Password = enc.Encrypt(model.password);
+            access.Password = Encryption.Encrypt(model.password);
 
-            var addAcces = await _accessService.createAccess(access);
+            var addAcces = await _accessService.CreateAccess(access);
             if (addAcces is null) return StatusCode(StatusCodes.Status500InternalServerError);
             model.IdAccess = addAcces.IdAccess;
             var modelDTO = _mapper.Map<User>(model);
@@ -93,7 +133,7 @@ namespace PerfectMatchBack.Controllers
     [FromRoute] int idUser
     )
         {
-            var userTrue = await _userService.getUser(idUser);
+            var userTrue = await _userService.GetUser(idUser);
             if (userTrue is null) return StatusCode(StatusCodes.Status500InternalServerError);
             userTrue.Name = model.Name;
             userTrue.Email = model.Email;
@@ -117,9 +157,9 @@ namespace PerfectMatchBack.Controllers
             [FromRoute] int idUser
             )
         {
-            var userTrue = await _userService.getUser(idUser);
+            var userTrue = await _userService.GetUser(idUser);
             if (userTrue is null) return NotFound();
-            var access = await _accessService.getAccess(userTrue.IdAccess);
+            var access = await _accessService.GetAccess(userTrue.IdAccess);
             var deleteUser = await _userService.deleteUser(userTrue);
             if (deleteUser)
             {
@@ -140,10 +180,10 @@ namespace PerfectMatchBack.Controllers
 
             )
         {
-            var acces = await _accessService.getAccess(idPass);
+            var acces = await _accessService.GetAccess(idPass);
             if (acces is null) return NotFound();
-            acces.Password =  enc.Encrypt(access.Password);
-            var updateAcces = await _accessService.updateAccess(acces);
+            acces.Password = Encryption.Encrypt(access.Password);
+            var updateAcces = await _accessService.UpdateAccess(acces);
             if (updateAcces) {
                 return Ok(_mapper.Map<AccessDTO>(acces));
             }

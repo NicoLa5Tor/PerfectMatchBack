@@ -1,6 +1,7 @@
 ﻿
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using PerfectMatchBack.DTOs.RecoverPass;
 using PerfectMatchBack.Models.Custom;
 using PerfectMatchBack.Services.Contract;
 using System.IdentityModel.Tokens.Jwt;
@@ -12,9 +13,11 @@ namespace PerfectMatchBack.Controllers
     public class LoginController : ControllerBase
     {
         public readonly IAuthorizationService _authorizationService;
-        public LoginController( IAuthorizationService authorizationService)
+        private readonly IEmailService _emailService;
+        public LoginController( IAuthorizationService authorizationService, IEmailService emailService)
         {
             this._authorizationService = authorizationService;
+            _emailService = emailService;
         }
         [HttpPost]
         [Route("Authenticate")]
@@ -47,6 +50,46 @@ namespace PerfectMatchBack.Controllers
                 return Ok(authorizationResponse);
             else
                 return BadRequest(authorizationResponse);
+        }
+        [HttpPost("RecoverPassToken")]
+        public async Task<IActionResult> RecoverPassToken(EmailDTO Request)
+        {
+            try
+            {
+                var response = await _emailService.SendEmail(Request);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.ToString());
+            }
+        }
+        [HttpPost("NewPassword")]
+        public async Task<IActionResult> ChangePassword([FromBody] NewPass Request)
+        {
+            try
+            {
+                var response = await _emailService.UpdatePass(Request);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.ToString());
+            }
+        }
+
+        [HttpGet("ValidationToken")]
+        public async Task<IActionResult> ValidationToken([FromQuery] string token)
+        {
+            try
+            {
+                var response = await _emailService.ValidateToken(token);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.ToString());
+            }
         }
     }
 }

@@ -15,11 +15,13 @@ public partial class Movement
 
     public double? Amount { get; set; }
 
-    public DateTime? Date { get; set; }
+    public DateTime Date { get; set; }
 
-    public virtual User IdBuyerNavigation { get; set; }
+    public virtual User? IdBuyerNavigation { get; set; }
 
-    public virtual Publication IdPublicationNavigation { get; set; }
+    public virtual Publication? IdPublicationNavigation { get; set; }
 
-    public virtual User IdSellerNavigation { get; set; }
+    public virtual User? IdSellerNavigation { get; set; }
+
+    public virtual ICollection<Notification> Notifications { get; set; } = new List<Notification>();
 }

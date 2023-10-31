@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
+using PerfectMatchBack.DTOs;
 using PerfectMatchBack.Models;
 using PerfectMatchBack.Services.Contract;
 
@@ -6,12 +8,12 @@ namespace PerfectMatchBack.Services.Implementation
 {
     public class ImageService : IImageService
     {
-        private PetFectMatchContext _context;
-        public ImageService(PetFectMatchContext context)
+        private readonly PetFectMatchContext _context;
+        private readonly IMapper _map;
+        public ImageService(PetFectMatchContext context, IMapper mapper)
         {
-
             _context = context;
-
+            _map = mapper;
         }
         public async Task<Image> addImage(Image image)
         {
@@ -84,5 +86,27 @@ namespace PerfectMatchBack.Services.Implementation
             }
 
         }
+
+        public async Task<bool> removeRangeImage(List<ImageDTO> images)
+        {
+            try
+            {
+                var images1 = _map.Map<List<Image>>(images);
+                _context.RemoveRange(images1);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public async Task<List<ImageDTO>> GetImageFromPublication(int idPublication)
+        {
+            return _map.Map<List<ImageDTO>>(await (from x in _context.Images where x.IdPublication == idPublication select x).ToListAsync());
+
+        }
+
     }
 }

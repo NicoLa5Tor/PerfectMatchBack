@@ -1,4 +1,5 @@
-﻿using PerfectMatchBack.Models;
+﻿using PerfectMatchBack.DTOs;
+using PerfectMatchBack.Models;
 
 namespace PerfectMatchBack.Services.Contract
 {
@@ -8,7 +9,9 @@ namespace PerfectMatchBack.Services.Contract
         Task<Image> GetImage(int id);
         Task<Image> addImage(Image image);
         Task<bool> removeImage(Image image);
+        Task<bool> removeRangeImage(List<ImageDTO> images);
         Task<bool> Updatemgae(Image image);
+        Task<List<ImageDTO>> GetImageFromPublication(int idPublication);
 
     }
 }

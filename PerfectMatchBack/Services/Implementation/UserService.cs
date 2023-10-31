@@ -40,7 +40,7 @@ namespace PerfectMatchBack.Services.Implementation
             }
         }
 
-        public async Task<User> getUser(int id)
+        public async Task<User> GetUser(int id)
 
         {
             try {

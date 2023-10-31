@@ -183,7 +183,11 @@ public partial class PetFectMatchContext : DbContext
 
         modelBuilder.Entity<HistorialRefreshToken>(entity =>
         {
+<<<<<<< HEAD
             entity.HasKey(e => e.IdHistorialToken).HasName("PK__Historia__10A03A1181F8494A");
+=======
+            entity.HasKey(e => e.IdHistorialToken).HasName("PK__Historia__10A03A116524DEDB");
+>>>>>>> main
 
             entity.ToTable("HistorialRefreshToken");
 

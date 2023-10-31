@@ -173,7 +173,7 @@ public partial class PetFectMatchContext : DbContext
 
         modelBuilder.Entity<HistorialRefreshToken>(entity =>
         {
-            entity.HasKey(e => e.IdHistorialToken).HasName("PK__Historia__10A03A115845E93A");
+            entity.HasKey(e => e.IdHistorialToken).HasName("PK__Historia__10A03A116524DEDB");
 
             entity.ToTable("HistorialRefreshToken");
 
@@ -198,7 +198,7 @@ public partial class PetFectMatchContext : DbContext
 
             entity.HasOne(d => d.IdUserNavigation).WithMany(p => p.HistorialRefreshTokens)
                 .HasForeignKey(d => d.IdUser)
-                .HasConstraintName("FK__Historial__idUse__160F4887");
+                .HasConstraintName("FK__Historial__idUse__29221CFB");
         });
 
         modelBuilder.Entity<Image>(entity =>

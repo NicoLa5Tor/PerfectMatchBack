@@ -106,7 +106,7 @@ namespace PerfectMatchBack.Services.Implementation
             try
             {
                 var list = await _context.Publications.Include(navi => navi.IdOwnerNavigation).Include(navi => navi.IdCityNavigation).Include(navi => navi.IdAnimalTypeNavigation).Include(navi => navi.IdBreedNavigation).
-                    Include(id => id.IdGenderNavigation).Include(navi => navi.Images).Where(id => id.IdOwner == idUser).ToListAsync();
+                Include(id => id.IdGenderNavigation).Include(navi => navi.Images).Where(id => id.IdOwner == idUser).ToListAsync();
                 return list;
 
             }catch(Exception ex)

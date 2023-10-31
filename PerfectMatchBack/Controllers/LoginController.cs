@@ -12,14 +12,14 @@ namespace PerfectMatchBack.Controllers
     public class LoginController : ControllerBase
     {
         public readonly IAuthorizationService _authorizationService;
-        public LoginController( IAuthorizationService authorizationService)
+        public LoginController(IAuthorizationService authorizationService)
         {
             this._authorizationService = authorizationService;
         }
         [HttpPost]
         [Route("Authenticate")]
         public async Task<IActionResult> Authenticate(
-        [FromBody] 
+        [FromBody]
         AuthorizationRequest aut
             )
         {

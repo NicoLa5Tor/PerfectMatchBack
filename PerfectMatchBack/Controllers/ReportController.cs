@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AspNetCore.ReportingServices.ReportProcessing.ReportObjectModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using PerfectMatchBack.DTOs;
 using PerfectMatchBack.Models;
 using PerfectMatchBack.Services.Contract;
 using System.Net;
@@ -34,8 +36,8 @@ namespace PerfectMatchBack.Controllers
             return await _reportService.GetReportPath(reportName);
         }
         [Authorize]
-        [HttpGet("{reportName}")]
-        public async Task<IActionResult> GetReport(string reportName)
+        [HttpGet("ServerReport/{reportName}/{userId}")]
+        public async Task<IActionResult> GetReport(string reportName, int userId)
         {
             using (var httpClient = new HttpClient(new HttpClientHandler
             {
@@ -43,7 +45,9 @@ namespace PerfectMatchBack.Controllers
             }))
             {
                 ReportServerUrl = await _reportService.GetServerUrl();
-                var reportUrl = $"{ReportServerUrl}{reportName}&rs:Format=PDF";
+                // Construir la URL con los parámetros
+                var reportUrl = $"{ReportServerUrl}{reportName}&rs:Format=PDF&UserID={userId}";
+
                 var response = await httpClient.GetAsync(reportUrl);
 
                 if (response.IsSuccessStatusCode)
@@ -62,6 +66,7 @@ namespace PerfectMatchBack.Controllers
                 }
             }
         }
+
         [Authorize]
         [HttpGet("{reportName}/{param1Value}/{param2Value}")]
         public async Task<IActionResult> GetReportParams(string reportName, string param1Value, string param2Value)
@@ -93,5 +98,83 @@ namespace PerfectMatchBack.Controllers
                 }
             }
         }
+        //[Authorize]
+        [HttpGet("TableList/{reportName}/{idUser}")]
+        public async Task<IActionResult> GetAllSalesPurchase(string reportName, int idUser)
+        {
+            var movementList = new List<PurchaseSaleDTO>();
+            if (reportName == "SalesReport")
+            {
+                movementList = await _reportService.GetAllSales(idUser);
+            }
+            if (reportName == "PurchaseReport")
+            {
+                movementList = await _reportService.GetAllPurchase(idUser);
+            }
+
+            if (movementList.Count > 0)
+            {
+                return Ok(movementList);
+            }
+            else
+            {
+                return NotFound("No movements");
+            }
+        }
+
+        [HttpGet("GetRDLC/{idUser}/{reportName}/{startDate}/{endDate}")]
+        public ActionResult GetRDLC(int idUser, string reportName, string startDate, string endDate)
+        {
+            var reportFileByteString = _reportService.GenerateDateReportAsync(idUser, reportName, startDate, endDate);
+            var fileName = reportName;
+
+            return File(reportFileByteString, "application/pdf", fileName);
+        }
+
+        [HttpGet("GetGraphInfo/{startDate}/{endDate}")]
+        public async Task<ActionResult> GetGraphInfo(string startDate, string endDate)
+        {
+            var newUserList = await _reportService.GetGraphNewUser(startDate, endDate);
+
+            if (newUserList.Count > 0)
+            {
+                return Ok(newUserList);
+            }
+            else
+            {
+                return NotFound("No users");
+            }
+        }
+
+        [HttpGet("GetTableInfo/{startDate}/{endDate}")]
+        public async Task<ActionResult> GetTableInfo(string startDate, string endDate)
+        {
+            var newUserList = await _reportService.GetTableNewUser(startDate, endDate);
+
+            if (newUserList.Count > 0)
+            {
+                return Ok(newUserList);
+            }
+            else
+            {
+                return NotFound("No users");
+            }
+        }
+
+        [HttpGet("GetTableMov/{startDate}/{endDate}")]
+        public async Task<ActionResult> GetTableMov(string startDate, string endDate)
+        {
+            var movementList = await _reportService.GetMovementsBetweenDates(startDate, endDate);
+
+            if (movementList.Count > 0)
+            {
+                return Ok(movementList);
+            }
+            else
+            {
+                return NotFound("No movements");
+            }
+        }
+
     }
 }

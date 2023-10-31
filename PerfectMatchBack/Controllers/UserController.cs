@@ -127,6 +127,15 @@ namespace PerfectMatchBack.Controllers
 
         }
         [Authorize]
+        [HttpGet("GetUser/{idUser}")]
+        public async Task<IActionResult> GetUser(int idUser)
+        {
+            var user = await _userService.getUser(idUser);
+            if(user is null) return NotFound();
+            var maper = _mapper.Map<UserDTO>(user);
+            return Ok(maper.IdRole);
+        }
+        [Authorize]
         [HttpPut("Update/{idUser}")]
         public async Task<IActionResult> UpdateUser(
     [FromRoute] UserDTO model,

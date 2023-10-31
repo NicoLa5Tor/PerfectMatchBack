@@ -22,7 +22,7 @@ namespace PerfectMatchBack.Controllers
         [HttpPost]
         [Route("Authenticate")]
         public async Task<IActionResult> Authenticate(
-        [FromBody] 
+        [FromBody]
         AuthorizationRequest aut
             )
         {

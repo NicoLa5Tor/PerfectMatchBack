@@ -13,7 +13,7 @@ public partial class User
 
     public DateTime? BirthDate { get; set; }
 
-    public int IdAccess { get; set; }
+    public int? IdAccess { get; set; }
 
     public int? IdCity { get; set; }
 

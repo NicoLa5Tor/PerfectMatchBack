@@ -38,7 +38,7 @@ namespace PerfectMatchBack.Services.Implementation
             var tokenDetails = new SecurityTokenDescriptor
             {
                 Subject = claims,
-                Expires = DateTime.UtcNow.AddMinutes(1),
+                Expires = DateTime.UtcNow.AddMinutes(60),
                 SigningCredentials = credentialsToken
             };
             var tokenHandler = new JwtSecurityTokenHandler();
@@ -80,9 +80,10 @@ namespace PerfectMatchBack.Services.Implementation
         {
             try
             {
-               
+                ReportService report = new ReportService();
                 var user = await _context.Users.FirstOrDefaultAsync(em => em.Email == aut.email);
                 if (user is null) return await Task.FromResult<AuthorizationResponse>(null);
+
                 var access = await _context.Accesses.FirstOrDefaultAsync(id => id.IdAccess == user.IdAccess);
                if (access is null) return await Task.FromResult<AuthorizationResponse>(null);
                 aut.password = xOr.DecryptXOR(aut.password);
@@ -125,5 +126,6 @@ namespace PerfectMatchBack.Services.Implementation
                 throw ex;
             }
         }
+
     }
 }

@@ -123,12 +123,12 @@ namespace PerfectMatchBack.Controllers
         }
 
         [HttpGet("GetRDLC/{idUser}/{reportName}/{startDate}/{endDate}")]
-        public ActionResult GetRDLC(int idUser, string reportName, string startDate, string endDate)
+        public async Task<ActionResult> GetRDLC(int idUser, string reportName, string startDate, string endDate)
         {
-            var reportFileByteString = _reportService.GenerateDateReportAsync(idUser, reportName, startDate, endDate);
+            var reportFileBytes = await _reportService.GenerateDateReportAsync(idUser, reportName, startDate, endDate);
             var fileName = reportName;
 
-            return File(reportFileByteString, "application/pdf", fileName);
+            return File(reportFileBytes, "application/pdf", fileName);
         }
 
         [HttpGet("GetGraphInfo/{startDate}/{endDate}")]

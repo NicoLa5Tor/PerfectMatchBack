@@ -168,7 +168,7 @@ namespace PerfectMatchBack.Controllers
         {
             var userTrue = await _userService.GetUser(idUser);
             if (userTrue is null) return NotFound();
-            var access = await _accessService.GetAccess(userTrue.IdAccess);
+            var access = await _accessService.GetAccess((int)userTrue.IdAccess);
             var deleteUser = await _userService.deleteUser(userTrue);
             if (deleteUser)
             {

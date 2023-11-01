@@ -10,7 +10,7 @@ namespace PerfectMatchBack.Services.Contract
         Task<string> GetServerUrl();
         Task<List<PurchaseSaleDTO>> GetAllSales(int idSeller);
         Task<List<PurchaseSaleDTO>> GetAllPurchase(int idBuyer);
-        Byte[] GenerateDateReportAsync(int idUser, string reportName, string startDate, string endDate);
+        Task<Byte[]> GenerateDateReportAsync(int idUser, string reportName, string startDate, string endDate);
 
         Task<List<TableNewUserDTO>> GetTableNewUser(string startDateStr, string endDateStr);
         Task<List<DTOs.GraphNewUserDTO>> GetGraphNewUser(string startDateStr, string endDateStr);

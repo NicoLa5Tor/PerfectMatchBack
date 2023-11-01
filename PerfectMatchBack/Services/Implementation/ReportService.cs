@@ -122,7 +122,7 @@ namespace PerfectMatchBack.Services.Implementation
             }
         }
 
-        public Byte[] GenerateDateReportAsync(int idUser, string reportName, string startDate, string endDate)
+        public async Task<Byte[]> GenerateDateReportAsync(int idUser, string reportName, string startDate, string endDate)
         {
 
             string fileDirPatch = Assembly.GetExecutingAssembly().Location.Replace("PerfectMatchBack.dll", string.Empty);
@@ -138,19 +138,19 @@ namespace PerfectMatchBack.Services.Implementation
 
             if (reportName == "SalesReport")
             {
-                List<SaleDTO> salesList = GetSalesDataBetweenDates(idUser).Result;
+                List<SaleDTO> salesList = await GetSalesDataBetweenDates(idUser);
                 report.AddDataSource("dsSales", salesList);
             }
             else if (reportName == "PurchaseReport")
             {
-                List<PurchaseDTO> purchasesList = GetPurchasesDataBetweenDates(idUser).Result;
+                List<PurchaseDTO> purchasesList = await GetPurchasesDataBetweenDates(idUser);
                 report.AddDataSource("dsPurchase", purchasesList);
             }
             else if (reportName == "NewUserReport")
             {
                 parameters.Add("startDate", startDate);
                 parameters.Add("endDate", endDate);
-                List<TableNewUserDTO> tableList = GetTableNewUser(startDate, endDate).Result;
+                List<TableNewUserDTO> tableList = await GetTableNewUser(startDate, endDate);
                 report.AddDataSource("dsTableUser", tableList);
 
             }
@@ -158,7 +158,7 @@ namespace PerfectMatchBack.Services.Implementation
             {
                 parameters.Add("startDate", startDate);
                 parameters.Add("endDate", endDate);
-                List<AllMovementDTO> tableList = GetMovementsBetweenDates(startDate, endDate).Result;
+                List<AllMovementDTO> tableList = await GetMovementsBetweenDates(startDate, endDate);
                 report.AddDataSource("dsMovement", tableList);
 
             }

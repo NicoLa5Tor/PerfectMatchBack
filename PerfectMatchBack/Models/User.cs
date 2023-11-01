@@ -40,4 +40,6 @@ public partial class User
     public virtual ICollection<Notification> Notifications { get; set; } = new List<Notification>();
 
     public virtual ICollection<Publication> Publications { get; set; } = new List<Publication>();
+
+    public virtual ICollection<RecoverPass> RecoverPasses { get; set; } = new List<RecoverPass>();
 }

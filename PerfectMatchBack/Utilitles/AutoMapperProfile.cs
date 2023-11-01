@@ -9,7 +9,6 @@ namespace PerfectMatchBack.Utilitles
     {
         public AutoMapperProfile()
         {
-            Encryption key = new Encryption();
             #region AccessDTO
             CreateMap<AccessDTO, Access>().ReverseMap();
             #endregion
@@ -63,12 +62,40 @@ namespace PerfectMatchBack.Utilitles
                 ForMember(destiny => destiny.NameCity, origin => origin.MapFrom(dest => dest.IdCityNavigation.CityName)).
                 ForMember(destiny => destiny.BirthDate, origin => origin.MapFrom(
                 dest => dest.BirthDate.Value.ToString("dd/MM/yyyy"))).
-                   ForMember(destiny => destiny.password, origin => origin.MapFrom(dest => key.Decrypt(dest.IdAccessNavigation.Password)));
+                   ForMember(destiny => destiny.password, origin => origin.MapFrom(dest => Encryption.Decrypt(dest.IdAccessNavigation.Password)));
             #endregion
             #region Gender
 
             CreateMap<GenderDTO, Gender>()
                 .ReverseMap();
+            #endregion
+            #region Notification
+            CreateMap<NotificationDTO, Notification>().
+                ForMember(destiny => destiny.IdMovementNavigation, origin => origin.Ignore()).
+                ForMember(destiny => destiny.IdUserNavigation, origin => origin.Ignore()).
+                ForMember(destiny => destiny.IdMovementNavigation, origin => origin.Ignore());
+            CreateMap<Notification, NotificationDTO>().
+                 ForMember(destiny => destiny.TypeNotification, origin => origin.MapFrom(dest => dest.TypeNotification)).
+                ForMember(destiny => destiny.NameUser, origin => origin.MapFrom(dest => dest.IdUserNavigation.Name)).
+                ForMember(destiny => destiny.Description, origin => origin.MapFrom(dest => dest.IdMovementNavigation.IdPublicationNavigation.Description)).
+                ForMember(destiny => destiny.NamePublication, origin => origin.MapFrom(dest => dest.IdMovementNavigation.IdPublicationNavigation.AnimalName)).
+                ForMember(destiny => destiny.ImagePublication, origin => origin.MapFrom(dest => dest.IdMovementNavigation.IdPublicationNavigation.Images.FirstOrDefault().DataImage)).
+                ForMember(destiny => destiny.Date, origin => origin.MapFrom(
+                dest => dest.IdMovementNavigation.Date.ToString("dd/MM/yyyy"))).
+                ForMember(destiny => destiny.TypeNotification, origin => origin.MapFrom(
+                dest => dest.IdMovementNavigation.IdSeller == dest.IdUser ? (int)NotificationType.sellNotification : (int)NotificationType.moveNotification));
+            #endregion
+            #region comment
+            CreateMap<CommentDTO, Comment>().
+                ForMember(destiny => destiny.IdPublicationNavigation, origin => origin.Ignore()).
+                ForMember(destiny => destiny.IdUserNavigation, origin => origin.Ignore()).
+                ForMember(destiny => destiny.InverseIdCommentFkNavigation, origin => origin.Ignore()).
+                ForMember(destiny => destiny.IdCommentFkNavigation, origin => origin.Ignore());
+            CreateMap<Comment, CommentDTO>().
+                ForMember(destiny => destiny.NameOwnerComment, origin => origin.MapFrom(dest => dest.IdCommentFkNavigation.IdUserNavigation.Name)).
+                ForMember(destiny => destiny.NameUser, origin => origin.MapFrom(dest => dest.IdUserNavigation.Name)).
+                ForMember(destiny => destiny.NameOwnerPublication, origin => origin.MapFrom(dest => dest.IdPublicationNavigation.IdOwnerNavigation.Name));
+
             #endregion
 
         }

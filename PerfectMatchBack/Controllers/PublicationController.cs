@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using PerfectMatchBack.DTOs;
 using PerfectMatchBack.Models;
 using PerfectMatchBack.Services.Contract;
+using PerfectMatchBack.Services.Implementation;
 
 namespace PerfectMatchBack.Controllers
 {
@@ -15,11 +16,10 @@ namespace PerfectMatchBack.Controllers
     {
 
         private readonly IMapper _mapper;
-        private readonly IPostService _service;
-        private readonly IImageService _serviceImage;
+        private readonly IPostService _postService;
         public PublicationController(IMapper mapper, IPostService service)
         {
-            _service = service;
+            _postService = service;
             _mapper = mapper;
         }
         [Authorize]
@@ -28,7 +28,7 @@ namespace PerfectMatchBack.Controllers
        [FromRoute] int id
        )
         {
-            var list = await _service.listImage(id);
+            var list = await _postService.ListImage(id);
             var listDTO = _mapper.Map<List<ImageDTO>>(list);
             if (listDTO is not null)
             {
@@ -46,7 +46,7 @@ namespace PerfectMatchBack.Controllers
         [FromRoute] int idUser
         )
         {
-            var list = await _service.userPublications(idUser);
+            var list = await _postService.UserPublications(idUser);
             var listDTO = _mapper.Map<List<PublicationDTO>>(list);
             if (listDTO is not null)
             {
@@ -64,7 +64,7 @@ namespace PerfectMatchBack.Controllers
         [Route("List")]
         public async Task<IActionResult> ListPublications()
         {
-            var list = await _service.listPublication();
+            var list = await _postService.ListPublication();
             var listDTO = _mapper.Map<List<PublicationDTO>>(list);
             if (listDTO.Count > 0)
             {
@@ -80,7 +80,7 @@ namespace PerfectMatchBack.Controllers
         public async Task<IActionResult> AddPublication(PublicationDTO model)
         {
             var post = _mapper.Map<Publication>(model);
-            var postAdd = await _service.addPublication(post);
+            var postAdd = await _postService.AddPublication(post);
             if (postAdd.IdPublication != 0)
             {
                 return Ok(_mapper.Map<PublicationDTO>(postAdd));
@@ -93,44 +93,14 @@ namespace PerfectMatchBack.Controllers
         }
         [Authorize]
         [HttpPut("Update/{idPublication}")]
-        public async Task<IActionResult> UpdatePublication(
-            int idPublication,
-             PublicationDTO model
-
-
-            )
+        public async Task<IActionResult> UpdatePublication(int idPublication, PublicationDTO model)
         {
 
-            var modelTrue = await _service.GetPublication(idPublication);
-            if (modelTrue is null) return NotFound();
-            var publication = _mapper.Map<Publication>(model);
-            modelTrue.Age = publication.Age;
-            modelTrue.IdOwner = publication.IdOwner;
-            modelTrue.Description = publication.Description;
-            modelTrue.Comments = publication.Comments;
-            modelTrue.AnimalName = publication.AnimalName;
-            modelTrue.IdBreed = publication.IdBreed;
-            modelTrue.IdAnimalType = publication.IdAnimalType;
-            modelTrue.IdGender = publication.IdGender;
-            modelTrue.Weight = publication.Weight;
-            if (publication.Images is null) { 
-           
-                foreach (var im in publication.Images)
-                {
-                    var images = await _serviceImage.GetImage(im.IdImage);
-                    if (images is not null)
-                    {
-                        images.DataImage = im.DataImage;
-                        await _serviceImage.Updatemgae(images);
-                    }
 
-                }
-            
-            }
-            var ouput = await _service.updatePublication(modelTrue);
-            if (ouput)
+            var ouput = await _postService.UpdatePublication(model, idPublication);
+            if (ouput != null)
             {
-                return Ok(_mapper.Map<PublicationDTO>(modelTrue));
+                return Ok(_mapper.Map<PublicationDTO>(ouput));
             }
             else
             {
@@ -140,15 +110,13 @@ namespace PerfectMatchBack.Controllers
         [Authorize]
         [HttpDelete("Delete/{idPublication}")]
         public async Task<IActionResult> DeletePublication(
-            int idPublication,
-            IPostService _service,
-            IImageService _imageService
+            int idPublication
 
             )
         {
-            var postTrue = await _service.GetPublication(idPublication);
+            var postTrue = await _postService.GetPublication(idPublication);
             if (postTrue is null) return NotFound();
-            var deletePost = await _service.deletePublication(postTrue);
+            var deletePost = await _postService.DeletePublication(postTrue);
             if (deletePost)
             {
 

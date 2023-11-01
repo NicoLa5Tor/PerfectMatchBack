@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
+using PerfectMatchBack.DTOs;
 using PerfectMatchBack.Models;
 using PerfectMatchBack.Services.Contract;
 
@@ -7,13 +9,15 @@ namespace PerfectMatchBack.Services.Implementation
     public class PostService : IPostService
     {
         private PetFectMatchContext _context;
-        public PostService(PetFectMatchContext context)
+        private readonly IMapper _mapper;
+        private readonly IImageService _imageService;
+        public PostService(PetFectMatchContext context, IMapper mapper, IImageService imageService)
         {
-
             _context = context;
-
+            _mapper = mapper;
+            _imageService = imageService;
         }
-        public async Task<Publication> addPublication(Publication model)
+        public async Task<Publication> AddPublication(Publication model)
         {
             try
             {
@@ -28,7 +32,7 @@ namespace PerfectMatchBack.Services.Implementation
 
      
 
-        public async Task<bool> deletePublication(Publication model)
+        public async Task<bool> DeletePublication(Publication model)
         {
             try
             {
@@ -58,7 +62,7 @@ namespace PerfectMatchBack.Services.Implementation
             }
         }
 
-        public async Task<List<Image>> listImage(int id)
+        public async Task<List<Image>> ListImage(int id)
         {
             try
             {
@@ -70,7 +74,7 @@ namespace PerfectMatchBack.Services.Implementation
             }
         }
 
-        public async Task<List<Publication>> listPublication()
+        public async Task<List<Publication>> ListPublication()
         {
             try
             {
@@ -85,23 +89,70 @@ namespace PerfectMatchBack.Services.Implementation
             }
         }
 
-        public async Task<bool> updatePublication(Publication model)
+        public async Task<Publication> UpdatePublication(PublicationDTO model, int idPublication)
         {
             try
             {
-             
-                
-                _context.Publications.Update(model);
+                var modelTrue = await _context.Publications.FindAsync(idPublication);
+                if (modelTrue is null) return null;
+                var publication = _mapper.Map<Publication>(model);
+                modelTrue.Age = publication.Age;
+                modelTrue.IdOwner = publication.IdOwner;
+                modelTrue.Description = publication.Description;
+                modelTrue.Comments = publication.Comments;
+                modelTrue.AnimalName = publication.AnimalName;
+                modelTrue.IdBreed = publication.IdBreed;
+                modelTrue.IdAnimalType = publication.IdAnimalType;
+                modelTrue.IdGender = publication.IdGender;
+                modelTrue.Weight = publication.Weight;
+                var listImgs = await _imageService.GetImageFromPublication(idPublication);
+                if (publication.Images != null)
+                {
+
+                    foreach (var im in publication.Images)
+                    {
+                        var images = await _imageService.GetImage(im.IdImage);
+                        if (images is not null)
+                        {
+                            listImgs.Remove(listImgs.Find(x => x.IdImage == im.IdImage));
+                            if (images.DataImage != im.DataImage)
+                            {
+                                images.DataImage = im.DataImage;
+                                await _imageService.Updatemgae(images);
+                            }
+                        }
+                        else
+                        {
+                            images = new()
+                            {
+                                DataImage = im.DataImage,
+                                IdPublication = idPublication
+                            };
+                            await _imageService.addImage(images);
+
+                        }
+
+                    }
+                    if (listImgs.Count > 0)
+                    {
+                        await _imageService.removeRangeImage(listImgs);
+                    }
+
+                }
+
+                _context.Publications.Update(publication);
 
                 await _context.SaveChangesAsync();
-                return true;
+                return publication;
 
-            }catch (Exception ex) {
+            }
+            catch (Exception ex)
+            {
                 throw ex;
             }
         }
 
-        public async Task<List<Publication>> userPublications(int idUser)
+        public async Task<List<Publication>> UserPublications(int idUser)
         {
             try
             {

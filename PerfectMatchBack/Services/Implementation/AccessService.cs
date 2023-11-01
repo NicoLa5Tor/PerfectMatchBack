@@ -12,7 +12,7 @@ namespace PerfectMatchBack.Services.Implementation
             this._context = context;
         }
 
-        public async Task<Access> createAccess(Access access)
+        public async Task<Access> CreateAccess(Access access)
         {
             try
             {
@@ -25,7 +25,7 @@ namespace PerfectMatchBack.Services.Implementation
             }
         }
 
-        public async Task<bool> deleteAccess(Access access)
+        public async Task<bool> DeleteAccess(Access access)
         {
             try
             {
@@ -38,7 +38,7 @@ namespace PerfectMatchBack.Services.Implementation
             }
         }
 
-        public async Task<Access> getAccess(int id)
+        public async Task<Access> GetAccess(int id)
         {
             try
             {
@@ -50,7 +50,7 @@ namespace PerfectMatchBack.Services.Implementation
             }
         }
 
-        public async Task<List<Access>> listAccess()
+        public async Task<List<Access>> ListAccess()
         {
             try
             {
@@ -62,7 +62,7 @@ namespace PerfectMatchBack.Services.Implementation
             }
         }
 
-        public async Task<bool> updateAccess(Access access)
+        public async Task<bool> UpdateAccess(Access access)
         {
             try
             {

@@ -38,7 +38,7 @@ public partial class PetFectMatchContext : DbContext
     public virtual DbSet<Notification> Notifications { get; set; }
 
     public virtual DbSet<Publication> Publications { get; set; }
-
+    public virtual DbSet<RecoverPass> RecoverPasses { get; set; }
     public virtual DbSet<ReportPath> ReportPaths { get; set; }
 
     public virtual DbSet<Role> Roles { get; set; }
@@ -184,7 +184,6 @@ public partial class PetFectMatchContext : DbContext
         modelBuilder.Entity<HistorialRefreshToken>(entity =>
         {
             entity.HasKey(e => e.IdHistorialToken).HasName("PK__Historia__10A03A1181F8494A");
-            entity.HasKey(e => e.IdHistorialToken).HasName("PK__Historia__10A03A116524DEDB");
 
             entity.ToTable("HistorialRefreshToken");
 
@@ -268,27 +267,30 @@ public partial class PetFectMatchContext : DbContext
 
         modelBuilder.Entity<Notification>(entity =>
         {
-            entity.HasKey(e => e.IdNotifacation).HasName("PK__Notifica__C24D00C423C065BF");
+            entity.HasKey(e => e.IdNotification).HasName("PK__Notifica__C24D00C423C065BF");
 
             entity.ToTable("Notification");
 
-            entity.HasIndex(e => e.IdUser, "IX_Notification_idUser");
+            entity.HasIndex(e => e.IdMovement, "IX_Notification_idUser");
 
-            entity.Property(e => e.IdNotifacation).HasColumnName("idNotifacation");
-            entity.Property(e => e.Date)
-                .HasColumnType("datetime")
-                .HasColumnName("date");
-            entity.Property(e => e.Description)
-                .HasMaxLength(200)
+            entity.Property(e => e.IdNotification).HasColumnName("idNotification");
+            entity.Property(e => e.AccessLink)
+                .HasMaxLength(150)
                 .IsUnicode(false)
-                .HasColumnName("description");
+                .HasColumnName("accessLink");
+            entity.Property(e => e.IdMovement).HasColumnName("idMovement");
             entity.Property(e => e.IdUser).HasColumnName("idUser");
+            entity.Property(e => e.State).HasColumnName("state");
+            entity.Property(e => e.TypeNotification).HasColumnName("typeNotification");
+
+            entity.HasOne(d => d.IdMovementNavigation).WithMany(p => p.Notifications)
+                .HasForeignKey(d => d.IdMovement)
+                .HasConstraintName("FK__Notificat__idUse__3C69FB99");
 
             entity.HasOne(d => d.IdUserNavigation).WithMany(p => p.Notifications)
                 .HasForeignKey(d => d.IdUser)
-                .HasConstraintName("FK__Notificat__idUse__3C69FB99");
+                .HasConstraintName("FK_Notification_User");
         });
-
         modelBuilder.Entity<Publication>(entity =>
         {
             entity.HasKey(e => e.IdPublication).HasName("PK__Publicat__ECEE91EED6DB5C2C");
@@ -347,6 +349,29 @@ public partial class PetFectMatchContext : DbContext
                 .HasConstraintName("FK__Publicati__idOwn__403A8C7D");
         });
 
+
+        modelBuilder.Entity<RecoverPass>(entity =>
+        {
+            entity.HasKey(e => e.IdRecover);
+
+            entity.ToTable("RecoverPass");
+
+            entity.Property(e => e.IdRecover).HasColumnName("idRecover");
+            entity.Property(e => e.CreationDate)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime")
+                .HasColumnName("creationDate");
+            entity.Property(e => e.IdUser).HasColumnName("idUser");
+            entity.Property(e => e.Token)
+                .HasMaxLength(250)
+                .IsUnicode(false)
+                .HasColumnName("token");
+
+            entity.HasOne(d => d.IdUserNavigation).WithMany(p => p.RecoverPasses)
+                .HasForeignKey(d => d.IdUser)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_RecoverPass_User");
+        });
         modelBuilder.Entity<ReportPath>(entity =>
         {
             entity.HasKey(e => e.IdReport);

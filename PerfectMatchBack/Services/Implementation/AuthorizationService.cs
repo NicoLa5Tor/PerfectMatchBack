@@ -18,7 +18,6 @@ namespace PerfectMatchBack.Services.Implementation
     {
         private readonly PetFectMatchContext _context;
         private readonly IConfiguration _configuration;
-        Encryption encrip = new Encryption();
         EncryptXOR xOr = new EncryptXOR(); 
         
         public AuthorizationService(PetFectMatchContext _context,IConfiguration _configuration )
@@ -88,7 +87,7 @@ namespace PerfectMatchBack.Services.Implementation
                 var access = await _context.Accesses.FirstOrDefaultAsync(id => id.IdAccess == user.IdAccess);
                if (access is null) return await Task.FromResult<AuthorizationResponse>(null);
                 aut.password = xOr.DecryptXOR(aut.password);
-                aut.password = encrip.Encrypt(aut.password);
+                aut.password = Encryption.Encrypt(aut.password);
                 if (aut.password == access.Password)
                 {
                     string token = GenerateToken(user.IdUser.ToString());

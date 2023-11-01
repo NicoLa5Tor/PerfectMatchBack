@@ -30,7 +30,7 @@ namespace TestingBackPM
         [Fact]
         public async Task ListPublications()
         {
-            _service.Setup(s => s.listPublication()).ReturnsAsync(new List<Publication> { new Publication { } });
+            _service.Setup(s => s.ListPublication()).ReturnsAsync(new List<Publication> { new Publication { } });
             var result = await controller.ListPublications();
 
             Assert.IsType<OkObjectResult>(result);
@@ -45,7 +45,7 @@ namespace TestingBackPM
         {
 
             var expectedPublication = new Publication { IdPublication = 1 }; 
-            _service.Setup(s => s.addPublication(It.IsAny<Publication>())).ReturnsAsync(expectedPublication);
+            _service.Setup(s => s.AddPublication(It.IsAny<Publication>())).ReturnsAsync(expectedPublication);
 
             var model = new PublicationDTO(); 
             var result = await controller.AddPublication(model);
@@ -62,7 +62,7 @@ namespace TestingBackPM
         public async Task UpdatePublication()
         {
             _service.Setup(s => s.GetPublication(It.IsAny<int>())).ReturnsAsync(new Publication());
-            _service.Setup(s => s.updatePublication(It.IsAny<Publication>())).ReturnsAsync(true);
+            _service.Setup(s => s.UpdatePublication(It.IsAny<Publication>())).ReturnsAsync(true);
             var model = new PublicationDTO();
             var result = await controller.UpdatePublication(1, model);
             Assert.IsType<OkObjectResult>(result);
@@ -71,7 +71,7 @@ namespace TestingBackPM
         public async Task DeletePublication()
         {
             _service.Setup(s => s.GetPublication(It.IsAny<int>())).ReturnsAsync(new Publication());
-            _service.Setup(s => s.deletePublication(It.IsAny<Publication>())).ReturnsAsync(true);
+            _service.Setup(s => s.DeletePublication(It.IsAny<Publication>())).ReturnsAsync(true);
             var result = await controller.DeletePublication(1, _service.Object, null);
             Assert.IsType<OkResult>(result);
         }

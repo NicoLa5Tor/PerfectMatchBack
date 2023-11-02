@@ -29,23 +29,21 @@ namespace PerfectMatchBack.Services.Implementation
         public async Task AddNotification(NotificationDTO notification)
         {
             var onotification = _mapper.Map<Notification>(notification);
-            if (notification.TypeNotification == (int)NotificationType.infoNotification)
-            {
-                await _context.AddAsync(onotification);
-            }
-            else
-            {
-                await _context.AddAsync(onotification);
-                var seller = _context.Users.FirstOrDefault(x => x.Publications.FirstOrDefault(x => x.IdPublication == onotification.IdUser) != null);
-                if (seller == null)
-                {
-                    return;
-                }
-                onotification.IdMovement = seller.IdUser;
-                onotification.TypeNotification =(int) NotificationType.sellNotification;
-                await _context.AddAsync(onotification);
-            }
+            await _context.AddAsync(onotification);
             await _context.SaveChangesAsync();
+            var onotification2 = new Notification()
+                {
+            IdUserFK = notification.IdUser,
+            IdUser = notification.IdUserFK,
+            IdPublication = notification.IdPublication,
+            IdMovement = onotification.IdMovement,
+            AccessLink = notification.AccessLink,
+            TypeNotification = notification.TypeNotification+1,
+                };
+
+            await _context.AddAsync(onotification2);
+            await _context.SaveChangesAsync();
+            
             await _hubContext.Clients.All.SendAsync("ReceiveMessage",
             notification, notification.Description);
         }
@@ -55,7 +53,8 @@ namespace PerfectMatchBack.Services.Implementation
 
             return _mapper.Map<NotificationDTO>(await _context.Notifications
                .Where(x => x.IdNotification == id)
-               //.Include(x => x.IdMovementNavigation.IdPublicationNavigation.Images)
+               .Include(x => x.IdPublicationNavigation.Images)
+               .Include(x => x.IdMovementNavigation.IdPublicationNavigation.Images)
                .Include(x => x.IdMovementNavigation).FirstAsync());
         }
         public async Task<List<NotificationDTO>> GetNotifications(int id)
@@ -63,6 +62,7 @@ namespace PerfectMatchBack.Services.Implementation
             return _mapper.Map<List<NotificationDTO>>(await _context.Notifications
                .Where(x => x.IdUser == id)
                .Include(x => x.IdMovementNavigation.IdPublicationNavigation.Images)
+               .Include(x => x.IdUserFKNavigation)
                .Include(x => x.IdUserNavigation).ToListAsync());
 
         }

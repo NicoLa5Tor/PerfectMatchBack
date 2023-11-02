@@ -36,10 +36,8 @@ public partial class Publication
     public virtual City IdCityNavigation { get; set; }
 
     public virtual Gender IdGenderNavigation { get; set; }
-
     public virtual User IdOwnerNavigation { get; set; }
-
     public virtual ICollection<Image> Images { get; set; } = new List<Image>();
-
     public virtual ICollection<Movement> Movements { get; set; } = new List<Movement>();
+    public virtual ICollection<Notification> Notifications { get; set; } = new List<Notification>();
 }

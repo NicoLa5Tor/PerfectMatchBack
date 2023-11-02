@@ -76,10 +76,13 @@ namespace PerfectMatchBack.Utilitles
                 ForMember(destiny => destiny.IdMovementNavigation, origin => origin.Ignore());
             CreateMap<Notification, NotificationDTO>().
                  ForMember(destiny => destiny.TypeNotification, origin => origin.MapFrom(dest => dest.TypeNotification)).
+                ForMember(destiny => destiny.NameUserFK, origin => origin.MapFrom(dest => dest.IdUserFKNavigation.Name)).
                 ForMember(destiny => destiny.NameUser, origin => origin.MapFrom(dest => dest.IdUserNavigation.Name)).
                 ForMember(destiny => destiny.Description, origin => origin.MapFrom(dest => dest.IdMovementNavigation.IdPublicationNavigation.Description)).
                 ForMember(destiny => destiny.NamePublication, origin => origin.MapFrom(dest => dest.IdMovementNavigation.IdPublicationNavigation.AnimalName)).
-                ForMember(destiny => destiny.ImagePublication, origin => origin.MapFrom(dest => dest.IdMovementNavigation.IdPublicationNavigation.Images.FirstOrDefault().DataImage)).
+                ForMember(destiny => destiny.NamePublication1, origin => origin.MapFrom(dest => dest.IdPublicationNavigation.AnimalName)).
+                ForMember(destiny => destiny.Description1, origin => origin.MapFrom(dest => dest.IdPublicationNavigation.Description)).
+                ForMember(destiny => destiny.ImagePublication, origin => origin.MapFrom(dest => dest.IdPublicationNavigation.Images.FirstOrDefault().DataImage)).
                 ForMember(destiny => destiny.Date, origin => origin.MapFrom(
                 dest => dest.IdMovementNavigation.Date.ToString("dd/MM/yyyy"))).
                 ForMember(destiny => destiny.TypeNotification, origin => origin.MapFrom(

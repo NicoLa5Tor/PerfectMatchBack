@@ -158,7 +158,7 @@ namespace PerfectMatchBack.Services.Implementation
             {
                 parameters.Add("startDate", startDate);
                 parameters.Add("endDate", endDate);
-                List<AllMovementDTO> tableList = GetMovementsBetweenDates(startDate, endDate).Result;
+                List<MovementDTO> tableList = GetMovementsBetweenDates(startDate, endDate).Result;
                 report.AddDataSource("dsMovement", tableList);
 
             }
@@ -170,7 +170,7 @@ namespace PerfectMatchBack.Services.Implementation
             return result.MainStream;
         }
 
-        public async Task<List<AllMovementDTO>> GetMovementsBetweenDates(string startDateStr, string endDateStr)
+        public async Task<List<MovementDTO>> GetMovementsBetweenDates(string startDateStr, string endDateStr)
         {
             DateTime startDate;
             DateTime endDate;
@@ -183,7 +183,7 @@ namespace PerfectMatchBack.Services.Implementation
                     .Include(m => m.IdPublicationNavigation)
                     .Where(m => m.Date >= startDate && m.Date <= endDate)
                     .OrderByDescending(m => m.Date) 
-                    .Select(m => new AllMovementDTO
+                    .Select(m => new MovementDTO
                     {
                         Date = m.Date.ToString(),
                         Buyer = m.IdBuyerNavigation != null ? m.IdBuyerNavigation.Name : "N/A",

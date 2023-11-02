@@ -183,9 +183,6 @@ public partial class PetFectMatchContext : DbContext
 
         modelBuilder.Entity<HistorialRefreshToken>(entity =>
         {
-
-            
-
             entity.HasKey(e => e.IdHistorialToken).HasName("PK__Historia__10A03A116524DEDB");
 
 
@@ -250,6 +247,7 @@ public partial class PetFectMatchContext : DbContext
             entity.Property(e => e.IdMovement).HasColumnName("idMovement");
             entity.Property(e => e.Amount).HasColumnName("amount");
             entity.Property(e => e.Date)
+                .HasDefaultValueSql("(getdate())")
                 .HasColumnType("date")
                 .HasColumnName("date");
             entity.Property(e => e.IdBuyer).HasColumnName("idBuyer");
@@ -283,17 +281,26 @@ public partial class PetFectMatchContext : DbContext
                 .IsUnicode(false)
                 .HasColumnName("accessLink");
             entity.Property(e => e.IdMovement).HasColumnName("idMovement");
+            entity.Property(e => e.IdPublication).HasColumnName("idPublication");
             entity.Property(e => e.IdUser).HasColumnName("idUser");
+            entity.Property(e => e.IdUserFK).HasColumnName("idUserFK");
             entity.Property(e => e.State).HasColumnName("state");
             entity.Property(e => e.TypeNotification).HasColumnName("typeNotification");
 
             entity.HasOne(d => d.IdMovementNavigation).WithMany(p => p.Notifications)
                 .HasForeignKey(d => d.IdMovement)
-                .HasConstraintName("FK__Notificat__idUse__3C69FB99");
+                .HasConstraintName("FK_Notification_Movement");
+            entity.HasOne(d => d.IdPublicationNavigation).WithMany(p => p.Notifications)
+                .HasForeignKey(d => d.IdPublication)
+                .HasConstraintName("FK_Notification_Publication");
 
-            entity.HasOne(d => d.IdUserNavigation).WithMany(p => p.Notifications)
+            entity.HasOne(d => d.IdUserNavigation).WithMany(p => p.NotificationIdUserNavigations)
                 .HasForeignKey(d => d.IdUser)
                 .HasConstraintName("FK_Notification_User");
+
+            entity.HasOne(d => d.IdUserFKNavigation).WithMany(p => p.NotificationIdUserFkNavigations)
+                .HasForeignKey(d => d.IdUserFK)
+                .HasConstraintName("FK__Notificat__idUse__3C69FB99");
         });
         modelBuilder.Entity<Publication>(entity =>
         {

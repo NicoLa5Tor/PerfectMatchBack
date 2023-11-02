@@ -34,12 +34,9 @@ public partial class User
     public virtual Role IdRoleNavigation { get; set; }
 
     public virtual ICollection<Movement> MovementIdBuyerNavigations { get; set; } = new List<Movement>();
-
     public virtual ICollection<Movement> MovementIdSellerNavigations { get; set; } = new List<Movement>();
-
-    public virtual ICollection<Notification> Notifications { get; set; } = new List<Notification>();
-
+    public virtual ICollection<Notification> NotificationIdUserFkNavigations { get; set; } = new List<Notification>();
+    public virtual ICollection<Notification> NotificationIdUserNavigations { get; set; } = new List<Notification>();
     public virtual ICollection<Publication> Publications { get; set; } = new List<Publication>();
-
     public virtual ICollection<RecoverPass> RecoverPasses { get; set; } = new List<RecoverPass>();
 }

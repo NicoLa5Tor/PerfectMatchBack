@@ -130,10 +130,19 @@ namespace PerfectMatchBack.Controllers
         [HttpGet("GetUser/{idUser}")]
         public async Task<IActionResult> GetUser(int idUser)
         {
-            var user = await _userService.getUser(idUser);
+            var user = await _userService.GetUser(idUser);
             if(user is null) return NotFound();
             var maper = _mapper.Map<UserDTO>(user);
             return Ok(maper.IdRole);
+        }
+        [Authorize]
+        [HttpGet("GetTotalUser/{idUser}")]
+        public async Task<IActionResult> GetTotalUser(int idUser)
+        {
+            var user = await _userService.GetUser(idUser);
+            if (user is null) return NotFound();
+            var maper = _mapper.Map<UserDTO>(user);
+            return Ok(maper);
         }
         [Authorize]
         [HttpPut("Update/{idUser}")]
@@ -168,7 +177,7 @@ namespace PerfectMatchBack.Controllers
         {
             var userTrue = await _userService.GetUser(idUser);
             if (userTrue is null) return NotFound();
-            var access = await _accessService.GetAccess(userTrue.IdAccess);
+            var access = await _accessService.GetAccess((int)userTrue.IdAccess);
             var deleteUser = await _userService.deleteUser(userTrue);
             if (deleteUser)
             {

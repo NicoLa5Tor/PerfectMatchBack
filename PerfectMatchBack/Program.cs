@@ -23,6 +23,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSignalR();
 
+builder.Services.AddScoped<IMovementService, MovementService>();
 builder.Services.AddScoped<IAccessService, AccessService>();
 builder.Services.AddScoped<IAnimalTypeService,AnimalTypeService>();
 builder.Services.AddScoped<IBreedService, BreedService>();

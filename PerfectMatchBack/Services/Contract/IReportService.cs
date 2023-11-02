@@ -15,6 +15,6 @@ namespace PerfectMatchBack.Services.Contract
         Task<List<TableNewUserDTO>> GetTableNewUser(string startDateStr, string endDateStr);
         Task<List<DTOs.GraphNewUserDTO>> GetGraphNewUser(string startDateStr, string endDateStr);
 
-        Task<List<AllMovementDTO>> GetMovementsBetweenDates(string startDateStr, string endDateStr);
+        Task<List<MovementDTO>> GetMovementsBetweenDates(string startDateStr, string endDateStr);
     }
 }

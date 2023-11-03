@@ -28,7 +28,9 @@ namespace PerfectMatchBack.Services.Implementation
 
         public async Task<List<MovementDTO>> GetMovements()
         {
-            return _mapper.Map<List<MovementDTO>>(await _context.Movements.ToListAsync());
+            var list = (await _context.Movements.ToListAsync());
+            list.Reverse();
+            return _mapper.Map<List<MovementDTO>>(list);
         }
     }
 }

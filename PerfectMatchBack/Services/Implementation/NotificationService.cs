@@ -59,11 +59,13 @@ namespace PerfectMatchBack.Services.Implementation
         }
         public async Task<List<NotificationDTO>> GetNotifications(int id)
         {
-            return _mapper.Map<List<NotificationDTO>>(await _context.Notifications
+            var list = await _context.Notifications
                .Where(x => x.IdUser == id)
                .Include(x => x.IdMovementNavigation.IdPublicationNavigation.Images)
                .Include(x => x.IdUserFKNavigation)
-               .Include(x => x.IdUserNavigation).ToListAsync());
+               .Include(x => x.IdUserNavigation).ToListAsync();
+            list.Reverse();
+            return _mapper.Map<List<NotificationDTO>>(list);
 
         }
 

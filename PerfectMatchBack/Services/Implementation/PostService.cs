@@ -105,42 +105,49 @@ namespace PerfectMatchBack.Services.Implementation
                 modelTrue.IdAnimalType = publication.IdAnimalType;
                 modelTrue.IdGender = publication.IdGender;
                 modelTrue.Weight = publication.Weight;
-                var listImgs = await _imageService.GetImageFromPublication(idPublication);
-                if (publication.Images != null)
-                {
+                modelTrue.Price = publication.Price;
 
+                var listImgs = await _imageService.GetImageFromPublication(idPublication);
+                if (listImgs.Count > 0)
+                {
                     foreach (var im in publication.Images)
                     {
-                        var images = await _imageService.GetImage(im.IdImage);
-                        if (images is not null)
+                        if (im != null)
                         {
-                            listImgs.Remove(listImgs.Find(x => x.IdImage == im.IdImage));
-                            if (images.DataImage != im.DataImage)
+                            var images = await _imageService.GetImage(im.IdImage);
+                            if (images != null)
                             {
-                                images.DataImage = im.DataImage;
-                                await _imageService.Updatemgae(images);
+                                if (images.DataImage != im.DataImage)
+                                {
+                                    images.DataImage = im.DataImage;
+                                    await _imageService.Updatemgae(images);
+                                }
+
                             }
-                        }
-                        else
-                        {
-                            images = new()
+                            else
                             {
-                                DataImage = im.DataImage,
-                                IdPublication = idPublication
-                            };
-                            await _imageService.addImage(images);
+                                if (im.DataImage != null)
+                                {
+                                    images = new()
+                                    {
+
+                                        DataImage = im.DataImage,
+                                        IdPublication = idPublication
+                                    };
+                                    await _imageService.addImage(images);
+                                }
+
+                            }
 
                         }
 
+
                     }
-                    if (listImgs.Count > 0)
-                    {
-                        await _imageService.removeRangeImage(listImgs);
-                    }
+
 
                 }
 
-                _context.Publications.Update(publication);
+                _context.Publications.Update(modelTrue);
 
                 await _context.SaveChangesAsync();
                 return publication;

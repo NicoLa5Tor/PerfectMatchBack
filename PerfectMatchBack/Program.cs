@@ -25,15 +25,15 @@ builder.Services.AddSignalR();
 
 builder.Services.AddScoped<IMovementService, MovementService>();
 builder.Services.AddScoped<IAccessService, AccessService>();
-builder.Services.AddScoped<IAnimalTypeService,AnimalTypeService>();
+builder.Services.AddScoped<IAnimalTypeService, AnimalTypeService>();
 builder.Services.AddScoped<IBreedService, BreedService>();
 builder.Services.AddScoped<IGenderService, GenderService>();
-builder.Services.AddScoped<ICityService, CityService>();    
+builder.Services.AddScoped<ICityService, CityService>();
 builder.Services.AddScoped<IImageService, ImageService>();
 builder.Services.AddScoped<IPostService, PostService>();
 builder.Services.AddScoped<IReportService, ReportService>();
-builder.Services.AddScoped<IRoleService, RoleService>();    
-builder.Services.AddScoped<IUserService,UserService>();
+builder.Services.AddScoped<IRoleService, RoleService>();
+builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IAuthorizationService, AuthorizationService>();
 builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<INotificationService, NotificationService>();
@@ -75,11 +75,13 @@ builder.Services.AddAuthentication(confg =>
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
+
+app.UseSwagger();
+app.UseSwaggerUI(c =>
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+});
+
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
@@ -92,4 +94,3 @@ app.UseHttpsRedirection();
 app.MapControllers();
 app.MapHub<EmailHub>("/chatHub");
 app.Run();
-

@@ -21,6 +21,7 @@ namespace PerfectMatchBack.Services.Implementation
         {
             try
             {
+
                 _context.Publications.Add(model);
                 await _context.SaveChangesAsync();
                 return model;

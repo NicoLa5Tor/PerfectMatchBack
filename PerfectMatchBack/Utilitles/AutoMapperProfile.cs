@@ -39,7 +39,8 @@ namespace PerfectMatchBack.Utilitles
              ForMember(destiny => destiny.IdBreedNavigation, origin => origin.Ignore()).
              ForMember(destiny => destiny.IdCityNavigation, origin => origin.Ignore()).
              ForMember(destiny => destiny.IdOwnerNavigation, origin => origin.Ignore()).
-             ForMember(destiny => destiny.IdGenderNavigation, origin => origin.Ignore());
+             ForMember(destiny => destiny.IdGenderNavigation, origin => origin.Ignore()).
+             ForMember(destity => destity.Images, oring => oring.Ignore());
             CreateMap<Publication, PublicationDTO>().
                 ForMember(destiny => destiny.TypeName, origin => origin.MapFrom(dest => dest.IdAnimalTypeNavigation.AnimalTypeName)).
                 ForMember(destiny => destiny.CityName, origin => origin.MapFrom(dest => dest.IdCityNavigation.CityName)).

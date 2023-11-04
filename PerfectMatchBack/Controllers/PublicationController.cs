@@ -14,11 +14,13 @@ namespace PerfectMatchBack.Controllers
     [ApiController]
     public class PublicationController : ControllerBase
     {
-
+       
         private readonly IMapper _mapper;
         private readonly IPostService _postService;
-        public PublicationController(IMapper mapper, IPostService service)
+        private readonly IImageService _imageService;
+        public PublicationController(IMapper mapper, IPostService service, IImageService imageService)
         {
+            _imageService = imageService;
             _postService = service;
             _mapper = mapper;
         }
@@ -81,14 +83,20 @@ namespace PerfectMatchBack.Controllers
         {
             var post = _mapper.Map<Publication>(model);
             var postAdd = await _postService.AddPublication(post);
-            if (postAdd.IdPublication != 0)
+            if (postAdd.IdPublication == 0) return StatusCode(StatusCodes.Status500InternalServerError);
+            foreach(var im in model.Images)
             {
-                return Ok(_mapper.Map<PublicationDTO>(postAdd));
+                if(im.DataImage != null && im.DataImage != "")
+                {
+                    im.IdPublication = postAdd.IdPublication;
+                    await _imageService.addImage(_mapper.Map<Image>(im));
+                    
+                }
             }
-            else
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError);
-            }
+            return Ok(_mapper.Map<PublicationDTO>(postAdd));    
+
+
+         
 
         }
         [Authorize]

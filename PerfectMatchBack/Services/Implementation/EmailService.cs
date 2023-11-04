@@ -65,17 +65,16 @@ namespace PerfectMatchBack.Services.Implementation
                 var user = await _context.Users.Where(x => x.Email == Request.Email).FirstOrDefaultAsync();
                 if (user == null)
                 {
-                    response.Message = "The email is not found in the database";
+                    response.Message = "El correo no fue encontrado en la base de datos";
                     return response;
                 }
                 var newToken = new RecoverPass { IdUser = user.IdUser, Token = Encryption.GetSha256(token) };
                 await _context.AddAsync(newToken);
                 await _context.SaveChangesAsync();
 
-
-                Request.Content = "<h4>Mail to recover pass</h4><br> <a href='"
+                Request.Content = "<h4Correo para recuperar la contraseña</h4><br> <a href='"
                     + Request.Domain + "/newpassword?token=" + token
-                    + "'>Click to recover pass</a>";
+                    + "'>click para recuperar contraseña</a>";
 
                 var email = new MimeMessage();
                 email.From.Add(MailboxAddress.Parse(_config.GetSection("Email:UserName").Value));
@@ -95,7 +94,7 @@ namespace PerfectMatchBack.Services.Implementation
                 await smtp.SendAsync(email);
                 await smtp.DisconnectAsync(true);
                 response.State = 1;
-                response.Message = "The email was send successfully";
+                response.Message = "El email fue enviado satisfactoriamente";
                 return response;
             }
             catch (Exception ex)
@@ -115,24 +114,24 @@ namespace PerfectMatchBack.Services.Implementation
                 var oRecover = await _context.RecoverPasses.Where(x => Encryption.GetSha256(request.Token) == x.Token).FirstOrDefaultAsync();
                 if (oRecover == null)
                 {
-                    response.Message = "Token expired";
+                    response.Message = "Token expirado";
                     return response;
                 }
                 if (request.Pass != request.Pass2)
                 {
-                    response.Message = "Passwords do not match";
+                    response.Message = "Las contraseñas no coinciden";
                     return response;
                 }
                 var oUser = _mapper.Map<User>(await _userService.GetUser(oRecover.IdUser));
                 if (oUser == null)
                 {
-                    response.Message = "The user is not found";
+                    response.Message = "El usuario no fue encontrado";
                     return response;
                 }
                 var access = await _context.Accesses.Where(x => x.IdAccess == oUser.IdAccess).FirstOrDefaultAsync();
                 if (access == null)
                 {
-                    response.Message = "The user doesn't have a password assigned";
+                    response.Message = "El usuarion no tiene una contraseña asignada";
                     return response;
                 }
                 access.Password = Encryption.Encrypt(request.Pass);
@@ -140,7 +139,7 @@ namespace PerfectMatchBack.Services.Implementation
                 _context.Remove(oRecover);
                 await _context.SaveChangesAsync();
                 response.State = 1;
-                response.Message = "The user is updated";
+                response.Message = "El usuario esta actualizado";
                 response.Data = _mapper.Map<UserDTO>(oUser);
                 return response;
             }

@@ -74,7 +74,7 @@ namespace PerfectMatchBack.Services.Implementation
 
 
                 Request.Content = "<h4>Mail to recover pass</h4><br> <a href='"
-                    + Request.Domain + "newpassword?token=" + token
+                    + Request.Domain + "/newpassword?token=" + token
                     + "'>Click to recover pass</a>";
 
                 var email = new MimeMessage();
